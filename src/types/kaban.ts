@@ -7,7 +7,7 @@ export interface Task {
   title: string;
   description?: string;
   createdAt: string;
-  UpdatedAt: string;
+  updatedAt: string;
 }
 
 export interface Column {
