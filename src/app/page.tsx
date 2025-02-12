@@ -1,10 +1,15 @@
-import { Button } from '@/components/ui/button';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const Board = dynamic(() => import('@/components/board').then(({ Board }) => Board), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
-    <div>
-      <h1>안녕하세요 </h1>
-      <Button variant="outline">Button</Button>
-    </div>
+    <main>
+      <Board />
+    </main>
   );
 }
