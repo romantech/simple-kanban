@@ -11,6 +11,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        gunMetal: '#20212b',
+        haiti: '#2b2c36',
+        regent: '#838ea0',
+        line: '#3e3f4e',
+
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

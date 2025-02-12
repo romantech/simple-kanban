@@ -1,10 +1,9 @@
-import { Button } from '@/components/ui/button';
+import { Kanban } from '@/components';
 
 export default function Home() {
   return (
-    <div>
-      <h1>안녕하세요 </h1>
-      <Button variant="outline">Button</Button>
-    </div>
+    <main className="h-dvh w-dvw bg-gunMetal text-white">
+      <Kanban />
+    </main>
   );
 }
