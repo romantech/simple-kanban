@@ -23,8 +23,12 @@ export interface Board {
   columnIds: ColumnId[];
 }
 
+export type Tasks = Record<TaskId, Task>;
+export type Columns = Record<ColumnId, Column>;
+export type Boards = Record<BoardId, Board>;
+
 export interface Kanban {
-  tasks: Record<TaskId, Task>;
-  columns: Record<ColumnId, Column>;
-  boards: Record<BoardId, Board>;
+  tasks: Tasks;
+  columns: Columns;
+  boards: Boards;
 }

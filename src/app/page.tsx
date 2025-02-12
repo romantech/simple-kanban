@@ -1,15 +1,9 @@
-'use client';
-
-import dynamic from 'next/dynamic';
-
-const Board = dynamic(() => import('@/components/board').then(({ Board }) => Board), {
-  ssr: false,
-});
+import { Kanban } from '@/components';
 
 export default function Home() {
   return (
-    <main>
-      <Board />
+    <main className="h-dvh w-dvw bg-gunMetal text-white md:p-4">
+      <Kanban />
     </main>
   );
 }

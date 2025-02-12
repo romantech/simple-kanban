@@ -1,6 +1,6 @@
-import { type Kanban } from '@/types';
+import { type Boards, type Columns, type Kanban, type Tasks } from '@/types';
 
-const tasks: Kanban['tasks'] = {
+const tasks: Tasks = {
   'task-1': {
     id: 'task-1',
     title: '첫 번째 태스크',
@@ -24,7 +24,7 @@ const tasks: Kanban['tasks'] = {
   },
 };
 
-const columns: Kanban['columns'] = {
+const columns: Columns = {
   'column-1': {
     id: 'column-1',
     title: '해야 할 일',
@@ -45,7 +45,7 @@ const columns: Kanban['columns'] = {
   },
 };
 
-const boards: Kanban['boards'] = {
+const boards: Boards = {
   'board-1': {
     id: 'board-1',
     title: '프로젝트 보드',
@@ -59,4 +59,4 @@ const sampleKanbanData: Kanban = {
   boards,
 };
 
-export default sampleKanbanData;
+export { sampleKanbanData };
