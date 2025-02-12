@@ -5,11 +5,10 @@ interface TaskProps {
 }
 const Task = ({ task }: TaskProps) => {
   return (
-    <div>
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
+    <li className="min-w-60 rounded-md bg-haiti p-4 shadow-md">
+      <p className="font-semibold">{task.description}</p>
       <small>{task.UpdatedAt}</small>
-    </div>
+    </li>
   );
 };
 
