@@ -59,4 +59,6 @@ const sampleKanbanData: Kanban = {
   boards,
 };
 
-export { sampleKanbanData };
+const initialBoardId = 'board-1';
+
+export { sampleKanbanData, initialBoardId };

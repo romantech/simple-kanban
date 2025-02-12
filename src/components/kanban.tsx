@@ -1,13 +1,10 @@
-import { sampleKanbanData } from '@/lib';
 import { Board } from '@/components';
-
-const { boards, ...boardProps } = sampleKanbanData;
+import { initialBoardId } from '@/lib';
 
 const Kanban = () => {
-  const board = boards['board-1'];
   return (
     <div>
-      <Board board={board} {...boardProps} />
+      <Board boardId={initialBoardId} />
     </div>
   );
 };

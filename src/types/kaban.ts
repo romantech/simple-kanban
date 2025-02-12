@@ -1,6 +1,6 @@
-type TaskId = string;
-type ColumnId = string;
-type BoardId = string;
+export type TaskId = `task-${string}`;
+export type ColumnId = `column-${string}`;
+export type BoardId = `board-${string}`;
 
 export interface Task {
   id: TaskId;

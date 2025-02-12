@@ -1,12 +1,15 @@
-import { type Column } from '@/types';
+import { type Column, type ColumnId } from '@/types';
 import { Task } from '@/components';
+import { useKanbanStore } from '@/store';
 
 interface ColumnProps {
-  column: Column;
-  tasks: Task[];
+  columnId: ColumnId;
 }
 
-const Column = ({ column, tasks }: ColumnProps) => {
+const Column = ({ columnId }: ColumnProps) => {
+  const getColumnWithTasks = useKanbanStore.use.getColumnWithTasks();
+  const { tasks, column } = getColumnWithTasks(columnId);
+
   return (
     <div className="space-y-6">
       <h2 className="text-regent">{`${column.title} (${tasks.length})`}</h2>
