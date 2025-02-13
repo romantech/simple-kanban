@@ -1,20 +1,25 @@
 import { type Column, type ColumnId } from '@/types';
-import { Task } from '@/components';
+import { AddTask, Task } from '@/components';
 import { useKanbanStore } from '@/store';
+import { useShallow } from 'zustand/react/shallow';
 
 interface ColumnProps {
   columnId: ColumnId;
 }
 
 const Column = ({ columnId }: ColumnProps) => {
-  const getColumnWithTasks = useKanbanStore.use.getColumnWithTasks();
-  const { tasks, column } = getColumnWithTasks(columnId);
+  const { tasks, column } = useKanbanStore(
+    useShallow(({ tasks, columns }) => ({ tasks, column: columns[columnId] })),
+  );
+
+  const tasksByColumnId = column.taskIds.map((id) => tasks[id]);
 
   return (
-    <div className="w-64 space-y-6">
-      <h3 className="text-sm font-bold text-regent">{`${column.title} (${tasks.length})`}</h3>
-      <ul className="flex flex-col gap-4">
-        {tasks.map((task) => (
+    <div className="flex w-64 flex-col space-y-4">
+      <h3 className="mb-2 text-sm font-bold text-baltic-400">{`${column.title} (${tasksByColumnId.length})`}</h3>
+      <AddTask columnId={columnId} />
+      <ul className="scroll-custom flex flex-col gap-4 overflow-y-auto">
+        {tasksByColumnId.map((task) => (
           <Task key={task.id} task={task} />
         ))}
       </ul>
