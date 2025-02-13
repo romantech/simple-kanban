@@ -83,11 +83,13 @@ const boards: Boards = {
   [boardIds[0]]: {
     id: boardIds[0],
     title: 'B2B 프로젝트',
+    createdAt: '2025-02-10T09:00:00Z',
     columnIds: [columnIds[0], columnIds[1]],
   },
   [boardIds[1]]: {
     id: boardIds[1],
     title: '자기계발',
+    createdAt: '2025-02-10T09:00:00Z',
     columnIds: [columnIds[2], columnIds[3]],
   },
 };

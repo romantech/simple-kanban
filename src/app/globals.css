@@ -86,6 +86,6 @@ body {
   }
 
   .scroll-custom {
-    @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-charade-950 scrollbar-track-transparent;
+    @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-charade-900 scrollbar-track-transparent;
   }
 }

@@ -15,7 +15,7 @@ const Column = ({ columnId }: ColumnProps) => {
   const tasksByColumnId = column.taskIds.map((id) => tasks[id]);
 
   return (
-    <div className="flex w-64 flex-col space-y-4">
+    <div className="flex w-64 shrink-0 flex-col space-y-4">
       <h3 className="mb-2 text-sm font-bold text-baltic-400">{`${column.title} (${tasksByColumnId.length})`}</h3>
       <AddTask columnId={columnId} />
       <ul className="scroll-custom flex flex-col gap-4 overflow-y-auto">

@@ -24,6 +24,7 @@ export interface Column {
 export interface Board {
   id: BoardId;
   title: string;
+  createdAt: string;
   columnIds: ColumnId[];
 }
 

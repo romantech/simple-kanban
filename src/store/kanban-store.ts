@@ -1,5 +1,12 @@
 import { create } from 'zustand';
-import { type BoardId, type ColumnId, type Kanban, type Task, type TaskId } from '@/types';
+import {
+  type BoardId,
+  type Column,
+  type ColumnId,
+  type Kanban,
+  type Task,
+  type TaskId,
+} from '@/types';
 import { generateId, getISODate, initialBoardId, sampleKanbanData } from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
 import { immer } from 'zustand/middleware/immer';
@@ -12,6 +19,7 @@ interface KanbanActions {
   initialize: (data?: KanbanState) => void;
   setBoard: (boardId: BoardId) => void;
   addTask: (columnId: ColumnId, title: Task['title']) => void;
+  addColumn: (title: Column['title']) => void;
 }
 
 const initialState: KanbanState = {
@@ -42,6 +50,16 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
         const column = state.columns[columnId];
         column.taskIds.push(id);
         state.tasks[id] = newTask;
+      });
+    },
+    addColumn: (title) => {
+      const id: ColumnId = generateId('column');
+      const now = getISODate();
+      const newBoard: Column = { id, createdAt: now, title, taskIds: [] };
+
+      set((state) => {
+        state.columns[id] = newBoard;
+        state.boards[state.currentBoardId].columnIds.push(id);
       });
     },
   })),

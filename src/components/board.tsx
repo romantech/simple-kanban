@@ -1,5 +1,5 @@
 import { type Board } from '@/types';
-import { Column } from '@/components';
+import { AddColumn, Column } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -10,11 +10,15 @@ const Board = () => {
   const board = useKanbanStore(useShallow(({ boards, currentBoardId }) => boards[currentBoardId]));
 
   return (
-    <div className="flex gap-4 p-6">
+    <div className="scroll-custom flex w-full gap-4 overflow-x-auto p-6">
       {board.columnIds.map((columnId) => (
         <Column key={columnId} columnId={columnId} />
       ))}
+      <div className="ml-auto mt-11 flex">
+        <AddColumn />
+      </div>
     </div>
   );
 };
+
 export { Board };
