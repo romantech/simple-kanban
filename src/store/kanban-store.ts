@@ -19,7 +19,7 @@ const initialState: KanbanState = {
   currentBoardId: initialBoardId,
 };
 
-const useKanbanStoreBase = create<KanbanActions & KanbanState>((set, get) => ({
+const useKanbanStoreBase = create<KanbanActions & KanbanState>()((set, get) => ({
   // 데이터
   ...initialState,
 
