@@ -4,6 +4,6 @@ export * from './column';
 export * from './task';
 export * from './board-list';
 export * from './header';
-export * from './add-task';
-export * from './add-column';
+export * from './add-task-dialog';
+export * from './add-column-dialog';
 export * from './column-header';

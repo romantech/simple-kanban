@@ -26,7 +26,7 @@ interface AddTaskProps {
   columnId: ColumnId;
 }
 
-const AddTask = ({ columnId }: AddTaskProps) => {
+const AddTaskDialog = ({ columnId }: AddTaskProps) => {
   const addTask = useKanbanStore.use.addTask();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -94,4 +94,4 @@ const AddTask = ({ columnId }: AddTaskProps) => {
   );
 };
 
-export { AddTask };
+export { AddTaskDialog };

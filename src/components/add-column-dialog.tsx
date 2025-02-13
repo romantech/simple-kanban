@@ -23,7 +23,7 @@ import { Label } from '@/components/ui/label';
 
 const [fieldName] = addColumnSchema.keyof().options;
 
-const AddColumn = () => {
+const AddColumnDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addColumn = useKanbanStore.use.addColumn();
@@ -74,4 +74,4 @@ const AddColumn = () => {
   );
 };
 
-export { AddColumn };
+export { AddColumnDialog };

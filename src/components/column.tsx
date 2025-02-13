@@ -1,6 +1,6 @@
 'use client';
 
-import { AddTask, ColumnHeader, Task } from '@/components';
+import { AddTaskDialog, ColumnHeader, Task } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { type ColumnId } from '@/lib';
@@ -27,7 +27,7 @@ const Column = ({ columnId }: ColumnProps) => {
         onDelete={() => deleteColumn(columnId)}
         onTitleChange={(newTitle) => setColumnTitle(columnId, newTitle)}
       />
-      <AddTask columnId={columnId} />
+      <AddTaskDialog columnId={columnId} />
       <ul className="scroll-custom flex flex-1 flex-col gap-4 overflow-y-auto">
         {tasksByColumnId.map((task) => (
           <Task key={task.id} task={task} />

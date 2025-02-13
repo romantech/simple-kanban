@@ -1,4 +1,4 @@
-import { AddColumn, Column } from '@/components';
+import { AddColumnDialog, Column } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -14,7 +14,7 @@ const Board = () => {
         <Column key={columnId} columnId={columnId} />
       ))}
       <div className="ml-auto mt-11 flex">
-        <AddColumn />
+        <AddColumnDialog />
       </div>
     </div>
   );
