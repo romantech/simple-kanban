@@ -23,7 +23,7 @@ interface KanbanState extends Kanban {
 interface KanbanActions {
   initialize: (data?: KanbanState) => void;
   setBoard: (boardId: BoardId) => void;
-  addTask: (columnId: ColumnId, title: Title) => void;
+  addTask: (columnId: ColumnId, title: Title, description?: string) => void;
   addColumn: (title: Title) => void;
   deleteColumn: (columnId: ColumnId) => void;
   setColumnTitle: (columnId: ColumnId, title: Title) => void;
@@ -47,15 +47,15 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
 
       set({ currentBoardId: boardId });
     },
-    addTask: (columnId, title) => {
+    addTask: (columnId, title, description) => {
       const id: TaskId = generateId('Task');
       const now = getISODate();
 
-      const newTask: Task = { id, title, createdAt: now, updatedAt: now };
+      const newTask: Task = { id, title, description, createdAt: now, updatedAt: now };
 
       set((state) => {
         const column = state.columns[columnId];
-        column.taskIds.push(id);
+        column.taskIds.unshift(id);
         state.tasks[id] = newTask;
       });
     },

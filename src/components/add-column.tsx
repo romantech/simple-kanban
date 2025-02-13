@@ -4,6 +4,7 @@ import { SquarePlus } from 'lucide-react';
 import { useKanbanStore } from '@/store';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -18,6 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { useState } from 'react';
 import { addColumnSchema, type AddColumnSchema } from '@/lib';
+import { Label } from '@/components/ui/label';
 
 const [fieldName] = addColumnSchema.keyof().options;
 
@@ -46,11 +48,12 @@ const AddColumn = () => {
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           <DialogHeader>
             <DialogTitle>새로운 컬럼 추가</DialogTitle>
-            <DialogDescription>컬럼 이름을 입력하세요</DialogDescription>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-2 py-6">
-            <Input {...register(fieldName)} placeholder="최대 20자까지 입력할 수 있어요" />
+          <div className="space-y-2 py-7">
+            <Label htmlFor={fieldName}>컬럼 이름</Label>
+            <Input {...register(fieldName)} placeholder="최대 50자까지 입력할 수 있어요" />
             <ErrorMessage
               errors={formState.errors}
               name={fieldName}
@@ -58,6 +61,11 @@ const AddColumn = () => {
             />
           </div>
           <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                취소
+              </Button>
+            </DialogClose>
             <Button type="submit">추가</Button>
           </DialogFooter>
         </form>

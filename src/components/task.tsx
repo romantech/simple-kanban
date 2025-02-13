@@ -8,7 +8,7 @@ interface TaskProps {
 const Task = ({ task }: TaskProps) => {
   return (
     <li className="min-w-60 cursor-grab rounded-md bg-charade-950 p-4 shadow-md active:cursor-grabbing">
-      <p className="line-clamp-2 text-[15px] font-semibold">{task.description}</p>
+      <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
       <small className="text-xs text-baltic-400">
         {format(task.updatedAt, 'yyyy-MM-dd(eee) HH:mm', { locale: ko })}
       </small>

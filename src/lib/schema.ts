@@ -9,19 +9,17 @@ export const titleSchema = z
   .string()
   .trim()
   .min(1, { message: '최소 1글자 이상 입력해주세요' })
-  .max(20, { message: '최대 20자까지만 입력할 수 있어요' });
+  .max(50, { message: '최대 50자까지만 입력할 수 있어요' });
 
 export const taskSchema = z.object({
   id: taskId,
   title: titleSchema,
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(500, { message: '설명은 최대 500자까지만 입력할 수 있어요' })
+    .optional(),
   createdAt: z.coerce.string(),
   updatedAt: z.coerce.string(),
-});
-
-export const addTaskSchema = taskSchema.pick({
-  title: true,
-  description: true,
 });
 
 export const columnSchema = z.object({
@@ -48,5 +46,7 @@ export type Board = z.infer<typeof boardSchema>;
 
 export type Title = z.infer<typeof titleSchema>;
 
+export const addTaskSchema = taskSchema.pick({ title: true, description: true });
+export type AddTaskSchema = z.infer<typeof addTaskSchema>;
 export const addColumnSchema = columnSchema.pick({ title: true });
 export type AddColumnSchema = z.infer<typeof addColumnSchema>;
