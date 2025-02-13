@@ -1,19 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Pencil, Save, Trash2 } from 'lucide-react';
+import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 interface ColumnHeaderProps {
   title: string;
@@ -47,7 +37,7 @@ const ColumnHeader = ({ title, taskCount, onDelete, onTitleChange }: ColumnHeade
     setEditedTitle(e.target.value);
   };
 
-  const EditIcon = isEditing ? Save : Pencil;
+  const Icon = isEditing ? Save : EditIcon;
 
   return (
     <div className="mb-2 flex h-[24px] items-center justify-between gap-2 text-baltic-400">
@@ -66,26 +56,15 @@ const ColumnHeader = ({ title, taskCount, onDelete, onTitleChange }: ColumnHeade
 
       <div className="flex">
         <button onClick={toggleIsEditing} className="rounded">
-          <EditIcon height={14} className="transition-colors hover:text-charade-200" />
+          <Icon height={14} className="transition-colors hover:text-charade-200" />
         </button>
-
-        <AlertDialog>
-          <AlertDialogTrigger className="rounded p-0.5">
-            <Trash2 height={14} className="transition-colors hover:text-charade-200" />
-          </AlertDialogTrigger>
-          <AlertDialogContent className="max-w-md">
-            <AlertDialogHeader>
-              <AlertDialogTitle>컬럼을 삭제할까요?</AlertDialogTitle>
-              <AlertDialogDescription>
-                컬럼을 삭제하면 해당 컬럼에 있는 모든 작업이 삭제돼요. 삭제할까요?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>취소</AlertDialogCancel>
-              <AlertDialogAction onClick={onDelete}>삭제</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <ConfirmDialog
+          title="컬럼을 삭제할까요?"
+          description="컬럼을 삭제하면 해당 컬럼에 있는 모든 작업이 삭제돼요."
+          onConfirm={onDelete}
+        >
+          <Trash2 height={14} className="rounded transition-colors hover:text-charade-200" />
+        </ConfirmDialog>
       </div>
     </div>
   );

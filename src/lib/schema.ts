@@ -17,6 +17,7 @@ export const taskSchema = z.object({
   description: z
     .string()
     .max(500, { message: '설명은 최대 500자까지만 입력할 수 있어요' })
+    .transform((val) => (val === '' ? undefined : val))
     .optional(),
   createdAt: z.coerce.string(),
   updatedAt: z.coerce.string(),

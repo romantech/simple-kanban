@@ -1,6 +1,5 @@
 'use client';
 
-import { SquarePlus } from 'lucide-react';
 import { useKanbanStore } from '@/store';
 import {
   Dialog,
@@ -17,13 +16,13 @@ import { Button } from '@/components/ui/button';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
-import { useState } from 'react';
+import { type PropsWithChildren, useState } from 'react';
 import { addColumnSchema, type AddColumnSchema } from '@/lib';
 import { Label } from '@/components/ui/label';
 
 const [fieldName] = addColumnSchema.keyof().options;
 
-const AddColumnDialog = () => {
+const AddColumnDialog = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addColumn = useKanbanStore.use.addColumn();
@@ -39,11 +38,7 @@ const AddColumnDialog = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="flex h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md outline-none transition-all hover:bg-baltic-900/50 active:scale-95">
-          <SquarePlus height={20} /> add column
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           <DialogHeader>

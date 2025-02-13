@@ -1,7 +1,7 @@
 import { type Boards, type Columns, type Kanban, type Tasks } from '@/types';
 import { generateIds } from '@/lib/utils';
 
-const taskIds = generateIds('task', 6);
+const taskIds = generateIds('Task', 6);
 
 const tasks: Tasks = {
   [taskIds[0]]: {
@@ -48,7 +48,7 @@ const tasks: Tasks = {
   },
 };
 
-const columnIds = generateIds('column', 4);
+const columnIds = generateIds('Column', 4);
 
 const columns: Columns = {
   [columnIds[0]]: {
@@ -77,7 +77,7 @@ const columns: Columns = {
   },
 };
 
-const boardIds = generateIds('board', 2);
+const boardIds = generateIds('Board', 2);
 
 const boards: Boards = {
   [boardIds[0]]: {
