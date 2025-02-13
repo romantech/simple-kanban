@@ -13,33 +13,24 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from './ui/input';
 import { Button } from '@/components/ui/button';
-import { z } from 'zod';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { useState } from 'react';
+import { addColumnSchema, type AddColumnSchema } from '@/lib';
 
-const formSchema = z.object({
-  columnName: z
-    .string()
-    .trim()
-    .min(1, { message: '최소 1글자 이상 입력해주세요' })
-    .max(20, { message: '최대 20자까지만 입력할 수 있어요' }),
-});
-
-const [fieldName] = formSchema.keyof().options;
-type FormSchema = z.infer<typeof formSchema>;
+const [fieldName] = addColumnSchema.keyof().options;
 
 const AddColumn = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addColumn = useKanbanStore.use.addColumn();
-  const { register, handleSubmit, reset, formState } = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const { register, handleSubmit, reset, formState } = useForm<AddColumnSchema>({
+    resolver: zodResolver(addColumnSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    addColumn(data.columnName);
+  const onSubmit: SubmitHandler<AddColumnSchema> = (data) => {
+    addColumn(data.title);
     reset();
     setIsOpen(false);
   };

@@ -1,6 +1,6 @@
-import { type Task } from '@/types';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { type Task } from '@/lib';
 
 interface TaskProps {
   task: Task;

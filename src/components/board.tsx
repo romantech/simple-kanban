@@ -1,4 +1,3 @@
-import { type Board } from '@/types';
 import { AddColumn, Column } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';

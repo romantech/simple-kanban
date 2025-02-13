@@ -1,6 +1,5 @@
 'use client';
 
-import { type Column, type ColumnId } from '@/types';
 import { AddTask, Task } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
@@ -18,6 +17,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Pencil, Save, Trash2 } from 'lucide-react';
+import { type ColumnId } from '@/lib';
 
 interface ColumnProps {
   columnId: ColumnId;

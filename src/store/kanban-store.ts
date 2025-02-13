@@ -1,15 +1,20 @@
 import { create } from 'zustand';
+
 import {
   type BoardId,
   type Column,
   type ColumnId,
-  type Kanban,
+  generateId,
+  getISODate,
+  initialBoardId,
+  sampleKanbanData,
   type Task,
   type TaskId,
-} from '@/types';
-import { generateId, getISODate, initialBoardId, sampleKanbanData } from '@/lib';
+  type Title,
+} from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
 import { immer } from 'zustand/middleware/immer';
+import { type Kanban } from '@/types';
 
 interface KanbanState extends Kanban {
   currentBoardId: BoardId;
@@ -18,10 +23,10 @@ interface KanbanState extends Kanban {
 interface KanbanActions {
   initialize: (data?: KanbanState) => void;
   setBoard: (boardId: BoardId) => void;
-  addTask: (columnId: ColumnId, title: Task['title']) => void;
-  addColumn: (title: Column['title']) => void;
+  addTask: (columnId: ColumnId, title: Title) => void;
+  addColumn: (title: Title) => void;
   deleteColumn: (columnId: ColumnId) => void;
-  setColumnTitle: (columnId: ColumnId, title: Column['title']) => void;
+  setColumnTitle: (columnId: ColumnId, title: Title) => void;
 }
 
 const initialState: KanbanState = {
@@ -43,7 +48,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
       set({ currentBoardId: boardId });
     },
     addTask: (columnId, title) => {
-      const id: TaskId = generateId('task');
+      const id: TaskId = generateId('Task');
       const now = getISODate();
 
       const newTask: Task = { id, title, createdAt: now, updatedAt: now };
@@ -55,7 +60,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
       });
     },
     addColumn: (title) => {
-      const id: ColumnId = generateId('column');
+      const id: ColumnId = generateId('Column');
       const now = getISODate();
       const newBoard: Column = { id, createdAt: now, title, taskIds: [] };
 

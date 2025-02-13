@@ -1,6 +1,6 @@
 import { CirclePlus } from 'lucide-react';
-import { type ColumnId } from '@/types';
 import { useKanbanStore } from '@/store';
+import { type ColumnId } from '@/lib';
 
 interface AddTaskProps {
   columnId: ColumnId;
