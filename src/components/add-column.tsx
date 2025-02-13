@@ -22,6 +22,7 @@ import { useState } from 'react';
 const formSchema = z.object({
   columnName: z
     .string()
+    .trim()
     .min(1, { message: '최소 1글자 이상 입력해주세요' })
     .max(20, { message: '최대 20자까지만 입력할 수 있어요' }),
 });
