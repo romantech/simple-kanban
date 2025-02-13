@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
+import tailwindScrollbar from 'tailwind-scrollbar';
 
 export default {
   darkMode: ['class'],
@@ -11,10 +12,33 @@ export default {
   theme: {
     extend: {
       colors: {
-        gunMetal: '#20212b',
-        haiti: '#2b2c36',
-        regent: '#838ea0',
-        line: '#3e3f4e',
+        baltic: {
+          '50': '#f6f6f9',
+          '100': '#ecedf2',
+          '200': '#d5d6e2',
+          '300': '#b1b5c8',
+          '400': '#868daa',
+          '500': '#676e90',
+          '600': '#525777',
+          '700': '#444860',
+          '800': '#3a3d52',
+          '900': '#343646',
+          '950': '#20212b',
+        },
+
+        charade: {
+          '50': '#f6f6f9',
+          '100': '#ededf1',
+          '200': '#d7d8e0',
+          '300': '#b4b7c5',
+          '400': '#8a8fa6',
+          '500': '#6c718b',
+          '600': '#575b72',
+          '700': '#474a5d',
+          '800': '#3d404f',
+          '900': '#363844',
+          '950': '#2b2c36',
+        },
 
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -67,5 +91,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindcssAnimate, tailwindScrollbar],
 } satisfies Config;

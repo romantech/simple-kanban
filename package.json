@@ -11,16 +11,25 @@
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/utilities": "^3.2.2",
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^4.0.0",
+    "@radix-ui/react-alert-dialog": "^1.1.6",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "immer": "^10.1.1",
     "lucide-react": "^0.475.0",
+    "nanoid": "^5.0.9",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -36,6 +45,7 @@
     "eslint-plugin-tailwindcss": "^3.18.0",
     "postcss": "^8",
     "prettier": "^3.5.0",
+    "tailwind-scrollbar": "^4.0.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.0"
