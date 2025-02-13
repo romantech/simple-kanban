@@ -20,6 +20,7 @@ interface KanbanActions {
   setBoard: (boardId: BoardId) => void;
   addTask: (columnId: ColumnId, title: Task['title']) => void;
   addColumn: (title: Column['title']) => void;
+  deleteColumn: (columnId: ColumnId) => void;
 }
 
 const initialState: KanbanState = {
@@ -60,6 +61,15 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
       set((state) => {
         state.columns[id] = newBoard;
         state.boards[state.currentBoardId].columnIds.push(id);
+      });
+    },
+    deleteColumn: (columnId) => {
+      set((state) => {
+        const column = state.columns[columnId];
+        const board = state.boards[state.currentBoardId];
+        board.columnIds = board.columnIds.filter((id) => id !== columnId);
+        column.taskIds.forEach((id) => delete state.tasks[id]);
+        delete state.columns[columnId];
       });
     },
   })),
