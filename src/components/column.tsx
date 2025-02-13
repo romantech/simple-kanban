@@ -34,7 +34,7 @@ const Column = ({ columnId }: ColumnProps) => {
   const tasksByColumnId = column.taskIds.map((id) => tasks[id]);
 
   return (
-    <div className="flex w-64 shrink-0 flex-col space-y-4">
+    <div className="flex w-64 shrink-0 flex-col gap-4">
       <ColumnHeader
         title={column.title}
         taskCount={tasksByColumnId.length}
@@ -42,7 +42,7 @@ const Column = ({ columnId }: ColumnProps) => {
         onTitleChange={(newTitle) => setColumnTitle(columnId, newTitle)}
       />
       <AddTask columnId={columnId} />
-      <ul className="scroll-custom flex flex-col gap-4 overflow-y-auto">
+      <ul className="scroll-custom flex flex-1 flex-col gap-4 overflow-y-auto">
         {tasksByColumnId.map((task) => (
           <Task key={task.id} task={task} />
         ))}
