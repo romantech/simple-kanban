@@ -1,8 +1,7 @@
 import { create } from 'zustand';
-import type { BoardId, ColumnId, Kanban, Task, TaskId } from '@/types';
-import { initialBoardId, sampleKanbanData } from '@/lib';
+import { type BoardId, type ColumnId, type Kanban, type Task, type TaskId } from '@/types';
+import { generateId, getISODate, initialBoardId, sampleKanbanData } from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
-import { nanoid } from 'nanoid';
 import { immer } from 'zustand/middleware/immer';
 
 interface KanbanState extends Kanban {
@@ -34,8 +33,8 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
       set({ currentBoardId: boardId });
     },
     addTask: (columnId, title) => {
-      const id: TaskId = `task-${nanoid()}`;
-      const now = new Date().toISOString();
+      const id: TaskId = generateId('task');
+      const now = getISODate();
 
       const newTask: Task = { id, title, createdAt: now, updatedAt: now };
 

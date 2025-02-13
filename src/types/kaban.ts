@@ -1,6 +1,10 @@
-export type TaskId = `task-${string}`;
-export type ColumnId = `column-${string}`;
-export type BoardId = `board-${string}`;
+import { type Branded } from '@/types/common';
+
+export type KanbanEntity = 'task' | 'column' | 'board';
+
+export type TaskId = Branded<`task-${string}`, 'task'>;
+export type ColumnId = Branded<`column-${string}`, 'column'>;
+export type BoardId = Branded<`board-${string}`, 'board'>;
 
 export interface Task {
   id: TaskId;
