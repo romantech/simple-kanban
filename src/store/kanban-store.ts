@@ -24,7 +24,9 @@ type TaskAction = (task: Task) => void;
 interface KanbanActions {
   initialize: (data?: KanbanState) => void;
   setBoard: (boardId: BoardId) => void;
+
   addTask: TaskAction;
+  deleteTask: TaskAction;
   addColumn: ColumnAction;
   deleteColumn: ColumnAction;
   setColumnTitle: (columnId: ColumnId, title: Title) => void;
@@ -52,6 +54,13 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
         const column = state.columns[task.columnId];
         column.taskIds.unshift(task.id);
         state.tasks[task.id] = task;
+      });
+    },
+    deleteTask: (task) => {
+      set((state) => {
+        const column = state.columns[task.columnId];
+        column.taskIds = column.taskIds.filter((id) => id !== task.id);
+        delete state.tasks[task.id];
       });
     },
     addColumn: (column) => {

@@ -18,13 +18,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { TaskViewContent } from '@/components/task-view-content';
+import { useKanbanStore } from '@/store';
 
 interface SharedTaskProps {
   task: Task;
 }
 
 const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
+  const deleteTask = useKanbanStore.use.deleteTask();
+
   const [isEditing, setIsEditing] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleEditMode = () => setIsEditing((prev) => !prev);
 
@@ -39,14 +43,15 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
   };
 
   const onDelete = () => {
-    // ..
+    deleteTask(task);
+    setIsOpen(false);
   };
 
   const title = isEditing ? '작업 수정' : task.title;
   const Icon = isEditing ? Save : EditIcon;
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="text-left">{children}</DialogTrigger>
       <DialogContent className="min-h-52">
         <DialogHeader>
