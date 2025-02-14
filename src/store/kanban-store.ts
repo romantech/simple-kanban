@@ -1,27 +1,38 @@
 import { create } from 'zustand';
+
 import {
   type BoardId,
   type Column,
   type ColumnId,
-  type Kanban,
+  getISODate,
+  initialBoardId,
+  sampleKanbanData,
   type Task,
   type TaskId,
-} from '@/types';
-import { generateId, getISODate, initialBoardId, sampleKanbanData } from '@/lib';
+  type Title,
+} from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
 import { immer } from 'zustand/middleware/immer';
+import { type Kanban } from '@/types';
 
 interface KanbanState extends Kanban {
   currentBoardId: BoardId;
 }
 
+type ColumnAction = (column: Column) => void;
+type TaskAction = (task: Task) => void;
+
 interface KanbanActions {
   initialize: (data?: KanbanState) => void;
   setBoard: (boardId: BoardId) => void;
-  addTask: (columnId: ColumnId, title: Task['title']) => void;
-  addColumn: (title: Column['title']) => void;
-  deleteColumn: (columnId: ColumnId) => void;
-  setColumnTitle: (columnId: ColumnId, title: Column['title']) => void;
+
+  addTask: TaskAction;
+  deleteTask: TaskAction;
+  editTask: (taskId: TaskId, title: Title, description?: string) => void;
+
+  addColumn: ColumnAction;
+  deleteColumn: ColumnAction;
+  editColumn: (columnId: ColumnId, title: Title) => void;
 }
 
 const initialState: KanbanState = {
@@ -30,53 +41,60 @@ const initialState: KanbanState = {
 };
 
 const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
-  immer((set, get) => ({
+  immer((set) => ({
     // 데이터
     ...initialState,
 
     // 액션
     initialize: (data) => set(data ?? sampleKanbanData),
     setBoard: (boardId) => {
-      const { boards } = get();
-      if (!boards[boardId]) throw new Error(`'${boardId}'에 해당하는 보드가 존재하지 않습니다.`);
-
-      set({ currentBoardId: boardId });
-    },
-    addTask: (columnId, title) => {
-      const id: TaskId = generateId('task');
-      const now = getISODate();
-
-      const newTask: Task = { id, title, createdAt: now, updatedAt: now };
-
       set((state) => {
-        const column = state.columns[columnId];
-        column.taskIds.push(id);
-        state.tasks[id] = newTask;
+        state.currentBoardId = boardId;
       });
     },
-    addColumn: (title) => {
-      const id: ColumnId = generateId('column');
-      const now = getISODate();
-      const newBoard: Column = { id, createdAt: now, title, taskIds: [] };
-
+    addTask: (task) => {
       set((state) => {
-        state.columns[id] = newBoard;
-        state.boards[state.currentBoardId].columnIds.push(id);
+        const column = state.columns[task.columnId];
+        column.taskIds.unshift(task.id);
+        state.tasks[task.id] = task;
       });
     },
-    deleteColumn: (columnId) => {
+    deleteTask: (task) => {
       set((state) => {
-        const column = state.columns[columnId];
+        const column = state.columns[task.columnId];
+        column.taskIds = column.taskIds.filter((id) => id !== task.id);
+        delete state.tasks[task.id];
+      });
+    },
+    editTask: (taskId, title, description) => {
+      set((state) => {
+        const task = state.tasks[taskId];
+        task.title = title;
+        task.description = description;
+        task.updatedAt = getISODate();
+      });
+    },
+
+    addColumn: (column) => {
+      set((state) => {
         const board = state.boards[state.currentBoardId];
-        board.columnIds = board.columnIds.filter((id) => id !== columnId);
-        column.taskIds.forEach((id) => delete state.tasks[id]);
-        delete state.columns[columnId];
+        board.columnIds.push(column.id);
+        state.columns[column.id] = column;
       });
     },
-    setColumnTitle: (columnId, title) => {
+    deleteColumn: (column) => {
+      set((state) => {
+        const board = state.boards[column.boardId];
+        board.columnIds = board.columnIds.filter((id) => id !== column.id);
+        column.taskIds.forEach((id) => delete state.tasks[id]);
+        delete state.columns[column.id];
+      });
+    },
+    editColumn: (columnId, title) => {
       set((state) => {
         const column = state.columns[columnId];
         column.title = title;
+        column.updatedAt = getISODate();
       });
     },
   })),

@@ -1,9 +1,9 @@
 'use client';
 
-import { SquarePlus } from 'lucide-react';
 import { useKanbanStore } from '@/store';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -13,53 +13,42 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from './ui/input';
 import { Button } from '@/components/ui/button';
-import { z } from 'zod';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
-import { useState } from 'react';
+import { type PropsWithChildren, useState } from 'react';
+import { addColumnSchema, type AddColumnSchema, type BoardId, generateColumn } from '@/lib';
+import { Label } from '@/components/ui/label';
 
-const formSchema = z.object({
-  columnName: z
-    .string()
-    .trim()
-    .min(1, { message: '최소 1글자 이상 입력해주세요' })
-    .max(20, { message: '최대 20자까지만 입력할 수 있어요' }),
-});
+const [fieldName] = addColumnSchema.keyof().options;
 
-const [fieldName] = formSchema.keyof().options;
-type FormSchema = z.infer<typeof formSchema>;
-
-const AddColumn = () => {
+const AddColumnDialog = ({ children, boardId }: PropsWithChildren<{ boardId: BoardId }>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addColumn = useKanbanStore.use.addColumn();
-  const { register, handleSubmit, reset, formState } = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const { register, handleSubmit, reset, formState } = useForm<AddColumnSchema>({
+    resolver: zodResolver(addColumnSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    addColumn(data.columnName);
+  const onSubmit: SubmitHandler<AddColumnSchema> = ({ title }) => {
+    addColumn(generateColumn(boardId, title));
     reset();
     setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="flex h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md outline-none transition-all hover:bg-baltic-900/50 active:scale-95">
-          <SquarePlus height={20} /> add column
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           <DialogHeader>
             <DialogTitle>새로운 컬럼 추가</DialogTitle>
-            <DialogDescription>컬럼 이름을 입력하세요</DialogDescription>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-2 py-6">
-            <Input {...register(fieldName)} placeholder="최대 20자까지 입력할 수 있어요" />
+          <div className="space-y-2 py-7">
+            <Label htmlFor={fieldName}>컬럼 이름</Label>
+            <Input {...register(fieldName)} placeholder="최대 50자까지 입력할 수 있어요" />
             <ErrorMessage
               errors={formState.errors}
               name={fieldName}
@@ -67,6 +56,11 @@ const AddColumn = () => {
             />
           </div>
           <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                취소
+              </Button>
+            </DialogClose>
             <Button type="submit">추가</Button>
           </DialogFooter>
         </form>
@@ -75,4 +69,4 @@ const AddColumn = () => {
   );
 };
 
-export { AddColumn };
+export { AddColumnDialog };

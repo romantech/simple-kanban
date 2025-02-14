@@ -1,2 +1,2 @@
-export * from './kaban';
+export * from './kanban';
 export * from './common';

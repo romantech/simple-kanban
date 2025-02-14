@@ -1,0 +1,56 @@
+import { z } from 'zod';
+import { type KanbanBrandType } from '@/types';
+
+const taskId = z.string().brand<KanbanBrandType.Task>();
+const columnId = z.string().brand<KanbanBrandType.Column>();
+const boardId = z.string().brand<KanbanBrandType.Board>();
+
+const timestampsSchema = z.object({
+  createdAt: z.string().datetime({ offset: true }), // UTC 오프셋 허용
+  updatedAt: z.string().datetime({ offset: true }),
+});
+
+export const titleSchema = z
+  .string()
+  .trim()
+  .min(1, { message: '최소 1글자 이상 입력해주세요' })
+  .max(50, { message: '최대 50자까지만 입력할 수 있어요' });
+
+export const taskSchema = timestampsSchema.extend({
+  id: taskId,
+  columnId: columnId,
+  title: titleSchema,
+  description: z
+    .string()
+    .max(500, { message: '설명은 최대 500자까지만 입력할 수 있어요' })
+    .transform((val) => (val === '' ? undefined : val))
+    .optional(),
+});
+
+export const columnSchema = timestampsSchema.extend({
+  id: columnId,
+  boardId: boardId,
+  title: titleSchema,
+  taskIds: z.array(taskId),
+});
+
+export const boardSchema = timestampsSchema.extend({
+  id: boardId,
+  title: titleSchema,
+  columnIds: z.array(columnId),
+});
+
+export type TaskId = z.infer<typeof taskId>;
+export type ColumnId = z.infer<typeof columnId>;
+export type BoardId = z.infer<typeof boardId>;
+
+export type Task = z.infer<typeof taskSchema>;
+export type Column = z.infer<typeof columnSchema>;
+export type Board = z.infer<typeof boardSchema>;
+
+export type Title = z.infer<typeof titleSchema>;
+
+export const addTaskSchema = taskSchema.pick({ title: true, description: true });
+export type AddTaskSchema = z.infer<typeof addTaskSchema>;
+export const addColumnSchema = columnSchema.pick({ title: true });
+export type AddColumnSchema = z.infer<typeof addColumnSchema>;
