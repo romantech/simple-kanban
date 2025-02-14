@@ -10,3 +10,4 @@ export * from './column-header';
 export * from './task-dialog';
 export * from './edit-task-form-content';
 export * from './task-view-content';
+export * from './draggable';

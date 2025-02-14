@@ -4,15 +4,23 @@ import { useState } from 'react';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { cn } from '@/lib';
 
-interface ColumnHeaderProps {
+interface ColumnHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   taskCount: number;
   onDelete: () => void;
   onTitleChange: (title: string) => void;
 }
 
-const ColumnHeader = ({ title, taskCount, onDelete, onTitleChange }: ColumnHeaderProps) => {
+const ColumnHeader = ({
+  title,
+  taskCount,
+  onDelete,
+  onTitleChange,
+  className,
+  ...divProps
+}: ColumnHeaderProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
 
@@ -40,7 +48,13 @@ const ColumnHeader = ({ title, taskCount, onDelete, onTitleChange }: ColumnHeade
   const Icon = isEditing ? Save : EditIcon;
 
   return (
-    <div className="mb-2 flex h-[24px] items-center justify-between gap-2 text-baltic-400">
+    <div
+      className={cn(
+        'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400 active:cursor-grabbing',
+        className,
+      )}
+      {...divProps}
+    >
       {isEditing ? (
         <Input
           value={editedTitle}
