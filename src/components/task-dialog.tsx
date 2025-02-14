@@ -26,6 +26,7 @@ interface SharedTaskProps {
 
 const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
+  const editTask = useKanbanStore.use.editTask();
 
   const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +38,8 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
     defaultValues: task,
   });
 
-  const onSubmit: SubmitHandler<AddTaskSchema> = (data) => {
-    methods.reset();
+  const onSubmit: SubmitHandler<AddTaskSchema> = ({ title, description }) => {
+    editTask(task.id, title, description);
     toggleEditMode();
   };
 
@@ -47,8 +48,9 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
     setIsOpen(false);
   };
 
-  const title = isEditing ? '작업 수정' : task.title;
+  const title = isEditing ? 'edit task' : task.title;
   const Icon = isEditing ? Save : EditIcon;
+  const editText = isEditing ? '저장' : '수정';
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -56,18 +58,24 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
       <DialogContent className="min-h-52">
         <DialogHeader>
           <div className="flex flex-col gap-1.5">
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle className="capitalize">{title}</DialogTitle>
             <DialogDescription></DialogDescription>
-            <div className="-ml-1 flex gap-1 text-baltic-300">
-              <button onClick={toggleEditMode} className="rounded">
+
+            <div className="-ml-1 flex gap-3 text-baltic-300">
+              <button onClick={toggleEditMode} className="flex items-center rounded">
                 <Icon height={16} className="transition-colors hover:text-charade-200" />
+                <span className="text-sm">{editText}</span>
               </button>
               <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
-                <Trash2 height={16} className="transition-colors hover:text-charade-200" />
+                <div className="flex items-center">
+                  <Trash2 height={16} className="transition-colors hover:text-charade-200" />
+                  <span className="text-sm">삭제</span>
+                </div>
               </ConfirmDialog>
             </div>
           </div>
         </DialogHeader>
+
         {isEditing ? (
           <FormProvider {...methods}>
             <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>

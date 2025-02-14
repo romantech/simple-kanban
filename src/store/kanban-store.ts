@@ -8,6 +8,7 @@ import {
   initialBoardId,
   sampleKanbanData,
   type Task,
+  type TaskId,
   type Title,
 } from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
@@ -27,9 +28,11 @@ interface KanbanActions {
 
   addTask: TaskAction;
   deleteTask: TaskAction;
+  editTask: (taskId: TaskId, title: Title, description?: string) => void;
+
   addColumn: ColumnAction;
   deleteColumn: ColumnAction;
-  setColumnTitle: (columnId: ColumnId, title: Title) => void;
+  editColumn: (columnId: ColumnId, title: Title) => void;
 }
 
 const initialState: KanbanState = {
@@ -63,6 +66,15 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
         delete state.tasks[task.id];
       });
     },
+    editTask: (taskId, title, description) => {
+      set((state) => {
+        const task = state.tasks[taskId];
+        task.title = title;
+        task.description = description;
+        task.updatedAt = getISODate();
+      });
+    },
+
     addColumn: (column) => {
       set((state) => {
         const board = state.boards[state.currentBoardId];
@@ -78,7 +90,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
         delete state.columns[column.id];
       });
     },
-    setColumnTitle: (columnId, title) => {
+    editColumn: (columnId, title) => {
       set((state) => {
         const column = state.columns[columnId];
         column.title = title;

@@ -12,7 +12,7 @@ interface ColumnProps {
 
 const Column = ({ columnId }: ColumnProps) => {
   const deleteColumn = useKanbanStore.use.deleteColumn();
-  const setColumnTitle = useKanbanStore.use.setColumnTitle();
+  const editColumn = useKanbanStore.use.editColumn();
 
   const { tasks, column } = useKanbanStore(
     useShallow(({ tasks, columns }) => ({ tasks, column: columns[columnId] })),
@@ -26,7 +26,7 @@ const Column = ({ columnId }: ColumnProps) => {
         title={column.title}
         taskCount={tasksByColumnId.length}
         onDelete={() => deleteColumn(column)}
-        onTitleChange={(newTitle) => setColumnTitle(columnId, newTitle)}
+        onTitleChange={(newTitle) => editColumn(columnId, newTitle)}
       />
       <AddTaskDialog columnId={columnId}>
         <button className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-md border border-baltic-900 p-2 text-xs font-semibold capitalize text-baltic-200 shadow-md transition-all hover:bg-charade-950 active:scale-95">
