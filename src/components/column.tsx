@@ -25,7 +25,7 @@ const Column = ({ columnId }: ColumnProps) => {
       <ColumnHeader
         title={column.title}
         taskCount={tasksByColumnId.length}
-        onDelete={() => deleteColumn(columnId)}
+        onDelete={() => deleteColumn(column)}
         onTitleChange={(newTitle) => setColumnTitle(columnId, newTitle)}
       />
       <AddTaskDialog columnId={columnId}>

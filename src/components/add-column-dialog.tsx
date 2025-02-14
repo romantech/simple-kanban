@@ -17,12 +17,12 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { type PropsWithChildren, useState } from 'react';
-import { addColumnSchema, type AddColumnSchema } from '@/lib';
+import { addColumnSchema, type AddColumnSchema, type BoardId, generateColumn } from '@/lib';
 import { Label } from '@/components/ui/label';
 
 const [fieldName] = addColumnSchema.keyof().options;
 
-const AddColumnDialog = ({ children }: PropsWithChildren) => {
+const AddColumnDialog = ({ children, boardId }: PropsWithChildren<{ boardId: BoardId }>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addColumn = useKanbanStore.use.addColumn();
@@ -30,8 +30,8 @@ const AddColumnDialog = ({ children }: PropsWithChildren) => {
     resolver: zodResolver(addColumnSchema),
   });
 
-  const onSubmit: SubmitHandler<AddColumnSchema> = (data) => {
-    addColumn(data.title);
+  const onSubmit: SubmitHandler<AddColumnSchema> = ({ title }) => {
+    addColumn(generateColumn(boardId, title));
     reset();
     setIsOpen(false);
   };

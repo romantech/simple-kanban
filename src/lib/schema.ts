@@ -13,6 +13,7 @@ export const titleSchema = z
 
 export const taskSchema = z.object({
   id: taskId,
+  columnId: columnId,
   title: titleSchema,
   description: z
     .string()
@@ -25,6 +26,7 @@ export const taskSchema = z.object({
 
 export const columnSchema = z.object({
   id: columnId,
+  boardId: boardId,
   title: titleSchema,
   createdAt: z.coerce.string(),
   taskIds: z.array(taskId),

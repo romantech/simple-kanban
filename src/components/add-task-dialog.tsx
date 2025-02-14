@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { addTaskSchema, type AddTaskSchema, type ColumnId } from '@/lib';
+import { addTaskSchema, type AddTaskSchema, type ColumnId, generateTask } from '@/lib';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -30,8 +30,8 @@ const AddTaskDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
     resolver: zodResolver(addTaskSchema),
   });
 
-  const onSubmit: SubmitHandler<AddTaskSchema> = (data) => {
-    addTask(columnId, data.title, data.description);
+  const onSubmit: SubmitHandler<AddTaskSchema> = ({ title, description }) => {
+    addTask(generateTask(columnId, title, description));
     methods.reset();
     setIsOpen(false);
   };

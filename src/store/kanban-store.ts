@@ -4,12 +4,9 @@ import {
   type BoardId,
   type Column,
   type ColumnId,
-  generateId,
-  getISODate,
   initialBoardId,
   sampleKanbanData,
   type Task,
-  type TaskId,
   type Title,
 } from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
@@ -20,12 +17,15 @@ interface KanbanState extends Kanban {
   currentBoardId: BoardId;
 }
 
+type ColumnAction = (column: Column) => void;
+type TaskAction = (task: Task) => void;
+
 interface KanbanActions {
   initialize: (data?: KanbanState) => void;
   setBoard: (boardId: BoardId) => void;
-  addTask: (columnId: ColumnId, title: Title, description?: string) => void;
-  addColumn: (title: Title) => void;
-  deleteColumn: (columnId: ColumnId) => void;
+  addTask: TaskAction;
+  addColumn: ColumnAction;
+  deleteColumn: ColumnAction;
   setColumnTitle: (columnId: ColumnId, title: Title) => void;
 }
 
@@ -35,47 +35,37 @@ const initialState: KanbanState = {
 };
 
 const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
-  immer((set, get) => ({
+  immer((set) => ({
     // 데이터
     ...initialState,
 
     // 액션
     initialize: (data) => set(data ?? sampleKanbanData),
     setBoard: (boardId) => {
-      const { boards } = get();
-      if (!boards[boardId]) throw new Error(`'${boardId}'에 해당하는 보드가 존재하지 않습니다.`);
-
-      set({ currentBoardId: boardId });
-    },
-    addTask: (columnId, title, description) => {
-      const id: TaskId = generateId('Task');
-      const now = getISODate();
-
-      const newTask: Task = { id, title, description, createdAt: now, updatedAt: now };
-
       set((state) => {
-        const column = state.columns[columnId];
-        column.taskIds.unshift(id);
-        state.tasks[id] = newTask;
+        state.currentBoardId = boardId;
       });
     },
-    addColumn: (title) => {
-      const id: ColumnId = generateId('Column');
-      const now = getISODate();
-      const newBoard: Column = { id, createdAt: now, title, taskIds: [] };
-
+    addTask: (task) => {
       set((state) => {
-        state.columns[id] = newBoard;
-        state.boards[state.currentBoardId].columnIds.push(id);
+        const column = state.columns[task.columnId];
+        column.taskIds.unshift(task.id);
+        state.tasks[task.id] = task;
       });
     },
-    deleteColumn: (columnId) => {
+    addColumn: (column) => {
       set((state) => {
-        const column = state.columns[columnId];
         const board = state.boards[state.currentBoardId];
-        board.columnIds = board.columnIds.filter((id) => id !== columnId);
+        board.columnIds.push(column.id);
+        state.columns[column.id] = column;
+      });
+    },
+    deleteColumn: (column) => {
+      set((state) => {
+        const board = state.boards[column.boardId];
+        board.columnIds = board.columnIds.filter((id) => id !== column.id);
         column.taskIds.forEach((id) => delete state.tasks[id]);
-        delete state.columns[columnId];
+        delete state.columns[column.id];
       });
     },
     setColumnTitle: (columnId, title) => {
