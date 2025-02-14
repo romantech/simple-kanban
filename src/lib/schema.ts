@@ -5,13 +5,18 @@ const taskId = z.string().brand<KanbanBrandType.Task>();
 const columnId = z.string().brand<KanbanBrandType.Column>();
 const boardId = z.string().brand<KanbanBrandType.Board>();
 
+const timestampsSchema = z.object({
+  createdAt: z.string().datetime({ offset: true }), // UTC 오프셋 허용
+  updatedAt: z.string().datetime({ offset: true }),
+});
+
 export const titleSchema = z
   .string()
   .trim()
   .min(1, { message: '최소 1글자 이상 입력해주세요' })
   .max(50, { message: '최대 50자까지만 입력할 수 있어요' });
 
-export const taskSchema = z.object({
+export const taskSchema = timestampsSchema.extend({
   id: taskId,
   columnId: columnId,
   title: titleSchema,
@@ -20,22 +25,18 @@ export const taskSchema = z.object({
     .max(500, { message: '설명은 최대 500자까지만 입력할 수 있어요' })
     .transform((val) => (val === '' ? undefined : val))
     .optional(),
-  createdAt: z.coerce.string(),
-  updatedAt: z.coerce.string(),
 });
 
-export const columnSchema = z.object({
+export const columnSchema = timestampsSchema.extend({
   id: columnId,
   boardId: boardId,
   title: titleSchema,
-  createdAt: z.coerce.string(),
   taskIds: z.array(taskId),
 });
 
-export const boardSchema = z.object({
+export const boardSchema = timestampsSchema.extend({
   id: boardId,
   title: titleSchema,
-  createdAt: z.coerce.string(),
   columnIds: z.array(columnId),
 });
 

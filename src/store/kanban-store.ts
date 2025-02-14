@@ -4,6 +4,7 @@ import {
   type BoardId,
   type Column,
   type ColumnId,
+  getISODate,
   initialBoardId,
   sampleKanbanData,
   type Task,
@@ -72,6 +73,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
       set((state) => {
         const column = state.columns[columnId];
         column.title = title;
+        column.updatedAt = getISODate();
       });
     },
   })),
