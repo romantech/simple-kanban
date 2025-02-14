@@ -2,10 +2,9 @@
 
 import { AddTaskDialog, ColumnHeader, TaskCard } from '@/components';
 import { useKanbanStore } from '@/store';
-import { useShallow } from 'zustand/react/shallow';
 import { cn, type ColumnId } from '@/lib';
 import { CirclePlus } from 'lucide-react';
-import { useSortable } from '@dnd-kit/sortable';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { type CSSProperties } from 'react';
 import { DndPlaceholder } from '@/components/ui/dnd-placeholder';
@@ -17,18 +16,14 @@ interface ColumnProps extends React.HTMLAttributes<HTMLDivElement> {
 const Column = ({ columnId, className, ...divProps }: ColumnProps) => {
   const deleteColumn = useKanbanStore.use.deleteColumn();
   const editColumn = useKanbanStore.use.editColumn();
+  const column = useKanbanStore((state) => state.columns[columnId]);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: columnId,
+    data: { type: 'column' },
   });
 
   const style: CSSProperties = { transform: CSS.Transform.toString(transform), transition };
-
-  const { tasks, column } = useKanbanStore(
-    useShallow(({ tasks, columns }) => ({ tasks, column: columns[columnId] })),
-  );
-
-  const tasksByColumnId = column.taskIds.map((id) => tasks[id]);
 
   if (isDragging) return <DndPlaceholder style={style} ref={setNodeRef} />;
 
@@ -43,7 +38,7 @@ const Column = ({ columnId, className, ...divProps }: ColumnProps) => {
         {...listeners}
         {...attributes}
         title={column.title}
-        taskCount={tasksByColumnId.length}
+        taskCount={column.taskIds.length}
         onDelete={() => deleteColumn(column)}
         onTitleChange={(newTitle) => editColumn(columnId, newTitle)}
       />
@@ -54,9 +49,11 @@ const Column = ({ columnId, className, ...divProps }: ColumnProps) => {
         </button>
       </AddTaskDialog>
       <ul className="scroll-custom flex flex-1 flex-col gap-4 overflow-y-auto">
-        {tasksByColumnId.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        <SortableContext items={column.taskIds}>
+          {column.taskIds.map((taskId) => (
+            <TaskCard key={taskId} taskId={taskId} />
+          ))}
+        </SortableContext>
       </ul>
     </div>
   );

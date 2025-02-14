@@ -1,28 +1,23 @@
 'use client';
 
-import { useDraggable } from '@dnd-kit/core';
-import { type ElementType, type HTMLAttributes, type ReactNode } from 'react';
+import { useDraggable, type UseDraggableArguments } from '@dnd-kit/core';
+import { type ElementType, type ReactNode } from 'react';
 
-interface DraggableProps<T> extends HTMLAttributes<T> {
+interface DraggableProps extends UseDraggableArguments {
   children: ReactNode;
-  id: string;
+  className?: string;
   element?: ElementType;
 }
 
 /**
  * @see https://docs.dndkit.com/api-documentation/draggable/drag-overlay#wrapper-nodes
  * */
-const Draggable = <T extends ElementType = 'div'>({
-  children,
-  id,
-  element,
-  ...props
-}: DraggableProps<T>) => {
+const Draggable = ({ children, element, className, ...dragProps }: DraggableProps) => {
   const Element = element ?? 'div';
-  const { attributes, listeners, setNodeRef } = useDraggable({ id });
+  const { attributes, listeners, setNodeRef } = useDraggable(dragProps);
 
   return (
-    <Element ref={setNodeRef} {...attributes} {...listeners} {...props}>
+    <Element ref={setNodeRef} {...attributes} {...listeners} className={className}>
       {children}
     </Element>
   );

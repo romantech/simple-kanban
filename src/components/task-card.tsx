@@ -1,17 +1,25 @@
-import { formatKoDate, type Task } from '@/lib';
-import { TaskDialog } from '@/components';
+import { formatKoDate, type TaskId } from '@/lib';
+import { Draggable, TaskDialog } from '@/components';
+import { useKanbanStore } from '@/store';
 
 interface TaskProps {
-  task: Task;
+  taskId: TaskId;
 }
 
-const TaskCard = ({ task }: TaskProps) => {
+const TaskCard = ({ taskId }: TaskProps) => {
+  const task = useKanbanStore((state) => state.tasks[taskId]);
+
   return (
     <TaskDialog task={task}>
-      <li className="min-w-60 cursor-grab rounded-md bg-charade-950 p-4 shadow-md active:cursor-grabbing">
+      <Draggable
+        id={task.id}
+        data={{ type: 'task' }}
+        element="li"
+        className="min-w-60 rounded-md bg-charade-950 p-4 shadow-md"
+      >
         <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
         <small className="text-xs text-baltic-400">{formatKoDate(task.createdAt)}</small>
-      </li>
+      </Draggable>
     </TaskDialog>
   );
 };

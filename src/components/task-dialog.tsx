@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { type PropsWithChildren, useState } from 'react';
-import { addTaskSchema, type AddTaskSchema, type Task } from '@/lib';
+import { addTaskSchema, type AddTaskSchema, type TaskFields } from '@/lib';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { EditTaskFormContent } from '@/components/edit-task-form-content';
@@ -22,7 +22,7 @@ import { useKanbanStore } from '@/store';
 import { AnimatePresence, motion } from 'motion/react';
 
 interface SharedTaskProps {
-  task: Task;
+  task: TaskFields;
 }
 
 const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {

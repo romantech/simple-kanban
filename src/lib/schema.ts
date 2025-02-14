@@ -44,11 +44,11 @@ export type TaskId = z.infer<typeof taskId>;
 export type ColumnId = z.infer<typeof columnId>;
 export type BoardId = z.infer<typeof boardId>;
 
-export type Task = z.infer<typeof taskSchema>;
-export type Column = z.infer<typeof columnSchema>;
-export type Board = z.infer<typeof boardSchema>;
+export type TaskFields = z.infer<typeof taskSchema>;
+export type ColumnFields = z.infer<typeof columnSchema>;
+export type BoardFields = z.infer<typeof boardSchema>;
 
-export type Title = z.infer<typeof titleSchema>;
+export type TitleField = z.infer<typeof titleSchema>;
 
 export const addTaskSchema = taskSchema.pick({ title: true, description: true });
 export type AddTaskSchema = z.infer<typeof addTaskSchema>;

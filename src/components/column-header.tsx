@@ -50,7 +50,7 @@ const ColumnHeader = ({
   return (
     <div
       className={cn(
-        'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400 active:cursor-grabbing',
+        'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400',
         className,
       )}
       {...divProps}

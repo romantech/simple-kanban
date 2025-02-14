@@ -1,9 +1,9 @@
 import {
-  type Board,
+  type BoardFields,
   type BoardId,
-  type Column,
+  type ColumnFields,
   type ColumnId,
-  type Task,
+  type TaskFields,
   type TaskId,
 } from '@/lib';
 
@@ -15,9 +15,9 @@ export enum KanbanBrandType {
 
 export type KanbanEntity = keyof typeof KanbanBrandType;
 
-export type Tasks = Record<TaskId, Task>;
-export type Columns = Record<ColumnId, Column>;
-export type Boards = Record<BoardId, Board>;
+export type Tasks = Record<TaskId, TaskFields>;
+export type Columns = Record<ColumnId, ColumnFields>;
+export type Boards = Record<BoardId, BoardFields>;
 
 export interface Kanban {
   tasks: Tasks;
