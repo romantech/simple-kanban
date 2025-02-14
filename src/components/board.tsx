@@ -5,7 +5,14 @@ import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
 import { SquarePlus } from 'lucide-react';
-import { DndContext, type DragEndEvent, DragOverlay, type DragStartEvent } from '@dnd-kit/core';
+import {
+  DndContext,
+  type DragEndEvent,
+  DragOverlay,
+  type DragStartEvent,
+  PointerSensor,
+  useSensor,
+} from '@dnd-kit/core';
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { type ColumnId } from '@/lib';
@@ -18,6 +25,10 @@ const Board = () => {
   const board = useKanbanStore(useShallow(({ boards, currentBoardId }) => boards[currentBoardId]));
 
   const editColumnOrder = useKanbanStore.use.editColumnOrder();
+
+  const mouseSensor = useSensor(PointerSensor, {
+    activationConstraint: { distance: 10 }, // 드래그 핸들에 있는 버튼 클릭 가능하도록 10px 이동했을때만 활성
+  });
 
   const [activeId, setActiveId] = useState<ColumnId>();
 
@@ -41,6 +52,7 @@ const Board = () => {
         onDragEnd={onDragEnd}
         onDragStart={onDragStart}
         modifiers={[restrictToHorizontalAxis]}
+        sensors={[mouseSensor]}
       >
         <SortableContext items={board.columnIds}>
           {board.columnIds.map((columnId) => (
