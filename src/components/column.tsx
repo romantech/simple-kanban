@@ -8,6 +8,7 @@ import { CirclePlus } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { type CSSProperties } from 'react';
+import { DndPlaceholder } from '@/components/ui/dnd-placeholder';
 
 interface ColumnProps extends React.HTMLAttributes<HTMLDivElement> {
   columnId: ColumnId;
@@ -29,15 +30,7 @@ const Column = ({ columnId, className, ...divProps }: ColumnProps) => {
 
   const tasksByColumnId = column.taskIds.map((id) => tasks[id]);
 
-  if (isDragging) {
-    return (
-      <div
-        ref={setNodeRef}
-        style={style}
-        className="flex w-64 rounded border-2 border-baltic-900"
-      />
-    );
-  }
+  if (isDragging) return <DndPlaceholder style={style} ref={setNodeRef} />;
 
   return (
     <div
