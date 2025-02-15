@@ -15,9 +15,10 @@ import {
   useSensor,
 } from '@dnd-kit/core';
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import { Empty } from '@/components/ui/empty';
 import { type ColumnId, getDragTypes, type TaskId } from '@/lib';
+import { useDragState } from '@/hooks';
 
 const Board = () => {
   // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
@@ -31,13 +32,7 @@ const Board = () => {
     activationConstraint: { distance: 10 }, // 드래그 핸들에 있는 버튼 클릭 가능하도록 10px 이동했을때만 활성
   });
 
-  const [activeColumnId, setActiveColumnId] = useState<ColumnId>();
-  const [activeTaskId, setActiveTaskId] = useState<TaskId>();
-
-  const resetActive = () => {
-    setActiveColumnId(undefined);
-    setActiveTaskId(undefined);
-  };
+  const { dragColumnId, setDragState, dragTaskId, resetDragState } = useDragState();
 
   /**
    * 하이드레이션 에러 해결
@@ -46,12 +41,12 @@ const Board = () => {
   const dndContextId = useId();
 
   const onDragStart = ({ active }: DragStartEvent) => {
-    if (getDragTypes(active).isActiveTask) setActiveTaskId(active.id as TaskId);
-    else setActiveColumnId(active.id as ColumnId);
+    const dragType = getDragTypes(active).isActiveTask ? 'task' : 'column';
+    setDragState(dragType, active.id);
   };
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
-    resetActive(); // early return 있으므로 최상단에서 초기화 필요
+    resetDragState(); // early return 있으므로 최상단에서 초기화 필요
 
     if (active.id === over?.id) return;
 
@@ -73,15 +68,23 @@ const Board = () => {
 
     const activeTaskColumnId = active.data.current?.columnId as ColumnId;
     const overTaskColumnId = over.data.current?.columnId as ColumnId;
+    const targetColumnId = isOverTask
+      ? overTaskColumnId
+      : isOverColumn
+        ? (over.id as ColumnId)
+        : null;
 
-    if (isActiveTask && isOverTask) {
-      useKanbanStore.setState((state) => {
-        const sourceColumn = state.columns[activeTaskColumnId];
-        const targetColumn = state.columns[overTaskColumnId];
+    if (!targetColumnId) return;
 
-        const sourceIdx = sourceColumn.taskIds.findIndex((id) => id === active.id);
+    useKanbanStore.setState((state) => {
+      const sourceColumn = state.columns[activeTaskColumnId];
+      const sourceIdx = sourceColumn.taskIds.findIndex((id) => id === active.id);
+      if (sourceIdx === -1) return state;
+
+      if (isOverTask) {
+        const targetColumn = state.columns[targetColumnId];
         const targetIdx = targetColumn.taskIds.findIndex((id) => id === over.id);
-        if (sourceIdx === -1 || targetIdx === -1) return state;
+        if (targetIdx === -1) return state;
 
         // 동일 컬럼 내에서 드래그할 때
         if (activeTaskColumnId === overTaskColumnId) {
@@ -92,23 +95,18 @@ const Board = () => {
           targetColumn.taskIds.splice(targetIdx, 0, active.id as TaskId);
           state.tasks[active.id as TaskId].columnId = overTaskColumnId;
         }
-      });
-    }
-
-    // 컬럼에 카드가 하나도 없거나, 하나만 있는 상태에서 마지막에 추가할 때(마지막은 컬럼 영역이므로)
-    if (isActiveTask && isOverColumn) {
-      useKanbanStore.setState((state) => {
-        const sourceColumn = state.columns[activeTaskColumnId];
-        const targetColumn = state.columns[over.id as ColumnId];
-
-        const sourceIdx = sourceColumn.taskIds.findIndex((id) => id === active.id);
-        if (sourceIdx === -1) return state;
-
+      }
+      // 컬럼 영역에 추가할 때 (컬럼에 카드가 없거나, 하나만 있을 때)
+      else if (isOverColumn) {
+        const targetColumn = state.columns[targetColumnId];
+        const targetIdx = targetColumn.taskIds.findIndex((id) => id === active.id);
         sourceColumn.taskIds.splice(sourceIdx, 1);
-        targetColumn.taskIds.push(active.id as TaskId);
-        state.tasks[active.id as TaskId].columnId = over.id as ColumnId;
-      });
-    }
+        targetColumn.taskIds.splice(targetIdx, 0, active.id as TaskId);
+        state.tasks[active.id as TaskId].columnId = targetColumnId;
+      }
+
+      return state;
+    });
   };
 
   const isEmpty = board.columnIds.length === 0;
@@ -129,8 +127,8 @@ const Board = () => {
           ))}
         </SortableContext>
         <DragOverlay>
-          {activeColumnId && <Column columnId={activeColumnId} />}
-          {activeTaskId && <TaskCard taskId={activeTaskId} />}
+          {dragColumnId && <Column columnId={dragColumnId as ColumnId} />}
+          {dragTaskId && <TaskCard taskId={dragTaskId as TaskId} />}
         </DragOverlay>
       </DndContext>
 
