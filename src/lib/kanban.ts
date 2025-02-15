@@ -2,7 +2,13 @@ import { KanbanBrandType, type KanbanEntity } from '@/types';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { getISODate } from '@/lib/utils';
-import { type BoardId, type Column, type ColumnId, type Task, type Title } from '@/lib/schema';
+import {
+  type BoardId,
+  type ColumnFields,
+  type ColumnId,
+  type TaskFields,
+  type TitleField,
+} from '@/lib/schema';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];
@@ -13,7 +19,11 @@ export const generateKanbanIds = <T extends KanbanEntity>(type: T, count: number
   return Array.from({ length: count }, () => generateKanbanId(type));
 };
 
-export const generateTask = (columnId: ColumnId, title: Title, description?: string): Task => {
+export const generateTask = (
+  columnId: ColumnId,
+  title: TitleField,
+  description?: string,
+): TaskFields => {
   const now = getISODate();
 
   return {
@@ -26,7 +36,7 @@ export const generateTask = (columnId: ColumnId, title: Title, description?: str
   };
 };
 
-export const generateColumn = (boardId: BoardId, title: Title): Column => {
+export const generateColumn = (boardId: BoardId, title: TitleField): ColumnFields => {
   const now = getISODate();
 
   return {

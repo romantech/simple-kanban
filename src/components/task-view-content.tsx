@@ -1,6 +1,6 @@
-import { formatKoDate, type Task } from '@/lib';
+import { formatKoDate, type TaskFields } from '@/lib';
 
-const TaskViewContent = ({ task }: { task: Task }) => {
+const TaskViewContent = ({ task }: { task: TaskFields }) => {
   return (
     <div className="flex flex-col gap-4 py-4 text-sm">
       <div className="space-y-1">

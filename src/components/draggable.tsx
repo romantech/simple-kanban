@@ -1,29 +1,55 @@
 'use client';
 
-import { useDraggable } from '@dnd-kit/core';
-import { type ElementType, type HTMLAttributes, type ReactNode } from 'react';
+import { type DraggableAttributes, type UseDraggableArguments } from '@dnd-kit/core';
+import { type CSSProperties, type ElementType, type ReactNode } from 'react';
+import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
+import { DndPlaceholder, type DndPlaceholderVariantType } from '@/components/ui/dnd-placeholder';
+import { type SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 
-interface DraggableProps<T> extends HTMLAttributes<T> {
-  children: ReactNode;
-  id: string;
+interface ChildrenProps {
+  listeners?: SyntheticListenerMap;
+  attributes: DraggableAttributes;
+}
+
+interface DraggableProps extends UseDraggableArguments {
+  children: ({ listeners, attributes }: ChildrenProps) => ReactNode;
+  rootDndConfig?: Record<keyof ChildrenProps, boolean>;
+  className?: string;
+  type: DndPlaceholderVariantType;
   element?: ElementType;
 }
 
 /**
  * @see https://docs.dndkit.com/api-documentation/draggable/drag-overlay#wrapper-nodes
  * */
-const Draggable = <T extends ElementType = 'div'>({
+const Draggable = ({
   children,
-  id,
   element,
-  ...props
-}: DraggableProps<T>) => {
+  type,
+  className,
+  rootDndConfig = { attributes: true, listeners: true },
+  ...dragProps
+}: DraggableProps) => {
   const Element = element ?? 'div';
-  const { attributes, listeners, setNodeRef } = useDraggable({ id });
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    ...dragProps,
+    data: { ...dragProps.data, type },
+  });
+
+  const style: CSSProperties = { transform: CSS.Transform.toString(transform), transition };
+
+  if (isDragging) return <DndPlaceholder variant={type} style={style} ref={setNodeRef} />;
+
+  const configProps = {
+    ...(rootDndConfig?.attributes && attributes),
+    ...(rootDndConfig?.listeners && listeners),
+  };
 
   return (
-    <Element ref={setNodeRef} {...attributes} {...listeners} {...props}>
-      {children}
+    <Element ref={setNodeRef} className={className} style={style} {...configProps}>
+      {children({ listeners, attributes })}
     </Element>
   );
 };
