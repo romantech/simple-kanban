@@ -80,7 +80,7 @@ const Board = () => {
       const sourceColumn = state.columns[activeTaskColumnId];
       const sourceIdx = sourceColumn.taskIds.indexOf(activeId);
       if (sourceIdx === -1) return state;
-
+      // 드롭 대상이 Task 카드일 때
       if (isOverTask) {
         const targetColumn = state.columns[targetColumnId];
         const targetIdx = targetColumn.taskIds.indexOf(overId);
@@ -97,7 +97,7 @@ const Board = () => {
           state.tasks[activeId].columnId = overTaskColumnId;
         }
       }
-      // 컬럼 영역으로 드래그할 때 (컬럼에 카드가 없거나, 하나만 있을 때 등)
+      // 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나 Task 카드가 아닌 다른 영역에 위치했을 때)
       else if (isOverColumn) {
         const targetColumn = state.columns[targetColumnId];
         let targetIdx = targetColumn.taskIds.indexOf(activeId);
