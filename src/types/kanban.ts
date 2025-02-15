@@ -11,14 +11,6 @@ import {
 } from '@/lib';
 import { createBrandedParser } from '@/types/common';
 
-export enum KanbanBrandType {
-  Task = 'Task',
-  Column = 'Column',
-  Board = 'Board',
-}
-
-export type KanbanEntity = keyof typeof KanbanBrandType;
-
 export type Tasks = Record<TaskId, TaskFields>;
 export type Columns = Record<ColumnId, ColumnFields>;
 export type Boards = Record<BoardId, BoardFields>;

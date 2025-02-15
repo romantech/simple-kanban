@@ -1,4 +1,3 @@
-import { KanbanBrandType, type KanbanEntity } from '@/types';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { getISODate } from '@/lib/utils';
@@ -6,6 +5,8 @@ import {
   type BoardId,
   type ColumnFields,
   type ColumnId,
+  KanbanBrandType,
+  type KanbanEntity,
   type TaskFields,
   type TitleField,
 } from '@/lib/schema';
