@@ -5,7 +5,7 @@ import { cn } from '@/lib';
 const dndPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
   variants: {
     variant: {
-      column: 'w-72',
+      column: 'min-w-72',
       task: 'h-[74.5px]',
     },
   },

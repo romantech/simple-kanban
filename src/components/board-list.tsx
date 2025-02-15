@@ -7,7 +7,7 @@ const BoardList = () => {
   const currentBoardId = useKanbanStore.use.currentBoardId();
 
   return (
-    <div className="min-w-72 space-y-4 border-r border-baltic-900 bg-charade-950 p-6">
+    <div className="invisible w-0 max-w-72 space-y-4 border-r border-baltic-900 bg-charade-950 p-6 opacity-0 transition-all lg:visible lg:block lg:w-full lg:opacity-100">
       <h3 className="text-sm font-bold uppercase text-baltic-400">all boards</h3>
       <ul className="space-y-2">
         {Object.values(boards).map((board) => (

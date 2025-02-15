@@ -19,7 +19,7 @@ const TaskCard = ({ taskId, className }: TaskProps) => {
         type="task"
         element="li"
         className={cn(
-          'w-[272px] rounded-md bg-charade-950 p-4 shadow-md flex flex-col gap-1',
+          'w-full max-w-[272px] rounded-md bg-charade-950 p-4 shadow-md flex flex-col gap-1',
           className,
         )}
       >

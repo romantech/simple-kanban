@@ -22,7 +22,10 @@ const Column = ({ columnId, className }: ColumnProps) => {
       data={column}
       id={columnId}
       rootDndConfig={{ listeners: false, attributes: false }}
-      className={cn('flex w-72 rounded bg-baltic-950 shrink-0 flex-col gap-4 p-2', className)}
+      className={cn(
+        'flex w-full max-w-72 rounded bg-baltic-950 shrink-0 flex-col gap-4 p-2',
+        className,
+      )}
     >
       {({ listeners, attributes }) => (
         <>

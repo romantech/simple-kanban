@@ -19,6 +19,7 @@ import { useId } from 'react';
 import { Empty } from '@/components/ui/empty';
 import { type ColumnId, getDragTypes, type TaskId } from '@/lib';
 import { useDragState } from '@/hooks';
+import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 
 const Board = () => {
   // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
@@ -58,7 +59,7 @@ const Board = () => {
     }
   };
 
-  const onDragOver = ({ active, over }: DragOverEvent) => {
+  const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
     if (!over) return; // 드롭 영역 벗어났을 때
     if (active.id === over.id) return; // 같은 위치일 때
 
@@ -96,10 +97,18 @@ const Board = () => {
           state.tasks[active.id as TaskId].columnId = overTaskColumnId;
         }
       }
-      // 컬럼 영역에 추가할 때 (컬럼에 카드가 없거나, 하나만 있을 때)
+      // 컬럼 영역으로 드래그할 때 (컬럼에 카드가 없거나, 하나만 있을 때 등)
       else if (isOverColumn) {
         const targetColumn = state.columns[targetColumnId];
-        const targetIdx = targetColumn.taskIds.findIndex((id) => id === active.id);
+        let targetIdx = targetColumn.taskIds.findIndex((id) => id === active.id);
+
+        if (targetIdx === -1) {
+          // delta: 드래그 시작 대비 이동거리, clientY: 드래그 시작 지점 좌표
+          const currentY = (activatorEvent as MouseEvent).clientY + delta.y;
+          // 대상 컬럼의 첫번째 카드보다 위로 드래그 했을 땐 첫번째로, 그 외엔 마지막으로(대상 컬럼의 마지막 카드보다 아래)
+          targetIdx = currentY < 200 ? 0 : targetColumn.taskIds.length;
+        }
+
         sourceColumn.taskIds.splice(sourceIdx, 1);
         targetColumn.taskIds.splice(targetIdx, 0, active.id as TaskId);
         state.tasks[active.id as TaskId].columnId = targetColumnId;
@@ -120,6 +129,7 @@ const Board = () => {
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}
         sensors={[mouseSensor]}
+        modifiers={[restrictToWindowEdges]}
       >
         <SortableContext items={board.columnIds} id={board.id}>
           {board.columnIds.map((columnId) => (
@@ -128,7 +138,7 @@ const Board = () => {
         </SortableContext>
         <DragOverlay>
           {dragColumnId && <Column columnId={dragColumnId as ColumnId} />}
-          {dragTaskId && <TaskCard taskId={dragTaskId as TaskId} />}
+          {dragTaskId && <TaskCard taskId={dragTaskId as TaskId} className="w-[272px]" />}
         </DragOverlay>
       </DndContext>
 
