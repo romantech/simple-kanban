@@ -34,8 +34,7 @@ interface KanbanActions {
   addColumn: ColumnAction;
   deleteColumn: ColumnAction;
   editColumn: (columnId: ColumnId, title: TitleField) => void;
-
-  editColumnOrder: (boardId: BoardId, columnIds: ColumnId[]) => void;
+  moveColumn: (boardId: BoardId, columnIds: ColumnId[]) => void;
 }
 
 const initialState: KanbanState = {
@@ -103,7 +102,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
             column.updatedAt = getISODate();
           });
         },
-        editColumnOrder: (boardId, columnIds) => {
+        moveColumn: (boardId, columnIds) => {
           set((state) => {
             const board = state.boards[boardId];
             board.columnIds = columnIds;

@@ -17,17 +17,19 @@ import {
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 import { useId } from 'react';
 import { Empty } from '@/components/ui/empty';
-import { type ColumnId, getDragTypes, type TaskId } from '@/lib';
+import { type ColumnId, getDragTypes } from '@/lib';
 import { useDragState } from '@/hooks';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
+import { toColumnId, toTaskId } from '@/types';
 
 const Board = () => {
   // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
   // 객체/배열 반환 시 내부 프로퍼티 변경을 감지하여 불필요한 리렌더링 방지
   // 단일 원시 타입 값은 기본 Object.is 비교로 충분하므로 useShallow 불필요
   const board = useKanbanStore(useShallow(({ boards, currentBoardId }) => boards[currentBoardId]));
+  const columns = useKanbanStore((state) => state.columns);
 
-  const editColumnOrder = useKanbanStore.use.editColumnOrder();
+  const moveColumn = useKanbanStore.use.moveColumn();
 
   const mouseSensor = useSensor(PointerSensor, {
     activationConstraint: { distance: 10 }, // 드래그 핸들에 있는 버튼 클릭 가능하도록 10px 이동했을때만 활성
@@ -55,7 +57,7 @@ const Board = () => {
       const activeIdx = board.columnIds.findIndex((id) => id === active.id);
       const overIdx = board.columnIds.findIndex((id) => id === over?.id);
       const newColumnIds = arrayMove(board.columnIds, activeIdx, overIdx);
-      editColumnOrder(board.id, newColumnIds);
+      moveColumn(board.id, newColumnIds);
     }
   };
 
@@ -69,38 +71,36 @@ const Board = () => {
 
     const activeTaskColumnId = active.data.current?.columnId as ColumnId;
     const overTaskColumnId = over.data.current?.columnId as ColumnId;
-    const targetColumnId = isOverTask
-      ? overTaskColumnId
-      : isOverColumn
-        ? (over.id as ColumnId)
-        : null;
+    const targetColumnId = isOverTask ? overTaskColumnId : toColumnId(over.id);
 
-    if (!targetColumnId) return;
+    const activeId = toTaskId(active.id);
+    const overId = toTaskId(over.id);
 
     useKanbanStore.setState((state) => {
       const sourceColumn = state.columns[activeTaskColumnId];
-      const sourceIdx = sourceColumn.taskIds.findIndex((id) => id === active.id);
+      const sourceIdx = sourceColumn.taskIds.indexOf(activeId);
       if (sourceIdx === -1) return state;
 
       if (isOverTask) {
         const targetColumn = state.columns[targetColumnId];
-        const targetIdx = targetColumn.taskIds.findIndex((id) => id === over.id);
+        const targetIdx = targetColumn.taskIds.indexOf(overId);
         if (targetIdx === -1) return state;
 
         // 동일 컬럼 내에서 드래그할 때
         if (activeTaskColumnId === overTaskColumnId) {
-          sourceColumn.taskIds = arrayMove(sourceColumn.taskIds, sourceIdx, targetIdx);
+          const newTask = arrayMove(sourceColumn.taskIds, sourceIdx, targetIdx);
+          sourceColumn.taskIds = newTask;
         } else {
           // 다른 컬럼으로 드래그할 때
           sourceColumn.taskIds.splice(sourceIdx, 1);
-          targetColumn.taskIds.splice(targetIdx, 0, active.id as TaskId);
-          state.tasks[active.id as TaskId].columnId = overTaskColumnId;
+          targetColumn.taskIds.splice(targetIdx, 0, activeId);
+          state.tasks[activeId].columnId = overTaskColumnId;
         }
       }
       // 컬럼 영역으로 드래그할 때 (컬럼에 카드가 없거나, 하나만 있을 때 등)
       else if (isOverColumn) {
         const targetColumn = state.columns[targetColumnId];
-        let targetIdx = targetColumn.taskIds.findIndex((id) => id === active.id);
+        let targetIdx = targetColumn.taskIds.indexOf(activeId);
 
         if (targetIdx === -1) {
           // delta: 드래그 시작 대비 이동거리, clientY: 드래그 시작 지점 좌표
@@ -110,8 +110,8 @@ const Board = () => {
         }
 
         sourceColumn.taskIds.splice(sourceIdx, 1);
-        targetColumn.taskIds.splice(targetIdx, 0, active.id as TaskId);
-        state.tasks[active.id as TaskId].columnId = targetColumnId;
+        targetColumn.taskIds.splice(targetIdx, 0, activeId);
+        state.tasks[activeId].columnId = targetColumnId;
       }
 
       return state;
@@ -137,8 +137,8 @@ const Board = () => {
           ))}
         </SortableContext>
         <DragOverlay>
-          {dragColumnId && <Column columnId={dragColumnId as ColumnId} />}
-          {dragTaskId && <TaskCard taskId={dragTaskId as TaskId} className="w-[272px]" />}
+          {dragColumnId && <Column columnId={toColumnId(dragColumnId)} />}
+          {dragTaskId && <TaskCard taskId={toTaskId(dragTaskId)} className="w-[272px]" />}
         </DragOverlay>
       </DndContext>
 

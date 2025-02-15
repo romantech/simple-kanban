@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { type KanbanBrandType } from '@/types';
 
-const taskId = z.string().brand<KanbanBrandType.Task>();
-const columnId = z.string().brand<KanbanBrandType.Column>();
-const boardId = z.string().brand<KanbanBrandType.Board>();
+export const taskId = z.string().brand<KanbanBrandType.Task>();
+export const columnId = z.string().brand<KanbanBrandType.Column>();
+export const boardId = z.string().brand<KanbanBrandType.Board>();
 
 const timestampsSchema = z.object({
   createdAt: z.string().datetime({ offset: true }), // UTC 오프셋 허용

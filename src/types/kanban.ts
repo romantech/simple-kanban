@@ -1,11 +1,15 @@
 import {
   type BoardFields,
+  boardId,
   type BoardId,
   type ColumnFields,
+  columnId,
   type ColumnId,
   type TaskFields,
+  taskId,
   type TaskId,
 } from '@/lib';
+import { createBrandedParser } from '@/types/common';
 
 export enum KanbanBrandType {
   Task = 'Task',
@@ -24,3 +28,7 @@ export interface Kanban {
   columns: Columns;
   boards: Boards;
 }
+
+export const toTaskId = createBrandedParser(taskId);
+export const toColumnId = createBrandedParser(columnId);
+export const toBoardId = createBrandedParser(boardId);
