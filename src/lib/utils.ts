@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { type Active, type Over } from '@dnd-kit/core';
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -16,16 +15,10 @@ export const formatKoDate = (date: string | Date) => {
   return format(date, 'yyyy-MM-dd(eee) HH:mm', { locale: ko });
 };
 
-export const getDragTypes = (active: Active, over?: Over) => {
-  const activeData = active.data.current;
-  const overData = over?.data.current;
+export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[] => {
+  const newArray = array.slice();
+  const [movedItem] = newArray.splice(fromIndex, 1);
+  newArray.splice(toIndex, 0, movedItem);
 
-  if (!activeData) throw new Error('Drag data is missing for active or over element');
-
-  return {
-    isActiveTask: activeData.type === 'task',
-    isOverTask: overData?.type === 'task',
-    isActiveColumn: activeData.type === 'column',
-    isOverColumn: overData?.type === 'column',
-  };
+  return newArray;
 };

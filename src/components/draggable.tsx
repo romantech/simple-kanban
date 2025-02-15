@@ -22,6 +22,7 @@ interface DraggableProps extends UseDraggableArguments {
 
 /**
  * @see https://docs.dndkit.com/api-documentation/draggable/drag-overlay#wrapper-nodes
+ * 공식 문서에서 제공한 코드를 기반으로 listeners, attributes 를 자유롭게 배치할 수 있도록 render prop 형태로 구현
  * */
 const Draggable = ({
   children,

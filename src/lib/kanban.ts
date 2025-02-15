@@ -9,6 +9,7 @@ import {
   type TaskFields,
   type TitleField,
 } from '@/lib/schema';
+import type { Active, Over } from '@dnd-kit/core';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];
@@ -46,5 +47,23 @@ export const generateColumn = (boardId: BoardId, title: TitleField): ColumnField
     createdAt: now,
     updatedAt: now,
     taskIds: [],
+  };
+};
+
+export const getDragTypes = (active: Active, over?: Over) => {
+  const activeData = active.data.current;
+  const overData = over?.data.current;
+
+  if (!activeData) throw new Error('Drag data is missing for active or over element');
+
+  return {
+    /** 드래그한 요소가 Task 카드일 때   */
+    isActiveTask: activeData.type === 'task',
+    /** 드래그할 위치가 Task 카드일 때  */
+    isOverTask: overData?.type === 'task',
+    /** 드래그한 요소가 컬럼일 때 */
+    isActiveColumn: activeData.type === 'column',
+    /** 드래그할 위치가 컬럼일 때 */
+    isOverColumn: overData?.type === 'column',
   };
 };

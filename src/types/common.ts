@@ -1,3 +1,16 @@
-export type Branded<T, B> = T & { __brand: B };
+import { type z } from 'zod';
+import type { UniqueIdentifier } from '@dnd-kit/core';
 
-export type BrandedId<T extends string> = Branded<`${T}-${string}`, T>;
+type BrandTag = string | number | symbol;
+type BrandedId<T extends BrandTag> = z.infer<z.ZodBranded<z.ZodString, T>>;
+
+export const createBrandedParser =
+  <T extends BrandTag>(schema: z.ZodBranded<z.ZodString, T>) =>
+  (value: UniqueIdentifier): BrandedId<T> => {
+    return schema.parse(value);
+  };
+
+/**
+ * @example Void<[string, number?]>
+ * */
+export type Void<T extends unknown[]> = (...param: T) => void;

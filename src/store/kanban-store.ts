@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
 import {
+  arrayMove,
   type BoardId,
   type ColumnFields,
   type ColumnId,
@@ -13,29 +14,26 @@ import {
   type TitleField,
 } from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
-import { type Kanban } from '@/types';
+import { type Kanban, type MoveTaskPayload, type Void } from '@/types';
 import { devtools, persist } from 'zustand/middleware';
 
 interface KanbanState extends Kanban {
   currentBoardId: BoardId;
 }
 
-type ColumnAction = (column: ColumnFields) => void;
-type TaskAction = (task: TaskFields) => void;
-
 interface KanbanActions {
-  initialize: (data?: KanbanState) => void;
-  setBoard: (boardId: BoardId) => void;
+  initialize: Void<[KanbanState?]>;
+  setBoard: Void<[BoardId]>;
 
-  addTask: TaskAction;
-  deleteTask: TaskAction;
-  editTask: (taskId: TaskId, title: TitleField, description?: string) => void;
+  addTask: Void<[TaskFields]>;
+  deleteTask: Void<[TaskFields]>;
+  editTask: Void<[TaskId, TitleField, string?]>;
 
-  addColumn: ColumnAction;
-  deleteColumn: ColumnAction;
-  editColumn: (columnId: ColumnId, title: TitleField) => void;
-
-  editColumnOrder: (boardId: BoardId, columnIds: ColumnId[]) => void;
+  addColumn: Void<[ColumnFields]>;
+  deleteColumn: Void<[ColumnFields]>;
+  editColumn: Void<[ColumnId, TitleField]>;
+  moveColumn: Void<[BoardId, ColumnId[]]>;
+  moveTask: Void<[MoveTaskPayload]>;
 }
 
 const initialState: KanbanState = {
@@ -103,10 +101,30 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
             column.updatedAt = getISODate();
           });
         },
-        editColumnOrder: (boardId, columnIds) => {
+        moveColumn: (boardId, columnIds) => {
           set((state) => {
             const board = state.boards[boardId];
             board.columnIds = columnIds;
+          });
+        },
+        moveTask: (payload) => {
+          set((state) => {
+            const sourceColumn = state.columns[payload.sourceColumnId];
+            const targetColumn = state.columns[payload.targetColumnId];
+
+            // 동일 컬럼 안에서 드래그할 때
+            if (payload.sourceColumnId === payload.targetColumnId) {
+              sourceColumn.taskIds = arrayMove(
+                sourceColumn.taskIds,
+                payload.sourceTaskIdx,
+                payload.targetTaskIdx,
+              );
+            } else {
+              // 다른 컬럼으로 드래그할 때
+              sourceColumn.taskIds.splice(payload.sourceTaskIdx, 1);
+              targetColumn.taskIds.splice(payload.targetTaskIdx, 0, payload.sourceTaskId);
+              state.tasks[payload.sourceTaskId].columnId = payload.targetColumnId;
+            }
           });
         },
       })),
