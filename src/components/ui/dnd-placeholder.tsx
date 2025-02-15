@@ -5,8 +5,8 @@ import { cn } from '@/lib';
 const dndPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
   variants: {
     variant: {
-      column: 'w-64',
-      task: 'w-full',
+      column: 'w-72',
+      task: 'h-[74.5px]',
     },
   },
   defaultVariants: {
@@ -14,9 +14,14 @@ const dndPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
   },
 });
 
-type DivProps = HTMLAttributes<HTMLDivElement> & { ref: Ref<HTMLDivElement>; style: CSSProperties };
-type DndPlaceholderProps = DivProps & VariantProps<typeof dndPlaceholderVariants>;
+type DndPlaceholderVariants = VariantProps<typeof dndPlaceholderVariants>;
+type DndPlaceholderVariantType = DndPlaceholderVariants['variant'];
 
-export const DndPlaceholder = ({ className, variant, ...divProps }: DndPlaceholderProps) => {
+type DivProps = HTMLAttributes<HTMLDivElement> & { ref: Ref<HTMLDivElement>; style: CSSProperties };
+type DndPlaceholderProps = DivProps & DndPlaceholderVariants;
+
+const DndPlaceholder = ({ className, variant, ...divProps }: DndPlaceholderProps) => {
   return <div className={cn(dndPlaceholderVariants({ variant }), className)} {...divProps} />;
 };
+
+export { DndPlaceholder, type DndPlaceholderVariantType };

@@ -15,7 +15,6 @@ import {
 } from '@dnd-kit/core';
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 import { useId, useState } from 'react';
-import { restrictToFirstScrollableAncestor, restrictToParentElement } from '@dnd-kit/modifiers';
 import { Empty } from '@/components/ui/empty';
 import { type ColumnId, type TaskId } from '@/lib';
 
@@ -49,6 +48,8 @@ const Board = () => {
   };
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
+    resetActive();
+
     if (active.id === over?.id) return;
 
     if (active.data.current?.type === 'column') {
@@ -62,18 +63,12 @@ const Board = () => {
     if (active.data.current?.type === 'task') {
       // ...
     }
-
-    resetActive();
   };
 
   const isEmpty = board.columnIds.length === 0;
 
-  const combinedModifiers = [
-    activeColumnId ? restrictToParentElement : restrictToFirstScrollableAncestor,
-  ];
-
   return (
-    <div className="scroll-custom flex w-full gap-4 overflow-x-auto p-6">
+    <div className="scroll-custom flex w-full gap-4 overflow-x-auto px-6 py-5">
       {isEmpty && <Empty />}
       <DndContext
         id={dndContextId}
@@ -81,13 +76,13 @@ const Board = () => {
         onDragStart={onDragStart}
         sensors={[mouseSensor]}
       >
-        <SortableContext items={board.columnIds}>
+        <SortableContext items={board.columnIds} id={board.id}>
           {board.columnIds.map((columnId) => (
             <Column key={columnId} columnId={columnId} />
           ))}
         </SortableContext>
-        <DragOverlay modifiers={combinedModifiers}>
-          {activeColumnId && <Column columnId={activeColumnId} className="rounded backdrop-blur" />}
+        <DragOverlay>
+          {activeColumnId && <Column columnId={activeColumnId} />}
           {activeTaskId && <TaskCard taskId={activeTaskId} />}
         </DragOverlay>
       </DndContext>
