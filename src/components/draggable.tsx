@@ -14,7 +14,7 @@ interface ChildrenProps {
 
 interface DraggableProps extends UseDraggableArguments {
   children: ({ listeners, attributes }: ChildrenProps) => ReactNode;
-  attach?: Record<keyof ChildrenProps, boolean>;
+  rootDndConfig?: Record<keyof ChildrenProps, boolean>;
   className?: string;
   type: DndPlaceholderVariantType;
   element?: ElementType;
@@ -28,7 +28,7 @@ const Draggable = ({
   element,
   type,
   className,
-  attach = { attributes: true, listeners: true },
+  rootDndConfig = { attributes: true, listeners: true },
   ...dragProps
 }: DraggableProps) => {
   const Element = element ?? 'div';
@@ -43,8 +43,8 @@ const Draggable = ({
   if (isDragging) return <DndPlaceholder variant={type} style={style} ref={setNodeRef} />;
 
   const configProps = {
-    ...(attach?.attributes && attributes),
-    ...(attach?.listeners && listeners),
+    ...(rootDndConfig?.attributes && attributes),
+    ...(rootDndConfig?.listeners && listeners),
   };
 
   return (
