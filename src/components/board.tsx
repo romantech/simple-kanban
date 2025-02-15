@@ -8,6 +8,7 @@ import { SquarePlus } from 'lucide-react';
 import {
   DndContext,
   type DragEndEvent,
+  type DragOverEvent,
   DragOverlay,
   type DragStartEvent,
   PointerSensor,
@@ -16,7 +17,7 @@ import {
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 import { useId, useState } from 'react';
 import { Empty } from '@/components/ui/empty';
-import { type ColumnId, type TaskId } from '@/lib';
+import { type ColumnId, getDragTypes, type TaskId } from '@/lib';
 
 const Board = () => {
   // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
@@ -38,30 +39,75 @@ const Board = () => {
     setActiveTaskId(undefined);
   };
 
+  /**
+   * 하이드레이션 에러 해결
+   * @see https://github.com/clauderic/dnd-kit/issues/926
+   * */
   const dndContextId = useId();
 
   const onDragStart = ({ active }: DragStartEvent) => {
-    const data = active.data.current;
-    const isTask = data?.type === 'task';
-    if (isTask) setActiveTaskId(active.id as TaskId);
+    if (getDragTypes(active).isActiveTask) setActiveTaskId(active.id as TaskId);
     else setActiveColumnId(active.id as ColumnId);
   };
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
-    resetActive();
+    resetActive(); // early return 있으므로 최상단에서 초기화 필요
 
     if (active.id === over?.id) return;
 
-    if (active.data.current?.type === 'column') {
-      const oldIndex = board.columnIds.findIndex((id) => id === active.id);
-      const newIndex = board.columnIds.findIndex((id) => id === over?.id);
-
-      const newColumnIds = arrayMove(board.columnIds, oldIndex, newIndex);
+    if (getDragTypes(active).isActiveColumn) {
+      const activeIdx = board.columnIds.findIndex((id) => id === active.id);
+      const overIdx = board.columnIds.findIndex((id) => id === over?.id);
+      const newColumnIds = arrayMove(board.columnIds, activeIdx, overIdx);
       editColumnOrder(board.id, newColumnIds);
     }
+  };
 
-    if (active.data.current?.type === 'task') {
-      // ...
+  const onDragOver = ({ active, over }: DragOverEvent) => {
+    if (!over) return; // 드롭 영역 벗어났을 때
+    if (active.id === over.id) return; // 같은 위치일 때
+
+    const { isActiveTask, isOverTask, isOverColumn } = getDragTypes(active, over);
+
+    if (!isActiveTask) return; // Task Card 드래그가 아닐 때
+
+    const activeTaskColumnId = active.data.current?.columnId as ColumnId;
+    const overTaskColumnId = over.data.current?.columnId as ColumnId;
+
+    if (isActiveTask && isOverTask) {
+      useKanbanStore.setState((state) => {
+        const sourceColumn = state.columns[activeTaskColumnId];
+        const targetColumn = state.columns[overTaskColumnId];
+
+        const sourceIdx = sourceColumn.taskIds.findIndex((id) => id === active.id);
+        const targetIdx = targetColumn.taskIds.findIndex((id) => id === over.id);
+        if (sourceIdx === -1 || targetIdx === -1) return state;
+
+        // 동일 컬럼 내에서 드래그할 때
+        if (activeTaskColumnId === overTaskColumnId) {
+          sourceColumn.taskIds = arrayMove(sourceColumn.taskIds, sourceIdx, targetIdx);
+        } else {
+          // 다른 컬럼으로 드래그할 때
+          sourceColumn.taskIds.splice(sourceIdx, 1);
+          targetColumn.taskIds.splice(targetIdx, 0, active.id as TaskId);
+          state.tasks[active.id as TaskId].columnId = overTaskColumnId;
+        }
+      });
+    }
+
+    // 컬럼에 카드가 하나도 없거나, 하나만 있는 상태에서 마지막에 추가할 때(마지막은 컬럼 영역이므로)
+    if (isActiveTask && isOverColumn) {
+      useKanbanStore.setState((state) => {
+        const sourceColumn = state.columns[activeTaskColumnId];
+        const targetColumn = state.columns[over.id as ColumnId];
+
+        const sourceIdx = sourceColumn.taskIds.findIndex((id) => id === active.id);
+        if (sourceIdx === -1) return state;
+
+        sourceColumn.taskIds.splice(sourceIdx, 1);
+        targetColumn.taskIds.push(active.id as TaskId);
+        state.tasks[active.id as TaskId].columnId = over.id as ColumnId;
+      });
     }
   };
 
@@ -72,8 +118,9 @@ const Board = () => {
       {isEmpty && <Empty />}
       <DndContext
         id={dndContextId}
-        onDragEnd={onDragEnd}
         onDragStart={onDragStart}
+        onDragOver={onDragOver}
+        onDragEnd={onDragEnd}
         sensors={[mouseSensor]}
       >
         <SortableContext items={board.columnIds} id={board.id}>
