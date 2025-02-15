@@ -9,3 +9,8 @@ export const createBrandedParser =
   (value: UniqueIdentifier): BrandedId<T> => {
     return schema.parse(value);
   };
+
+/**
+ * @example Void<[string, number?]>
+ * */
+export type Void<T extends unknown[]> = (...param: T) => void;

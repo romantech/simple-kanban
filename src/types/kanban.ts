@@ -32,3 +32,17 @@ export interface Kanban {
 export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
 export const toBoardId = createBrandedParser(boardId);
+
+export interface Sortable {
+  index: number;
+  containerId: ColumnId;
+  items: TaskId[];
+}
+
+export interface MoveTaskPayload {
+  sourceColumnId: ColumnId;
+  targetColumnId: ColumnId;
+  sourceTaskIdx: number;
+  targetTaskIdx: number;
+  sourceTaskId: TaskId;
+}

@@ -17,10 +17,10 @@ import {
 import { arrayMove, SortableContext } from '@dnd-kit/sortable';
 import { useId } from 'react';
 import { Empty } from '@/components/ui/empty';
-import { type ColumnId, getDragTypes } from '@/lib';
+import { getDragTypes } from '@/lib';
 import { useDragState } from '@/hooks';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
-import { toColumnId, toTaskId } from '@/types';
+import { type Sortable, toColumnId, toTaskId } from '@/types';
 
 const Board = () => {
   // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
@@ -30,6 +30,7 @@ const Board = () => {
   const columns = useKanbanStore((state) => state.columns);
 
   const moveColumn = useKanbanStore.use.moveColumn();
+  const moveTask = useKanbanStore.use.moveTask();
 
   const mouseSensor = useSensor(PointerSensor, {
     activationConstraint: { distance: 10 }, // 드래그 핸들에 있는 버튼 클릭 가능하도록 10px 이동했을때만 활성
@@ -53,10 +54,12 @@ const Board = () => {
 
     if (active.id === over?.id) return;
 
+    const activeSortable = active.data.current?.sortable as Sortable;
+    const overSortable = over?.data.current?.sortable as Sortable;
+    if (!activeSortable || !overSortable) return;
+
     if (getDragTypes(active).isActiveColumn) {
-      const activeIdx = board.columnIds.findIndex((id) => id === active.id);
-      const overIdx = board.columnIds.findIndex((id) => id === over?.id);
-      const newColumnIds = arrayMove(board.columnIds, activeIdx, overIdx);
+      const newColumnIds = arrayMove(board.columnIds, activeSortable.index, overSortable.index);
       moveColumn(board.id, newColumnIds);
     }
   };
@@ -69,53 +72,34 @@ const Board = () => {
 
     if (!isActiveTask) return; // Task Card 드래그가 아닐 때
 
-    const activeTaskColumnId = active.data.current?.columnId as ColumnId;
-    const overTaskColumnId = over.data.current?.columnId as ColumnId;
-    const targetColumnId = isOverTask ? overTaskColumnId : toColumnId(over.id);
+    const activeSort = active.data.current?.sortable as Sortable;
+    const overSort = over.data.current?.sortable as Sortable;
 
-    const activeId = toTaskId(active.id);
-    const overId = toTaskId(over.id);
+    const sourceColumnId = activeSort.containerId;
+    const targetColumnId = isOverTask ? overSort.containerId : toColumnId(over.id);
 
-    useKanbanStore.setState((state) => {
-      const sourceColumn = state.columns[activeTaskColumnId];
-      const sourceIdx = sourceColumn.taskIds.indexOf(activeId);
-      if (sourceIdx === -1) return state;
-      // 드롭 대상이 Task 카드일 때
-      if (isOverTask) {
-        const targetColumn = state.columns[targetColumnId];
-        const targetIdx = targetColumn.taskIds.indexOf(overId);
-        if (targetIdx === -1) return state;
+    const sourceTaskId = toTaskId(active.id);
+    // 드롭 대상이 Task 카드일 때
+    let sourceTaskIdx = activeSort.index;
+    let targetTaskIdx = overSort.index;
 
-        // 동일 컬럼 내에서 드래그할 때
-        if (activeTaskColumnId === overTaskColumnId) {
-          const newTask = arrayMove(sourceColumn.taskIds, sourceIdx, targetIdx);
-          sourceColumn.taskIds = newTask;
-        } else {
-          // 다른 컬럼으로 드래그할 때
-          sourceColumn.taskIds.splice(sourceIdx, 1);
-          targetColumn.taskIds.splice(targetIdx, 0, activeId);
-          state.tasks[activeId].columnId = overTaskColumnId;
-        }
+    // 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나 Task 카드가 아닌 다른 영역에 위치했을 때)
+    if (isOverColumn) {
+      const sourceColumn = columns[sourceColumnId];
+      sourceTaskIdx = sourceColumn.taskIds.indexOf(sourceTaskId);
+
+      const targetColumn = columns[targetColumnId];
+      targetTaskIdx = targetColumn.taskIds.indexOf(sourceTaskId);
+
+      if (targetTaskIdx === -1) {
+        // delta: 드래그 시작 대비 이동거리, clientY: 드래그 시작 지점 좌표
+        const currentY = (activatorEvent as MouseEvent).clientY + delta.y;
+        // 대상 컬럼의 첫번째 카드보다 위로 드래그 했을 땐 첫번째로, 그 외엔 마지막으로(대상 컬럼의 마지막 카드보다 아래)
+        targetTaskIdx = currentY < 200 ? 0 : targetColumn.taskIds.length;
       }
-      // 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나 Task 카드가 아닌 다른 영역에 위치했을 때)
-      else if (isOverColumn) {
-        const targetColumn = state.columns[targetColumnId];
-        let targetIdx = targetColumn.taskIds.indexOf(activeId);
+    }
 
-        if (targetIdx === -1) {
-          // delta: 드래그 시작 대비 이동거리, clientY: 드래그 시작 지점 좌표
-          const currentY = (activatorEvent as MouseEvent).clientY + delta.y;
-          // 대상 컬럼의 첫번째 카드보다 위로 드래그 했을 땐 첫번째로, 그 외엔 마지막으로(대상 컬럼의 마지막 카드보다 아래)
-          targetIdx = currentY < 200 ? 0 : targetColumn.taskIds.length;
-        }
-
-        sourceColumn.taskIds.splice(sourceIdx, 1);
-        targetColumn.taskIds.splice(targetIdx, 0, activeId);
-        state.tasks[activeId].columnId = targetColumnId;
-      }
-
-      return state;
-    });
+    moveTask({ sourceTaskId, sourceColumnId, targetColumnId, sourceTaskIdx, targetTaskIdx });
   };
 
   const isEmpty = board.columnIds.length === 0;
