@@ -12,7 +12,7 @@ import { type SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 
 interface ChildrenProps {
   listeners?: SyntheticListenerMap;
-  attributes: DraggableAttributes;
+  attributes?: DraggableAttributes;
 }
 
 interface DraggableProps extends UseDraggableArguments {
