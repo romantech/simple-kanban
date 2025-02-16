@@ -2,10 +2,11 @@ import { useKanbanStore } from '@/store';
 import { cn } from '@/lib';
 import { SquareKanban } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BoardAddDialog } from '@/components';
 
 const BoardList = () => {
   const boards = useKanbanStore.use.boards();
-  const setCurrentBoard = useKanbanStore.use.setBoard();
+  const setCurrentBoard = useKanbanStore.use.setCurrentBoard();
   const currentBoardId = useKanbanStore.use.currentBoardId();
 
   return (
@@ -27,7 +28,9 @@ const BoardList = () => {
           </li>
         ))}
       </ul>
-      <Button className="flex w-full font-bold capitalize">add board</Button>
+      <BoardAddDialog>
+        <Button className="flex w-full font-bold capitalize">add board</Button>
+      </BoardAddDialog>
     </div>
   );
 };

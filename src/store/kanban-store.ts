@@ -3,6 +3,7 @@ import { immer } from 'zustand/middleware/immer';
 
 import {
   arrayMove,
+  type BoardFields,
   type BoardId,
   type ColumnFields,
   type ColumnId,
@@ -22,7 +23,9 @@ interface KanbanState extends KanbanData {
 
 interface KanbanActions {
   initialize: Void<[KanbanState?]>;
-  setBoard: Void<[BoardId]>;
+
+  addBoard: Void<[BoardFields]>;
+  setCurrentBoard: Void<[BoardId]>;
 
   addTask: Void<[TaskFields]>;
   deleteTask: Void<[TaskFields]>;
@@ -49,7 +52,13 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
 
         // 액션
         initialize: (data) => set(data ?? initialState),
-        setBoard: (boardId) => {
+        addBoard: (board) => {
+          set((state) => {
+            state.boards[board.id] = board;
+            state.currentBoardId = board.id;
+          });
+        },
+        setCurrentBoard: (boardId) => {
           set((state) => {
             state.currentBoardId = boardId;
           });
