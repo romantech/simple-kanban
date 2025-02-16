@@ -25,11 +25,14 @@ export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
 export const toBoardId = createBrandedParser(boardId);
 
-export interface Sortable {
+export interface Sortable<TContainer, TItem> {
   index: number;
-  containerId: ColumnId;
-  items: TaskId[];
+  containerId: TContainer;
+  items: TItem[];
 }
+
+export type ColumnSortable = Sortable<BoardId, ColumnId>;
+export type TaskSortable = Sortable<ColumnId, TaskId>;
 
 export interface MoveTaskPayload {
   sourceColumnId: ColumnId;

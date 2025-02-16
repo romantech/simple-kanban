@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type ChangeEvent, type KeyboardEvent, useState } from 'react';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
@@ -27,6 +27,7 @@ const ColumnHeader = ({
   const saveTitle = () => {
     const trimmed = editedTitle.trim();
     if (trimmed.length === 0) return;
+
     onTitleChange(trimmed);
     setIsEditing(false);
   };
@@ -36,13 +37,13 @@ const ColumnHeader = ({
     else setIsEditing(true);
   };
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') saveTitle();
-    else if (e.key === 'Escape') setIsEditing(false);
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') saveTitle();
+    else if (event.key === 'Escape') setIsEditing(false);
   };
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedTitle(e.target.value);
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEditedTitle(event.target.value);
   };
 
   const Icon = isEditing ? Save : EditIcon;

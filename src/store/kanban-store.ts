@@ -136,4 +136,4 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
 
 const useKanbanStore = createSelectors(useKanbanStoreBase);
 
-export { useKanbanStore };
+export { useKanbanStore, type KanbanActions, type KanbanState };

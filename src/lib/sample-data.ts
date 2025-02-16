@@ -115,6 +115,8 @@ const sampleKanbanData: Kanban = {
   boards,
 };
 
+console.log(sampleKanbanData);
+
 const initialBoardId = boardIds[0];
 
 export { sampleKanbanData, initialBoardId };
