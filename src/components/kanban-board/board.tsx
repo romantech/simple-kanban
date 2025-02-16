@@ -39,7 +39,7 @@ const Board = () => {
         </SortableContext>
         <DragOverlay>
           {dragColumnId && <Column columnId={toColumnId(dragColumnId)} />}
-          {dragTaskId && <Task taskId={toTaskId(dragTaskId)} className="w-[272px]" />}
+          {dragTaskId && <Task taskId={toTaskId(dragTaskId)} />}
         </DragOverlay>
       </DndContext>
 
