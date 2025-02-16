@@ -1,5 +1,5 @@
-import { type Kanban } from '@/types';
-import { type BoardId } from '@/lib/schema';
+import { type KanbanData } from '@/types';
+import { type BoardId } from '@/lib';
 
 const sampleKanbanData = {
   tasks: {
@@ -106,7 +106,7 @@ const sampleKanbanData = {
       columnIds: ['Column-U6QHUWMvvizzC56pJyokc', 'Column-nAenj9pmiK_CG6LTeA-9V'],
     },
   },
-} as Kanban;
+} as KanbanData;
 
 const initialBoardId = 'Board-q0tzC2fGuBReTjYuzdUHL' as BoardId;
 

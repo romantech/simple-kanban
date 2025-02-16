@@ -10,7 +10,7 @@ import {
   type TaskFields,
   type TaskId,
   type TitleField,
-} from '@/lib/schema';
+} from '@/lib';
 import type { Active, Over } from '@dnd-kit/core';
 import type { Columns, TaskSortable } from '@/types';
 

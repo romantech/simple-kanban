@@ -15,7 +15,7 @@ export type Tasks = Record<TaskId, TaskFields>;
 export type Columns = Record<ColumnId, ColumnFields>;
 export type Boards = Record<BoardId, BoardFields>;
 
-export interface Kanban {
+export interface KanbanData {
   tasks: Tasks;
   columns: Columns;
   boards: Boards;
