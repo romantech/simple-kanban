@@ -10,24 +10,29 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { type PropsWithChildren } from 'react';
+import { type Void } from '@/types';
 
 interface AlertProps {
   title: string;
   description?: string;
-  onConfirm: () => void;
+  onConfirm: Void;
+  onCancel?: Void;
   asChild?: boolean;
+  disabled?: boolean;
 }
 
 const ConfirmDialog = ({
   title,
   description,
   onConfirm,
+  onCancel,
   children,
+  disabled = false,
   asChild = false,
 }: PropsWithChildren<AlertProps>) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="rounded" asChild={asChild}>
+      <AlertDialogTrigger disabled={disabled} className="rounded" asChild={asChild}>
         {children}
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-md">
@@ -36,7 +41,7 @@ const ConfirmDialog = ({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
+          <AlertDialogCancel onClick={onCancel}>취소</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm}>확인</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

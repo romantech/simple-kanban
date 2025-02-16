@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { getISODate } from '@/lib/utils';
 import {
+  type BoardFields,
   type BoardId,
   type ColumnFields,
   type ColumnId,
@@ -50,6 +51,18 @@ export const generateColumn = (boardId: BoardId, title: TitleField): ColumnField
     createdAt: now,
     updatedAt: now,
     taskIds: [],
+  };
+};
+
+export const generateBoard = (title: TitleField): BoardFields => {
+  const now = getISODate();
+
+  return {
+    id: generateKanbanId('Board'),
+    title,
+    createdAt: now,
+    updatedAt: now,
+    columnIds: [],
   };
 };
 
