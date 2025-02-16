@@ -1,7 +1,7 @@
 import { cn, formatKoDate, type TaskId } from '@/lib';
 import { Draggable, TaskEditViewDialog } from '@/components';
 import { useKanbanStore } from '@/store';
-import { Fragment } from 'react';
+import { motion } from 'motion/react';
 
 interface TaskProps {
   taskId: TaskId;
@@ -24,10 +24,10 @@ const Task = ({ taskId, className }: TaskProps) => {
         )}
       >
         {() => (
-          <Fragment>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <small className="text-xs text-baltic-400">{formatKoDate(task.createdAt)}</small>
-          </Fragment>
+          </motion.div>
         )}
       </Draggable>
     </TaskEditViewDialog>
