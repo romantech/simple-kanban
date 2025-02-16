@@ -26,6 +26,8 @@ interface KanbanActions {
 
   addBoard: Void<[BoardFields]>;
   setCurrentBoard: Void<[BoardId]>;
+  deleteBoard: Void<[BoardId]>;
+  getBoardCount: () => number;
 
   addTask: Void<[TaskFields]>;
   deleteTask: Void<[TaskFields]>;
@@ -46,16 +48,37 @@ const initialState: KanbanState = {
 const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
   devtools(
     persist(
-      immer((set) => ({
+      immer((set, get) => ({
         // 데이터
         ...initialState,
 
         // 액션
         initialize: (data) => set(data ?? initialState),
+        getBoardCount: () => Object.keys(get().boards).length,
         addBoard: (board) => {
           set((state) => {
             state.boards[board.id] = board;
             state.currentBoardId = board.id;
+          });
+        },
+        deleteBoard: (boardId) => {
+          set((state) => {
+            const beforeBoardIds = Object.keys(state.boards) as BoardId[];
+
+            if (beforeBoardIds.length > 1) {
+              const board = state.boards[boardId];
+              const index = beforeBoardIds.indexOf(boardId);
+
+              board.columnIds.forEach((columnId) => {
+                const column = state.columns[columnId];
+                column.taskIds.forEach((taskId) => delete state.tasks[taskId]);
+                delete state.columns[columnId];
+              });
+
+              delete state.boards[boardId];
+              // 삭제한 보드가 첫번째였다면 그 다음거 선택, 아니라면 그 전거 선택
+              state.currentBoardId = index > 0 ? beforeBoardIds[index - 1] : beforeBoardIds[1];
+            }
           });
         },
         setCurrentBoard: (boardId) => {

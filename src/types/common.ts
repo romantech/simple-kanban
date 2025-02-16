@@ -13,4 +13,4 @@ export const createBrandedParser =
 /**
  * @example Void<[string, number?]>
  * */
-export type Void<T extends unknown[]> = (...param: T) => void;
+export type Void<T extends unknown[] = []> = (...param: T) => void;
