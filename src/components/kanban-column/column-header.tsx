@@ -19,7 +19,7 @@ const fadeScaleAnimation: MotionProps = {
   initial: { scaleX: 0, opacity: 0 },
   animate: { scaleX: 1, opacity: 1 },
   exit: { scaleX: 0, opacity: 0 },
-  transition: { duration: 0.2 },
+  transition: { duration: 0.15 },
 };
 
 const ColumnHeader = ({
