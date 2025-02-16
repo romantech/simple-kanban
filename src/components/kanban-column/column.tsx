@@ -16,6 +16,8 @@ const Column = ({ columnId, className }: ColumnProps) => {
   const editColumn = useKanbanStore.use.editColumn();
   const column = useKanbanStore((state) => state.columns[columnId]);
 
+  if (!column) return null;
+
   return (
     <Draggable
       type="column"
