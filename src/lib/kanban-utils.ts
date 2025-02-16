@@ -53,7 +53,7 @@ export const generateColumn = (boardId: BoardId, title: TitleField): ColumnField
   };
 };
 
-export const getDragTypes = (active: Active, over?: Over) => {
+export const getDragTypes = (active: Active, over?: Over | null) => {
   const activeData = active.data.current;
   const overData = over?.data.current;
 

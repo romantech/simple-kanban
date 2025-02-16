@@ -2,8 +2,12 @@
 
 import { KanbanHeader } from './kanban-header';
 import { Board, BoardList } from '@/components/kanban-board';
+import { useHydration } from '@/hooks';
 
 const Kanban = () => {
+  const isHydrated = useHydration();
+  if (!isHydrated) return null;
+
   return (
     <div className="flex size-full flex-col">
       <KanbanHeader />

@@ -19,13 +19,13 @@ const IconButton = ({
   return (
     <Component
       className={cn(
-        'flex items-center rounded transition-all hover:text-charade-200 active:scale-95',
+        'flex gap-1.5 items-center rounded transition-all hover:text-charade-200 active:scale-95',
         className,
       )}
       {...props}
     >
       <Icon height={iconSize} width={iconSize} />
-      <span className="text-sm">{label}</span>
+      {label && <span className="text-sm">{label}</span>}
     </Component>
   );
 };

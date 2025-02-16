@@ -7,10 +7,11 @@ import { Button } from '@/components/ui/button';
 import { SquarePlus } from 'lucide-react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
-import { Empty } from '@/components/ui/empty';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { toColumnId, toTaskId } from '@/types';
 import { useKanbanDnd } from '@/hooks';
+import { AnimatePresence } from 'motion/react';
+import { Empty } from '@/components/ui/empty';
 
 const Board = () => {
   // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
@@ -24,7 +25,7 @@ const Board = () => {
 
   return (
     <div className="scroll-custom flex w-full gap-4 overflow-x-auto px-6 py-5">
-      {isEmpty && <Empty />}
+      <AnimatePresence>{isEmpty && <Empty />}</AnimatePresence>
       <DndContext
         id={dndContextId}
         sensors={sensors}
@@ -38,7 +39,7 @@ const Board = () => {
         </SortableContext>
         <DragOverlay>
           {dragColumnId && <Column columnId={toColumnId(dragColumnId)} />}
-          {dragTaskId && <Task taskId={toTaskId(dragTaskId)} className="w-[272px]" />}
+          {dragTaskId && <Task taskId={toTaskId(dragTaskId)} />}
         </DragOverlay>
       </DndContext>
 

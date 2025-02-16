@@ -13,6 +13,7 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: 'Simple Kanban',
   description: 'Organize your tasks effortlessly with Simple Kanban',
+  icons: { icon: '/favicon.png' },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

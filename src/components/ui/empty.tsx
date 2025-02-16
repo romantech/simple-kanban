@@ -1,11 +1,15 @@
 import { Inbox } from 'lucide-react';
 import { cn } from '@/lib';
+import { motion } from 'motion/react';
+import { type ComponentProps } from 'react';
 
-type EmptyProps = React.HTMLAttributes<HTMLDivElement>;
-
-const Empty = ({ className, ...divProps }: EmptyProps) => {
+const Empty = ({ className, ...divProps }: ComponentProps<typeof motion.div>) => {
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       className={cn(
         'size-full flex flex-col gap-4 items-center justify-center text-baltic-400',
         className,
@@ -14,7 +18,7 @@ const Empty = ({ className, ...divProps }: EmptyProps) => {
     >
       <Inbox width={100} height={100} />
       <p className="text-xl font-bold capitalize">this board is empty</p>
-    </div>
+    </motion.div>
   );
 };
 

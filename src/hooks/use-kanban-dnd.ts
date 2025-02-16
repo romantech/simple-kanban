@@ -13,11 +13,18 @@ import { computeTargetTaskIdx, getDragTypes } from '@/lib';
 import { type ColumnSortable, type TaskSortable, toColumnId, toTaskId } from '@/types';
 import { arrayMove } from '@dnd-kit/sortable';
 import { useKanbanStore } from '@/store';
+import { useDebouncedCallback } from 'use-debounce';
 
 const useKanbanDnd = () => {
   const columns = useKanbanStore((state) => state.columns);
   const moveColumn = useKanbanStore.use.moveColumn();
   const moveTask = useKanbanStore.use.moveTask();
+
+  /**
+   * dnd-kit Sortable 사용 시 발생할 수 있는 Maximum update depth exceeded 이슈 해결
+   * @see https://github.com/clauderic/dnd-kit/issues/900
+   * */
+  const debouncedMoveTask = useDebouncedCallback(moveTask, 0);
 
   const mouseSensor = useSensor(PointerSensor, {
     activationConstraint: { distance: 10 }, // 드래그 핸들에 있는 버튼 클릭 가능하도록 10px 이동했을때만 활성
@@ -85,7 +92,13 @@ const useKanbanDnd = () => {
       clientY,
     );
 
-    moveTask({ sourceTaskId, sourceColumnId, targetColumnId, sourceTaskIdx, targetTaskIdx });
+    debouncedMoveTask({
+      sourceTaskId,
+      sourceColumnId,
+      targetColumnId,
+      sourceTaskIdx,
+      targetTaskIdx,
+    });
   };
 
   return {
