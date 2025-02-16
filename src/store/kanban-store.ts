@@ -76,7 +76,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
               });
 
               delete state.boards[boardId];
-              // 삭제한 보드가 첫번째였다면 그 다음거 선택, 아니라면 그 전거 선택
+              // 삭제한 보드가 첫번째였다면 그 다음 보드 선택, 아니라면 이전 보드 선택
               state.currentBoardId = index > 0 ? beforeBoardIds[index - 1] : beforeBoardIds[1];
             }
           });
