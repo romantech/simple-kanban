@@ -15,6 +15,7 @@ interface AlertProps {
   title: string;
   description?: string;
   onConfirm: () => void;
+  asChild?: boolean;
 }
 
 const ConfirmDialog = ({
@@ -22,10 +23,13 @@ const ConfirmDialog = ({
   description,
   onConfirm,
   children,
+  asChild = false,
 }: PropsWithChildren<AlertProps>) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="rounded">{children}</AlertDialogTrigger>
+      <AlertDialogTrigger className="rounded" asChild={asChild}>
+        {children}
+      </AlertDialogTrigger>
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Column, ColumnAddDialog, TaskCard } from '@/components';
+import { Column, ColumnAddDialog, Task } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
@@ -38,7 +38,7 @@ const Board = () => {
         </SortableContext>
         <DragOverlay>
           {dragColumnId && <Column columnId={toColumnId(dragColumnId)} />}
-          {dragTaskId && <TaskCard taskId={toTaskId(dragTaskId)} className="w-[272px]" />}
+          {dragTaskId && <Task taskId={toTaskId(dragTaskId)} className="w-[272px]" />}
         </DragOverlay>
       </DndContext>
 

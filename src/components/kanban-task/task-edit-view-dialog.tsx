@@ -20,6 +20,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { TaskViewContent } from '@/components/kanban-task/task-view-content';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, motion } from 'motion/react';
+import { IconButton } from '@/components/ui/icon-button';
 
 interface SharedTaskProps {
   task: TaskFields;
@@ -64,18 +65,9 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
             <DialogDescription></DialogDescription>
 
             <div className="-ml-1 flex gap-3 text-baltic-300">
-              <button
-                onClick={toggleEditMode}
-                className="flex items-center rounded transition-transform active:scale-95"
-              >
-                <Icon height={16} className="transition-colors hover:text-charade-200" />
-                <span className="text-sm">{editText}</span>
-              </button>
+              <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
               <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
-                <div className="flex items-center transition-transform active:scale-95">
-                  <Trash2 height={16} className="transition-colors hover:text-charade-200" />
-                  <span className="text-sm">삭제</span>
-                </div>
+                <IconButton as="div" Icon={Trash2} label="삭제" />
               </ConfirmDialog>
             </div>
           </div>

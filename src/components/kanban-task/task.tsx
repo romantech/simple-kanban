@@ -8,7 +8,7 @@ interface TaskProps {
   className?: string;
 }
 
-const TaskCard = ({ taskId, className }: TaskProps) => {
+const Task = ({ taskId, className }: TaskProps) => {
   const task = useKanbanStore((state) => state.tasks[taskId]);
 
   return (
@@ -34,4 +34,4 @@ const TaskCard = ({ taskId, className }: TaskProps) => {
   );
 };
 
-export { TaskCard };
+export { Task };

@@ -1,6 +1,6 @@
 'use client';
 
-import { ColumnHeader, Draggable, TaskAddDialog, TaskCard } from '@/components';
+import { ColumnHeader, Draggable, Task, TaskAddDialog } from '@/components';
 import { useKanbanStore } from '@/store';
 import { cn, type ColumnId } from '@/lib';
 import { CirclePlus } from 'lucide-react';
@@ -46,7 +46,7 @@ const Column = ({ columnId, className }: ColumnProps) => {
           <ul className="scroll-custom flex flex-1 flex-col gap-4 overflow-y-auto">
             <SortableContext items={column.taskIds} id={column.id}>
               {column.taskIds.map((taskId) => (
-                <TaskCard key={taskId} taskId={taskId} />
+                <Task key={taskId} taskId={taskId} />
               ))}
             </SortableContext>
           </ul>
