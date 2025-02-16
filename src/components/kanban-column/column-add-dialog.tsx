@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import { Button } from '@/components/ui/button';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,7 +22,7 @@ import { Label } from '@/components/ui/label';
 
 const [fieldName] = addColumnSchema.keyof().options;
 
-const AddColumnDialog = ({ children, boardId }: PropsWithChildren<{ boardId: BoardId }>) => {
+const ColumnAddDialog = ({ children, boardId }: PropsWithChildren<{ boardId: BoardId }>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addColumn = useKanbanStore.use.addColumn();
@@ -69,4 +69,4 @@ const AddColumnDialog = ({ children, boardId }: PropsWithChildren<{ boardId: Boa
   );
 };
 
-export { AddColumnDialog };
+export { ColumnAddDialog };

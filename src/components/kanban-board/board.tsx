@@ -1,6 +1,6 @@
 'use client';
 
-import { AddColumnDialog, Column, TaskCard } from '@/components';
+import { Column, ColumnAddDialog, TaskCard } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
@@ -43,11 +43,11 @@ const Board = () => {
       </DndContext>
 
       <div className="ml-auto mt-11 flex">
-        <AddColumnDialog boardId={board.id}>
+        <ColumnAddDialog boardId={board.id}>
           <Button className="flex h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md outline-none transition-all hover:bg-baltic-900/50 active:scale-95">
             <SquarePlus height={20} /> add column
           </Button>
-        </AddColumnDialog>
+        </ColumnAddDialog>
       </div>
     </div>
   );

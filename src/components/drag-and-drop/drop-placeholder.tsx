@@ -2,7 +2,7 @@ import { type CSSProperties, type HTMLAttributes, type Ref } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib';
 
-const dndPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
+const dropPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
   variants: {
     variant: {
       column: 'min-w-72',
@@ -14,14 +14,14 @@ const dndPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
   },
 });
 
-type DndPlaceholderVariants = VariantProps<typeof dndPlaceholderVariants>;
+type DndPlaceholderVariants = VariantProps<typeof dropPlaceholderVariants>;
 type DndPlaceholderVariantType = DndPlaceholderVariants['variant'];
 
 type DivProps = HTMLAttributes<HTMLDivElement> & { ref: Ref<HTMLDivElement>; style: CSSProperties };
 type DndPlaceholderProps = DivProps & DndPlaceholderVariants;
 
-const DndPlaceholder = ({ className, variant, ...divProps }: DndPlaceholderProps) => {
-  return <div className={cn(dndPlaceholderVariants({ variant }), className)} {...divProps} />;
+const DropPlaceholder = ({ className, variant, ...divProps }: DndPlaceholderProps) => {
+  return <div className={cn(dropPlaceholderVariants({ variant }), className)} {...divProps} />;
 };
 
-export { DndPlaceholder, type DndPlaceholderVariantType };
+export { DropPlaceholder, type DndPlaceholderVariantType };
