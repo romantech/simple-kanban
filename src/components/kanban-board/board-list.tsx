@@ -10,7 +10,7 @@ const BoardList = () => {
   const currentBoardId = useKanbanStore.use.currentBoardId();
 
   return (
-    <div className="invisible w-0 max-w-72 space-y-4 border-r border-baltic-900 bg-charade-950 p-0 opacity-0 transition-all lg:visible lg:block lg:w-full lg:p-6 lg:opacity-100">
+    <div className="scroll-custom invisible w-0 max-w-72 space-y-4 overflow-y-auto border-r border-baltic-900 bg-charade-950 p-0 opacity-0 transition-all lg:visible lg:block lg:w-full lg:p-6 lg:opacity-100">
       <h3 className="text-sm font-bold uppercase text-baltic-400">all boards</h3>
       <ul className="flex flex-col divide-y divide-baltic-900">
         {Object.values(boards).map((board) => (
@@ -28,9 +28,11 @@ const BoardList = () => {
           </li>
         ))}
       </ul>
-      <BoardAddDialog>
-        <Button className="flex w-full font-bold capitalize">add board</Button>
-      </BoardAddDialog>
+      <div className="sticky bottom-0">
+        <BoardAddDialog>
+          <Button className="flex w-full font-bold capitalize">add board</Button>
+        </BoardAddDialog>
+      </div>
     </div>
   );
 };
