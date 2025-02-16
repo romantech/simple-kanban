@@ -55,7 +55,7 @@ const BoardAddDialog = ({ children }: PropsWithChildren) => {
               render={({ message }) => <p className="text-sm text-baltic-400">{message}</p>}
             />
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 취소

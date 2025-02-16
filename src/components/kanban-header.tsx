@@ -8,15 +8,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical, SquarePlus } from 'lucide-react';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useState } from 'react';
+import { ColumnAddDialog } from '@/components/kanban-column';
+import { Button } from '@/components/ui/button';
 
 const KanbanHeader = () => {
   const [openMenu, setOpenMenu] = useState(false);
 
   const currentBoardId = useKanbanStore.use.currentBoardId();
-  const title = useKanbanStore.use.boards()[currentBoardId].title;
+  const board = useKanbanStore.use.boards()[currentBoardId];
 
   const deleteBoard = useKanbanStore.use.deleteBoard();
   const getBoardCount = useKanbanStore.use.getBoardCount();
@@ -35,31 +37,44 @@ const KanbanHeader = () => {
           className="size-auto"
         />
       </div>
-      <div className="flex w-full items-center justify-between p-6">
-        <h2>{title}</h2>
-        <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
-          <DropdownMenuTrigger>
-            <EllipsisVertical />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="p-2 font-semibold">
-            <DropdownMenuItem disabled>보드 이름 변경(미구현)</DropdownMenuItem>
-            <ConfirmDialog
-              disabled={shouldDisableDelete}
-              title="보드를 삭제할까요?"
-              description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
-              onConfirm={() => {
-                deleteBoard(currentBoardId);
-                setOpenMenu(false);
-              }}
-              onCancel={() => setOpenMenu(false)}
+      <nav className="flex w-full items-center justify-between p-6">
+        <h2>{board.title}</h2>
+        <div className="flex gap-1">
+          <ColumnAddDialog boardId={board.id}>
+            <Button
+              variant="ghost"
+              className="flex items-center justify-center gap-1.5 text-[18px] font-bold capitalize text-charade-200  transition-all hover:bg-baltic-900/50 active:scale-95 lg:hidden"
             >
-              <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
-                보드 삭제
-              </DropdownMenuItem>
-            </ConfirmDialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+              <SquarePlus /> column
+            </Button>
+          </ColumnAddDialog>
+          <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
+            <DropdownMenuTrigger>
+              <EllipsisVertical />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-2 font-semibold">
+              <DropdownMenuItem disabled>보드 수정 (미구현)</DropdownMenuItem>
+              <ConfirmDialog
+                disabled={shouldDisableDelete}
+                title="보드를 삭제할까요?"
+                description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
+                onConfirm={() => {
+                  deleteBoard(currentBoardId);
+                  setOpenMenu(false);
+                }}
+                onCancel={() => setOpenMenu(false)}
+              >
+                <DropdownMenuItem
+                  disabled={shouldDisableDelete}
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  보드 삭제
+                </DropdownMenuItem>
+              </ConfirmDialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </nav>
     </header>
   );
 };
