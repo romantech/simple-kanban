@@ -16,13 +16,13 @@ import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { type PropsWithChildren, useState } from 'react';
-import { EditTaskFormContent } from '@/components/edit-task-form-content';
+import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
 
 interface AddTaskProps {
   columnId: ColumnId;
 }
 
-const AddTaskDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) => {
+const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) => {
   const addTask = useKanbanStore.use.addTask();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,7 +46,7 @@ const AddTaskDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
               <DialogTitle>새로운 작업 추가</DialogTitle>
               <DialogDescription></DialogDescription>
             </DialogHeader>
-            <EditTaskFormContent className="py-7" />
+            <TaskEditFormContent className="py-7" />
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="outline">
@@ -62,4 +62,4 @@ const AddTaskDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
   );
 };
 
-export { AddTaskDialog };
+export { TaskAddDialog };

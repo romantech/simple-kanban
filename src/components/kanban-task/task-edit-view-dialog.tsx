@@ -13,19 +13,20 @@ import { type PropsWithChildren, useState } from 'react';
 import { addTaskSchema, type AddTaskSchema, type TaskFields } from '@/lib';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
-import { EditTaskFormContent } from '@/components/edit-task-form-content';
+import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { TaskViewContent } from '@/components/task-view-content';
+import { TaskViewContent } from '@/components/kanban-task/task-view-content';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, motion } from 'motion/react';
+import { IconButton } from '@/components/ui/icon-button';
 
 interface SharedTaskProps {
   task: TaskFields;
 }
 
-const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
+const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
   const editTask = useKanbanStore.use.editTask();
 
@@ -64,18 +65,9 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
             <DialogDescription></DialogDescription>
 
             <div className="-ml-1 flex gap-3 text-baltic-300">
-              <button
-                onClick={toggleEditMode}
-                className="flex items-center rounded transition-transform active:scale-95"
-              >
-                <Icon height={16} className="transition-colors hover:text-charade-200" />
-                <span className="text-sm">{editText}</span>
-              </button>
+              <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
               <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
-                <div className="flex items-center transition-transform active:scale-95">
-                  <Trash2 height={16} className="transition-colors hover:text-charade-200" />
-                  <span className="text-sm">삭제</span>
-                </div>
+                <IconButton as="div" Icon={Trash2} label="삭제" />
               </ConfirmDialog>
             </div>
           </div>
@@ -94,7 +86,7 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
             {isEditing ? (
               <FormProvider {...methods}>
                 <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
-                  <EditTaskFormContent className="py-7" />
+                  <TaskEditFormContent className="py-7" />
                   <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소
@@ -113,4 +105,4 @@ const TaskDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
   );
 };
 
-export { TaskDialog };
+export { TaskEditViewDialog };

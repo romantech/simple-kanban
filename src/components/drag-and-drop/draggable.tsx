@@ -4,7 +4,10 @@ import { type DraggableAttributes, type UseDraggableArguments } from '@dnd-kit/c
 import { type CSSProperties, type ElementType, type ReactNode } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-import { DndPlaceholder, type DndPlaceholderVariantType } from '@/components/ui/dnd-placeholder';
+import {
+  type DndPlaceholderVariantType,
+  DropPlaceholder,
+} from '@/components/drag-and-drop/drop-placeholder';
 import { type SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 
 interface ChildrenProps {
@@ -41,7 +44,7 @@ const Draggable = ({
 
   const style: CSSProperties = { transform: CSS.Transform.toString(transform), transition };
 
-  if (isDragging) return <DndPlaceholder variant={type} style={style} ref={setNodeRef} />;
+  if (isDragging) return <DropPlaceholder variant={type} style={style} ref={setNodeRef} />;
 
   const configProps = {
     ...(rootDndConfig?.attributes && attributes),

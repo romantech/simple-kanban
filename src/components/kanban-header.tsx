@@ -1,7 +1,7 @@
 import { useKanbanStore } from '@/store';
 import Image from 'next/image';
 
-const Header = () => {
+const KanbanHeader = () => {
   const title = useKanbanStore(({ boards, currentBoardId }) => boards[currentBoardId].title);
 
   return (
@@ -21,4 +21,4 @@ const Header = () => {
   );
 };
 
-export { Header };
+export { KanbanHeader };

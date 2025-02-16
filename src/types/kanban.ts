@@ -11,19 +11,11 @@ import {
 } from '@/lib';
 import { createBrandedParser } from '@/types/common';
 
-export enum KanbanBrandType {
-  Task = 'Task',
-  Column = 'Column',
-  Board = 'Board',
-}
-
-export type KanbanEntity = keyof typeof KanbanBrandType;
-
 export type Tasks = Record<TaskId, TaskFields>;
 export type Columns = Record<ColumnId, ColumnFields>;
 export type Boards = Record<BoardId, BoardFields>;
 
-export interface Kanban {
+export interface KanbanData {
   tasks: Tasks;
   columns: Columns;
   boards: Boards;
@@ -33,11 +25,14 @@ export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
 export const toBoardId = createBrandedParser(boardId);
 
-export interface Sortable {
+export interface Sortable<TContainer, TItem> {
   index: number;
-  containerId: ColumnId;
-  items: TaskId[];
+  containerId: TContainer;
+  items: TItem[];
 }
+
+export type ColumnSortable = Sortable<BoardId, ColumnId>;
+export type TaskSortable = Sortable<ColumnId, TaskId>;
 
 export interface MoveTaskPayload {
   sourceColumnId: ColumnId;

@@ -1,4 +1,4 @@
-export * from './sample-data';
+export * from './sample-kanban-data';
 export * from './utils';
-export * from './schema';
-export * from './kanban';
+export * from './kanban-schema';
+export * from './kanban-utils';

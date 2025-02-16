@@ -1,5 +1,5 @@
 import { cn, formatKoDate, type TaskId } from '@/lib';
-import { Draggable, TaskDialog } from '@/components';
+import { Draggable, TaskEditViewDialog } from '@/components';
 import { useKanbanStore } from '@/store';
 import { Fragment } from 'react';
 
@@ -8,11 +8,11 @@ interface TaskProps {
   className?: string;
 }
 
-const TaskCard = ({ taskId, className }: TaskProps) => {
+const Task = ({ taskId, className }: TaskProps) => {
   const task = useKanbanStore((state) => state.tasks[taskId]);
 
   return (
-    <TaskDialog task={task}>
+    <TaskEditViewDialog task={task}>
       <Draggable
         id={task.id}
         data={task}
@@ -24,14 +24,14 @@ const TaskCard = ({ taskId, className }: TaskProps) => {
         )}
       >
         {() => (
-          <>
+          <Fragment>
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <small className="text-xs text-baltic-400">{formatKoDate(task.createdAt)}</small>
-          </>
+          </Fragment>
         )}
       </Draggable>
-    </TaskDialog>
+    </TaskEditViewDialog>
   );
 };
 
-export { TaskCard };
+export { Task };

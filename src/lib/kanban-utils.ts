@@ -1,4 +1,3 @@
-import { KanbanBrandType, type KanbanEntity } from '@/types';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { getISODate } from '@/lib/utils';
@@ -6,10 +5,14 @@ import {
   type BoardId,
   type ColumnFields,
   type ColumnId,
+  KanbanBrandType,
+  type KanbanEntity,
   type TaskFields,
+  type TaskId,
   type TitleField,
-} from '@/lib/schema';
+} from '@/lib';
 import type { Active, Over } from '@dnd-kit/core';
+import type { Columns, TaskSortable } from '@/types';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];
@@ -66,4 +69,26 @@ export const getDragTypes = (active: Active, over?: Over) => {
     /** 드래그할 위치가 컬럼일 때 */
     isOverColumn: overData?.type === 'column',
   };
+};
+
+export const computeTargetTaskIdx = (
+  isOverColumn: boolean,
+  targetColumn: Columns[ColumnId],
+  overSort: TaskSortable,
+  sourceTaskId: TaskId,
+  deltaY: number,
+  clientY: number,
+  topOffset = 200,
+): number => {
+  // 드롭 대상이 Task 카드일 때
+  if (!isOverColumn) return overSort.index;
+
+  // 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나 Task 카드가 아닌 다른 영역에 위치했을 때)
+  const index = targetColumn.taskIds.indexOf(sourceTaskId);
+  if (index !== -1) return index;
+
+  // 드래그 시작 위치(clientY)와 이동량(deltaY)을 합산하여 대상 인덱스 결정
+  const currentY = clientY + deltaY;
+  // 대상 컬럼의 첫번째 카드보다 위로 드래그 했을 땐 첫번째로, 그 외엔 마지막으로(대상 컬럼의 마지막 카드보다 아래)
+  return currentY < topOffset ? 0 : targetColumn.taskIds.length;
 };

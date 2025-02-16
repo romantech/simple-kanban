@@ -7,17 +7,16 @@ import {
   type ColumnFields,
   type ColumnId,
   getISODate,
-  initialBoardId,
-  sampleKanbanData,
   type TaskFields,
   type TaskId,
   type TitleField,
 } from '@/lib';
 import { createSelectors } from '@/store/create-selectors';
-import { type Kanban, type MoveTaskPayload, type Void } from '@/types';
+import { type KanbanData, type MoveTaskPayload, type Void } from '@/types';
 import { devtools, persist } from 'zustand/middleware';
+import { initialBoardId, sampleKanbanData } from '@/lib/sample-kanban-data';
 
-interface KanbanState extends Kanban {
+interface KanbanState extends KanbanData {
   currentBoardId: BoardId;
 }
 
@@ -136,4 +135,4 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
 
 const useKanbanStore = createSelectors(useKanbanStoreBase);
 
-export { useKanbanStore };
+export { useKanbanStore, type KanbanActions, type KanbanState };

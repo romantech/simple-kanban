@@ -1,6 +1,12 @@
 import { z } from 'zod';
-import { type KanbanBrandType } from '@/types';
 
+export enum KanbanBrandType {
+  Task = 'Task',
+  Column = 'Column',
+  Board = 'Board',
+}
+
+export type KanbanEntity = keyof typeof KanbanBrandType;
 export const taskId = z.string().brand<KanbanBrandType.Task>();
 export const columnId = z.string().brand<KanbanBrandType.Column>();
 export const boardId = z.string().brand<KanbanBrandType.Board>();
