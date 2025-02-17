@@ -5,7 +5,10 @@ import Image from 'next/image';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { EllipsisVertical, SquarePlus } from 'lucide-react';
@@ -56,24 +59,28 @@ const KanbanHeader = () => {
               <EllipsisVertical />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-2 font-semibold">
-              <DropdownMenuItem disabled>보드 수정 (미구현)</DropdownMenuItem>
-              <ConfirmDialog
-                disabled={shouldDisableDelete}
-                title="보드를 삭제할까요?"
-                description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
-                onConfirm={() => {
-                  deleteBoard(currentBoardId);
-                  setOpenMenu(false);
-                }}
-                onCancel={() => setOpenMenu(false)}
-              >
-                <DropdownMenuItem
+              <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem disabled>보드 수정 (미구현)</DropdownMenuItem>
+                <ConfirmDialog
                   disabled={shouldDisableDelete}
-                  onSelect={(e) => e.preventDefault()}
+                  title="보드를 삭제할까요?"
+                  description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
+                  onConfirm={() => {
+                    deleteBoard(currentBoardId);
+                    setOpenMenu(false);
+                  }}
+                  onCancel={() => setOpenMenu(false)}
                 >
-                  보드 삭제
-                </DropdownMenuItem>
-              </ConfirmDialog>
+                  <DropdownMenuItem
+                    disabled={shouldDisableDelete}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    보드 삭제
+                  </DropdownMenuItem>
+                </ConfirmDialog>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -17,7 +17,7 @@ const BoardList = () => {
           <li
             key={board.id}
             className={cn(
-              'cursor-pointer font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 line-clamp-1 py-2',
+              'cursor-pointer font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 truncate py-2',
               { 'text-charade-100 font-bold': board.id === currentBoardId },
             )}
             onClick={() => setCurrentBoard(board.id)}
