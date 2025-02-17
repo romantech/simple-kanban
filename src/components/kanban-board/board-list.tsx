@@ -30,7 +30,7 @@ const BoardList = () => {
       </ul>
       <div className="sticky bottom-0">
         <BoardAddDialog>
-          <Button className="flex w-full font-bold capitalize">add board</Button>
+          <Button className="w-full font-bold capitalize">add board</Button>
         </BoardAddDialog>
       </div>
     </div>

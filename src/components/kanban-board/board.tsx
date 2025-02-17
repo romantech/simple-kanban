@@ -4,7 +4,6 @@ import { Column, ColumnAddDialog, Task } from '@/components';
 import { useKanbanStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
-import { SquarePlus } from 'lucide-react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
@@ -51,7 +50,7 @@ const Board = () => {
       <div className="ml-auto mt-11 flex">
         <ColumnAddDialog boardId={board.id}>
           <Button className="hidden h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md outline-none transition-all hover:bg-baltic-900/50 active:scale-95 lg:flex">
-            <SquarePlus height={20} /> add column
+            add column
           </Button>
         </ColumnAddDialog>
       </div>

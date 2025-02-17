@@ -38,7 +38,6 @@ const HeaderDropdown = () => {
               deleteBoard(currentBoardId);
               setOpenMenu(false);
             }}
-            onCancel={() => setOpenMenu(false)}
           >
             <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
               보드 삭제

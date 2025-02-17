@@ -15,15 +15,21 @@ import { Button } from '@/components/ui/button';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
-import { type PropsWithChildren, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { type AddBoardSchema, addBoardSchema, generateBoard } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { useKanbanStore } from '@/store';
+import { type Void } from '@/types';
 
 const [fieldName] = addBoardSchema.keyof().options;
 
-const BoardAddDialog = ({ children }: PropsWithChildren) => {
-  const [isOpen, setIsOpen] = useState(false);
+interface BoardAddDialogProps {
+  onConfirm?: Void;
+  children: ReactNode;
+}
+
+const BoardAddDialog = ({ children, onConfirm }: BoardAddDialogProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const addBoard = useKanbanStore.use.addBoard();
   const { register, handleSubmit, reset, formState } = useForm<AddBoardSchema>({
@@ -33,13 +39,20 @@ const BoardAddDialog = ({ children }: PropsWithChildren) => {
   const onSubmit: SubmitHandler<AddBoardSchema> = ({ title }) => {
     addBoard(generateBoard(title));
     reset();
-    setIsOpen(false);
+    setIsDialogOpen(false);
+    onConfirm?.();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className="sm:max-w-[425px]"
+        onKeyDown={(e) => {
+          // Dialog 컴포넌트에서 엔터 누르면 Command 컴포넌트의 onSelect 핸들러 실행되는 문제 해결
+          if (e.key === 'Enter') e.stopPropagation();
+        }}
+      >
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           <DialogHeader>
             <DialogTitle>새로운 보드 추가</DialogTitle>
