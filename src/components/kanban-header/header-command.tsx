@@ -13,20 +13,18 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { type BoardId, cn } from '@/lib';
-import { type Boards, toBoardId } from '@/types';
-import { type KanbanActions } from '@/store';
+import { toBoardId } from '@/types';
+import { useKanbanStore } from '@/store';
 
-interface BoardSearchCommandProps {
-  currentBoardId: BoardId;
-  setCurrentBoard: KanbanActions['setCurrentBoard'];
-  boards: Boards;
-}
-
-const BoardCommand = ({ currentBoardId, setCurrentBoard, boards }: BoardSearchCommandProps) => {
+const HeaderCommand = () => {
   const [openCommand, setOpenCommand] = useState(false);
 
-  const boardList = Object.values(boards);
+  const setCurrentBoard = useKanbanStore.use.setCurrentBoard();
+  const currentBoardId = useKanbanStore.use.currentBoardId();
+  const boards = useKanbanStore.use.boards();
   const board = boards[currentBoardId];
+
+  const boardList = Object.values(boards);
 
   const onSearch = (boardId: string, term: string) => {
     // 검색어를 입력할 때마다 매칭 점수를 평가하기 위해 각 boardId에 대한 필터링이 독립적으로 실행됨
@@ -72,4 +70,4 @@ const BoardCommand = ({ currentBoardId, setCurrentBoard, boards }: BoardSearchCo
   );
 };
 
-export { BoardCommand };
+export { HeaderCommand };
