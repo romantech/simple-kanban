@@ -64,21 +64,20 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
         deleteBoard: (boardId) => {
           set((state) => {
             const beforeBoardIds = Object.keys(state.boards) as BoardId[];
+            if (beforeBoardIds.length <= 1) return;
 
-            if (beforeBoardIds.length > 1) {
-              const board = state.boards[boardId];
-              const index = beforeBoardIds.indexOf(boardId);
+            const board = state.boards[boardId];
+            board.columnIds.forEach((columnId) => {
+              const column = state.columns[columnId];
+              column.taskIds.forEach((taskId) => delete state.tasks[taskId]);
+              delete state.columns[columnId];
+            });
 
-              board.columnIds.forEach((columnId) => {
-                const column = state.columns[columnId];
-                column.taskIds.forEach((taskId) => delete state.tasks[taskId]);
-                delete state.columns[columnId];
-              });
+            delete state.boards[boardId];
 
-              delete state.boards[boardId];
-              // 삭제한 보드가 첫번째였다면 그 다음 보드 선택, 아니라면 이전 보드 선택
-              state.currentBoardId = index > 0 ? beforeBoardIds[index - 1] : beforeBoardIds[1];
-            }
+            // 삭제한 보드가 첫번째였다면 그 다음 보드 선택, 아니라면 이전 보드 선택
+            const index = beforeBoardIds.indexOf(boardId);
+            state.currentBoardId = index > 0 ? beforeBoardIds[index - 1] : beforeBoardIds[1];
           });
         },
         setCurrentBoard: (boardId) => {
