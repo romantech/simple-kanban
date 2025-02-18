@@ -64,7 +64,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
             <DialogTitle className="capitalize">{title}</DialogTitle>
             <DialogDescription></DialogDescription>
 
-            <div className="-ml-1 flex gap-3 text-baltic-300">
+            <div className="-ml-1 flex gap-4 text-baltic-300">
               <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
               <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
                 <IconButton as="div" Icon={Trash2} label="삭제" />
