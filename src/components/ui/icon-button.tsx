@@ -13,7 +13,7 @@ const IconButton = ({
   Icon,
   label,
   className,
-  iconSize = 16,
+  iconSize = 17,
   ...props
 }: DialogButtonProps) => {
   return (

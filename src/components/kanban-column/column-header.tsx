@@ -88,14 +88,14 @@ const ColumnHeader = ({
             key="title"
             {...fadeScaleAnimation}
             style={{ transformOrigin: 'left' }}
-            className="line-clamp-1 grow text-sm font-bold"
+            className="line-clamp-1 grow text-[15px] font-bold"
           >
             {`${title} (${taskCount})`}
           </motion.h3>
         )}
       </AnimatePresence>
 
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <ConfirmDialog
           title="컬럼을 삭제할까요?"
           description="컬럼을 삭제하면 해당 컬럼에 있는 모든 작업이 삭제돼요."

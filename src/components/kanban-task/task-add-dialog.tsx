@@ -47,7 +47,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
               <DialogDescription></DialogDescription>
             </DialogHeader>
             <TaskEditFormContent className="py-7" />
-            <DialogFooter>
+            <DialogFooter className="gap-3">
               <DialogClose asChild>
                 <Button type="button" variant="outline">
                   취소

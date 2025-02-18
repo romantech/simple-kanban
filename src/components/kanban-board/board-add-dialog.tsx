@@ -68,7 +68,7 @@ const BoardAddDialog = ({ children, onConfirm }: BoardAddDialogProps) => {
               render={({ message }) => <p className="text-sm text-baltic-400">{message}</p>}
             />
           </div>
-          <DialogFooter className="gap-2">
+          <DialogFooter className="gap-3">
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 취소

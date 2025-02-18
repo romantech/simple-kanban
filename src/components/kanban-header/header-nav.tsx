@@ -2,9 +2,7 @@
 
 import { useKanbanStore } from '@/store';
 import { SquarePlus } from 'lucide-react';
-import { ColumnAddDialog } from '@/components/kanban-column';
-import { HeaderCommand } from './header-command';
-import { HeaderDropdown } from '@/components/kanban-header/header-dropdown';
+import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
 import { Header } from '@/components/ui/header';
 
 const HeaderNav = () => {
