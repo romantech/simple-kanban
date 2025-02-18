@@ -6,11 +6,12 @@ import { SquareKanban } from 'lucide-react';
 import { BoardAddDialog } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
+import { useRouter } from 'next/navigation';
 
 const BoardSidebar = () => {
   const boards = useKanbanStore.use.boards();
-  const setCurrentBoard = useKanbanStore.use.setCurrentBoard();
   const currentBoardId = useKanbanStore.use.currentBoardId();
+  const router = useRouter();
 
   return (
     <Sidebar>
@@ -22,7 +23,7 @@ const BoardSidebar = () => {
               'cursor-pointer font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 truncate py-2',
               { 'text-charade-100 font-bold': board.id === currentBoardId },
             )}
-            onClick={() => setCurrentBoard(board.id)}
+            onClick={() => router.push(board.id)}
             role="button"
           >
             <SquareKanban className="inline size-[26px] pr-2" />
@@ -31,7 +32,7 @@ const BoardSidebar = () => {
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <BoardAddDialog>
+        <BoardAddDialog onConfirm={({ id }) => router.push(id)}>
           <Button className="w-full font-bold capitalize">add board</Button>
         </BoardAddDialog>
       </div>

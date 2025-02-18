@@ -59,7 +59,7 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
           addBoard: (board) => {
             set((state) => {
               state.boards[board.id] = board;
-              state.currentBoardId = board.id;
+              // state.currentBoardId = board.id;
             });
           },
           deleteBoard: (boardId) => {
