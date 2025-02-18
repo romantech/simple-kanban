@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![desktop-demo](./public/screenshot/demo.gif)
 
-## Getting Started
+> [!NOTE]
+>
+> - 드래그앤드롭 가능한 칸반 보드
+> - 데모 사이트: https://simple-kanban-iota.vercel.app
 
-First, run the development server:
+## 기술 스택
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **코어:** Next.js, TypeScript
+- **상태 관리:** Zustand
+- **UI:** Shadcn
+- **스타일링:** Tailwind CSS
+- **린팅:** ESLint, Prettier
+- **폼 관리:** React Hook Form, Zod
+- **기타:** DnD Kit, Motion
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 주요 기능
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. 보드(Board): 추가, 삭제
+2. 컬럼(Column): 추가, 삭제, 이름 변경
+3. 작업(Task): 추가, 삭제, 이름/상세정보 변경
+4. 컬럼/작업 드래그앤드롭 이동 (드롭 대상 영역 Placeholder 표시)
+5. 보드 검색 커맨드 (헤더 영역)
+6. 반응형 적용
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 참고 자료
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 칸반 디자인: https://kanban-app-jay.netlify.app
+- 전역 폰트: [Pretendard](https://github.com/orioncactus/pretendard)
+- 드래그앤드롭: [Dnd Kit Sortable](https://docs.dndkit.com/presets/sortable)
