@@ -16,7 +16,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { type ReactNode, useState } from 'react';
-import { type AddBoardSchema, addBoardSchema, generateBoard } from '@/lib';
+import { type AddBoardSchema, addBoardSchema, type BoardFields, generateBoard } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { useKanbanStore } from '@/store';
 import { type Void } from '@/types';
@@ -24,7 +24,7 @@ import { type Void } from '@/types';
 const [fieldName] = addBoardSchema.keyof().options;
 
 interface BoardAddDialogProps {
-  onConfirm?: Void;
+  onConfirm?: Void<[BoardFields]>;
   children: ReactNode;
 }
 
@@ -37,10 +37,11 @@ const BoardAddDialog = ({ children, onConfirm }: BoardAddDialogProps) => {
   });
 
   const onSubmit: SubmitHandler<AddBoardSchema> = ({ title }) => {
-    addBoard(generateBoard(title));
+    const newBoard = generateBoard(title);
+    addBoard(newBoard);
     reset();
     setIsDialogOpen(false);
-    onConfirm?.();
+    onConfirm?.(newBoard);
   };
 
   return (
