@@ -1,13 +1,13 @@
 'use client';
 
 import { Board } from '@/components';
-import { useBoardRouteSync } from '@/hooks';
+import { useBoardRouteSync, useHydration } from '@/hooks';
 
 export default function BoardPage() {
   useBoardRouteSync();
 
-  // const isHydrated = useHydration();
-  // if (!isHydrated) return null;
+  const isHydrated = useHydration();
+  if (!isHydrated) return null;
 
   return <Board />;
 }
