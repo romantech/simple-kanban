@@ -1,6 +1,6 @@
 'use client';
 
-import { Kanban } from '@/components';
+import { Board } from '@/components';
 import { useBoardRouteSync, useHydration } from '@/hooks';
 
 export default function BoardPage() {
@@ -9,5 +9,5 @@ export default function BoardPage() {
   const isHydrated = useHydration();
   if (!isHydrated) return null;
 
-  return <Kanban />;
+  return <Board />;
 }

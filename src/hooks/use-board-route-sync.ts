@@ -13,7 +13,7 @@ export const useBoardRouteSync = () => {
     const { boards, setCurrentBoard } = useKanbanStore.getState();
 
     // 없는 boardId 를 주소창에 입력해서 접속했을 때
-    if (!boards[boardId]) router.replace('/');
+    if (!boards[boardId]) router.replace(useKanbanStore.getState().currentBoardId);
     // 존재하는 boardId 를 주소창에 입력해서 접속했을 때
     else setCurrentBoard(boardId);
   }, [boardId, router]);
