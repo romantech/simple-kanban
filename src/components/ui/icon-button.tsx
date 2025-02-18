@@ -19,7 +19,7 @@ const IconButton = ({
   return (
     <Component
       className={cn(
-        'flex gap-1.5 items-center rounded transition-all hover:text-charade-200 active:scale-95',
+        'flex min-w-fit gap-1.5 items-center rounded transition-all hover:text-charade-200 active:scale-95',
         className,
       )}
       {...props}

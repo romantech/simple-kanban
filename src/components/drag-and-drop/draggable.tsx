@@ -9,6 +9,7 @@ import {
   DropPlaceholder,
 } from '@/components/drag-and-drop/drop-placeholder';
 import { type SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
+import { cn } from '@/lib';
 
 interface ChildrenProps {
   listeners?: SyntheticListenerMap;
@@ -52,7 +53,12 @@ const Draggable = ({
   };
 
   return (
-    <Element ref={setNodeRef} className={className} style={style} {...configProps}>
+    <Element
+      ref={setNodeRef}
+      className={cn('draggable-item', className)}
+      style={style}
+      {...configProps}
+    >
       {children({ listeners, attributes })}
     </Element>
   );

@@ -54,19 +54,19 @@ body {
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 235 11%, 19%;
+    --popover: 235 11% 19%;
     --popover-foreground: 240 12% 94%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
+    --muted: 233 15% 24%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
+    --accent: 230 13% 27%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
+    --border: 233 15% 24%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
@@ -91,5 +91,11 @@ body {
 
   .scroll-custom {
     @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-charade-900 scrollbar-track-transparent;
+  }
+
+  .draggable-item {
+    touch-action: none; /* 터치 스크롤 방지 */
+    user-select: none; /* 텍스트 선택 방지 */
+    -webkit-user-select: none; /* iOS Safari 대응 */
   }
 }

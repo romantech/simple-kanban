@@ -16,6 +16,7 @@ const Column = ({ columnId, className }: ColumnProps) => {
   const editColumn = useKanbanStore.use.editColumn();
   const column = useKanbanStore((state) => state.columns[columnId]);
 
+  // 보드 삭제 시 컬럼도 삭제됨. 이때 삭제한 컬럼 ID를 참조하는 컴포넌트가 일시적으로 남아있을 수 있으므로 조건 추가
   if (!column) return null;
 
   return (
