@@ -6,6 +6,7 @@ import { type BoardId } from '@/lib';
 import { use, useEffect } from 'react';
 import { useKanbanStore } from '@/store';
 import { notFound } from 'next/navigation';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Props {
   params: Promise<{ boardId: BoardId }>;
@@ -24,7 +25,7 @@ export default function BoardPage({ params }: Props) {
     else notFound();
   }, [boardId, isHydrated]);
 
-  if (!isHydrated) return null;
+  if (!isHydrated) return <Skeleton />;
 
   return <Kanban />;
 }

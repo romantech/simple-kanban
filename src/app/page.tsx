@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useKanbanStore } from '@/store';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
   const router = useRouter();
@@ -12,5 +13,5 @@ export default function Home() {
     router.replace(useKanbanStore.getState().currentBoardId);
   }, [router]);
 
-  return null;
+  return <Skeleton />;
 }
