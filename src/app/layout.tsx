@@ -6,7 +6,7 @@ import { type ReactNode } from 'react';
 const pretendard = localFont({
   src: '../../public/fonts/pretendard-variable.woff2',
   display: 'swap',
-  weight: '45 920',
+  weight: '100 900',
   variable: '--font-pretendard',
 });
 
@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="kr" className={pretendard.variable}>
-      <body className="dark antialiased">{children}</body>
+      <body className="dark bg-baltic-950 text-charade-100 antialiased">
+        <main className="h-dvh w-dvw">{children}</main>
+      </body>
     </html>
   );
 }
