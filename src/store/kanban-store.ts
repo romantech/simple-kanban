@@ -7,6 +7,7 @@ import {
   type BoardId,
   type ColumnFields,
   type ColumnId,
+  generateBaseColumns,
   getISODate,
   type TaskFields,
   type TaskId,
@@ -60,6 +61,10 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
             set((state) => {
               state.boards[board.id] = board;
               state.currentBoardId = board.id;
+              generateBaseColumns(board.id).forEach((column) => {
+                state.columns[column.id] = column;
+                board.columnIds.push(column.id);
+              });
             });
           },
           deleteBoard: (boardId) => {
