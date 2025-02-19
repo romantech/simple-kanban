@@ -1,14 +1,9 @@
 'use client';
 
-import { useHydration } from '@/hooks';
 import { HeaderNav } from '@/components/kanban-header';
 import { Board, BoardSidebar } from '@/components/kanban-board';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const Kanban = () => {
-  const isHydrated = useHydration();
-  if (!isHydrated) return <Skeleton />;
-
   return (
     <div className="flex size-full flex-col">
       <HeaderNav />

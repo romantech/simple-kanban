@@ -13,14 +13,23 @@ import { EllipsisVertical } from 'lucide-react';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useState } from 'react';
 import { useKanbanStore } from '@/store';
+import { useRouter } from 'next/navigation';
 
 const HeaderDropdown = () => {
   const [openMenu, setOpenMenu] = useState(false);
+
+  const router = useRouter();
 
   const currentBoardId = useKanbanStore.use.currentBoardId();
   const deleteBoard = useKanbanStore.use.deleteBoard();
   const getBoardCount = useKanbanStore.use.getBoardCount();
   const shouldDisableDelete = getBoardCount() <= 1;
+
+  const onConformDelete = () => {
+    deleteBoard(currentBoardId);
+    setOpenMenu(false);
+    router.replace(useKanbanStore.getState().currentBoardId);
+  };
 
   return (
     <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
@@ -36,10 +45,7 @@ const HeaderDropdown = () => {
             disabled={shouldDisableDelete}
             title="보드를 삭제할까요?"
             description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
-            onConfirm={() => {
-              deleteBoard(currentBoardId);
-              setOpenMenu(false);
-            }}
+            onConfirm={onConformDelete}
           >
             <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
               보드 삭제

@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react';
+
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
@@ -20,7 +22,10 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="kr" className={pretendard.variable}>
       <body className="dark bg-baltic-950 text-charade-100 antialiased">
-        <main className="h-dvh w-dvw">{children}</main>
+        <main className="h-dvh w-dvw">
+          {children}
+          <Analytics />
+        </main>
       </body>
     </html>
   );
