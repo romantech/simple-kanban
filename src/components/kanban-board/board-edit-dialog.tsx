@@ -57,7 +57,7 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
-          <div className="flex flex-col gap-2 py-5">
+          <div className="flex flex-col gap-2 py-4">
             <Label htmlFor={titleField}>보드 이름</Label>
             <Input {...register(titleField)} placeholder="최대 50자까지 입력할 수 있어요" />
             <ErrorMessage
