@@ -15,12 +15,6 @@ export type Tasks = Record<TaskId, TaskFields>;
 export type Columns = Record<ColumnId, ColumnFields>;
 export type Boards = Record<BoardId, BoardFields>;
 
-export interface KanbanData {
-  tasks: Tasks;
-  columns: Columns;
-  boards: Boards;
-}
-
 export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
 export const toBoardId = createBrandedParser(boardId);
