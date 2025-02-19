@@ -1,9 +1,9 @@
 'use client';
 
 import { Kanban } from '@/components';
-import { type BoardId } from '@/lib';
 import { use } from 'react';
 import { useInitBoard } from '@/hooks/use-init-board';
+import { type BoardId } from '@/schema';
 
 interface Props {
   params: Promise<{ boardId: BoardId }>;

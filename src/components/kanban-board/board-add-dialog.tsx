@@ -16,7 +16,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { type ReactNode, useState } from 'react';
-import { type AddBoardSchema, addBoardSchema, type BoardFields, generateBoard } from '@/lib';
+import { generateBoard } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { useKanbanStore } from '@/store';
 import { type Void } from '@/types';
@@ -29,6 +29,7 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
+import { addBoardSchema, type AddBoardSchema, type BoardFields } from '@/schema';
 
 const [titleField, presetField] = addBoardSchema.keyof().options;
 

@@ -1,4 +1,5 @@
-import { formatKoDate, type TaskFields } from '@/lib';
+import { formatKoDate } from '@/lib';
+import { type TaskFields } from '@/schema';
 
 const TaskViewContent = ({ task }: { task: TaskFields }) => {
   return (

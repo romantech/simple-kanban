@@ -1,4 +1,3 @@
-import { addBoardSchema, type BoardFields } from '@/lib';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ReactNode, useState } from 'react';
@@ -18,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
+import { addBoardSchema, type BoardFields } from '@/schema';
 
 interface BoardEditDialogProps {
   children: ReactNode;
@@ -51,13 +51,13 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger>{children}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="capitalize">보드 수정</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
-          <div className="flex flex-col gap-2 py-5">
+          <div className="flex flex-col gap-2 py-4">
             <Label htmlFor={titleField}>보드 이름</Label>
             <Input {...register(titleField)} placeholder="최대 50자까지 입력할 수 있어요" />
             <ErrorMessage

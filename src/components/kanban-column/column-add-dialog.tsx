@@ -17,8 +17,9 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { type PropsWithChildren, useState } from 'react';
-import { addColumnSchema, type AddColumnSchema, type BoardId, generateColumn } from '@/lib';
+import { generateColumn } from '@/lib';
 import { Label } from '@/components/ui/label';
+import { addColumnSchema, type AddColumnSchema, type BoardId } from '@/schema';
 
 const [fieldName] = addColumnSchema.keyof().options;
 

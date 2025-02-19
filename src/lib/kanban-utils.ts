@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { getISODate } from '@/lib/utils';
+import type { Active, Over } from '@dnd-kit/core';
+import type { Columns, TaskSortable } from '@/types';
 import {
   type BoardFields,
   type BoardId,
@@ -11,9 +13,7 @@ import {
   type TaskFields,
   type TaskId,
   type TitleField,
-} from '@/lib';
-import type { Active, Over } from '@dnd-kit/core';
-import type { Columns, TaskSortable } from '@/types';
+} from '@/schema';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];

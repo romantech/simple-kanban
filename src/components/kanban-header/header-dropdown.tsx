@@ -40,7 +40,7 @@ const HeaderDropdown = () => {
       <DropdownMenuTrigger>
         <EllipsisVertical />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-2 font-semibold">
+      <DropdownMenuContent className="p-2">
         <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

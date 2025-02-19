@@ -12,11 +12,12 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { type BoardId, cn } from '@/lib';
+import { cn } from '@/lib';
 import { useKanbanStore } from '@/store';
 import { BoardAddDialog } from '@/components';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { type BoardId } from '@/schema';
 
 const HeaderCommand = () => {
   const [openCommand, setOpenCommand] = useState(false);

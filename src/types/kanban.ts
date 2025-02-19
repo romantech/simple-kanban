@@ -1,3 +1,4 @@
+import { createBrandedParser } from '@/types/common';
 import {
   type BoardFields,
   boardId,
@@ -8,18 +9,11 @@ import {
   type TaskFields,
   taskId,
   type TaskId,
-} from '@/lib';
-import { createBrandedParser } from '@/types/common';
+} from '@/schema';
 
 export type Tasks = Record<TaskId, TaskFields>;
 export type Columns = Record<ColumnId, ColumnFields>;
 export type Boards = Record<BoardId, BoardFields>;
-
-export interface KanbanData {
-  tasks: Tasks;
-  columns: Columns;
-  boards: Boards;
-}
 
 export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
