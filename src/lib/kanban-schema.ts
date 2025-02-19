@@ -61,5 +61,7 @@ export type AddTaskSchema = z.infer<typeof addTaskSchema>;
 export const addColumnSchema = columnSchema.pick({ title: true });
 export type AddColumnSchema = z.infer<typeof addColumnSchema>;
 
-export const addBoardSchema = boardSchema.pick({ title: true });
+export const addBoardSchema = boardSchema
+  .pick({ title: true })
+  .extend({ preset: z.boolean().default(true) });
 export type AddBoardSchema = z.infer<typeof addBoardSchema>;
