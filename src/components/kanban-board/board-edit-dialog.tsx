@@ -1,4 +1,3 @@
-import { addBoardSchema, type BoardFields } from '@/lib';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ReactNode, useState } from 'react';
@@ -18,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
+import { addBoardSchema, type BoardFields } from '@/schema';
 
 interface BoardEditDialogProps {
   children: ReactNode;

@@ -1,7 +1,8 @@
-import { cn, formatKoDate, type TaskId } from '@/lib';
+import { cn, formatKoDate } from '@/lib';
 import { Draggable, TaskEditViewDialog } from '@/components';
 import { useKanbanStore } from '@/store';
 import { motion } from 'motion/react';
+import { type TaskId } from '@/schema';
 
 interface TaskProps {
   taskId: TaskId;

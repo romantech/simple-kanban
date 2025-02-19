@@ -1,13 +1,7 @@
 import type { Columns, Void } from '@/types';
-import {
-  type BoardId,
-  type ColumnFields,
-  type ColumnId,
-  getISODate,
-  sampleColumns,
-  type TitleField,
-} from '@/lib';
+import { getISODate, sampleColumns } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
+import { type BoardId, type ColumnFields, type ColumnId, type TitleField } from '@/schema';
 
 export interface ColumnSlice {
   columns: Columns;
@@ -18,9 +12,9 @@ export interface ColumnSlice {
   moveColumn: Void<[BoardId, ColumnId[]]>;
 }
 
-type ColumnStateCreator = KanbanSliceCreator<ColumnSlice>;
+type ColumnSliceCreator = KanbanSliceCreator<ColumnSlice>;
 
-export const createColumnSlice: ColumnStateCreator = (set) => ({
+export const createColumnSlice: ColumnSliceCreator = (set) => ({
   columns: sampleColumns,
 
   addColumn: (column) => {

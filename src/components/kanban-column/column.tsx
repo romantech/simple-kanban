@@ -2,9 +2,10 @@
 
 import { ColumnHeader, Draggable, Task, TaskAddDialog } from '@/components';
 import { useKanbanStore } from '@/store';
-import { cn, type ColumnId } from '@/lib';
+import { cn } from '@/lib';
 import { CirclePlus } from 'lucide-react';
 import { SortableContext } from '@dnd-kit/sortable';
+import { type ColumnId } from '@/schema';
 
 interface ColumnProps {
   columnId: ColumnId;

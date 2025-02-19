@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { type PropsWithChildren, useState } from 'react';
-import { addTaskSchema, type AddTaskSchema, type TaskFields } from '@/lib';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
@@ -21,6 +20,7 @@ import { TaskViewContent } from '@/components/kanban-task/task-view-content';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
+import { addTaskSchema, type AddTaskSchema, type TaskFields } from '@/schema';
 
 interface SharedTaskProps {
   task: TaskFields;

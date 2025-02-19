@@ -11,12 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { addTaskSchema, type AddTaskSchema, type ColumnId, generateTask } from '@/lib';
+import { generateTask } from '@/lib';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { type PropsWithChildren, useState } from 'react';
 import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
+import { addTaskSchema, type AddTaskSchema, type ColumnId } from '@/schema';
 
 interface AddTaskProps {
   columnId: ColumnId;

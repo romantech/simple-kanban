@@ -1,14 +1,7 @@
 import { type Boards, type Void } from '@/types';
-import {
-  type BoardFields,
-  type BoardId,
-  generatePresetColumns,
-  getISODate,
-  sampleBoardId,
-  sampleBoards,
-  type TitleField,
-} from '@/lib';
+import { generatePresetColumns, getISODate, sampleBoardId, sampleBoards } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
+import { type BoardFields, type BoardId, type TitleField } from '@/schema';
 
 export interface BoardSlice {
   boards: Boards;
@@ -21,9 +14,9 @@ export interface BoardSlice {
   getBoardCount: () => number;
 }
 
-type BoardStateCreator = KanbanSliceCreator<BoardSlice>;
+type BoardSliceCreator = KanbanSliceCreator<BoardSlice>;
 
-export const createBoardSlice: BoardStateCreator = (set, get) => ({
+export const createBoardSlice: BoardSliceCreator = (set, get) => ({
   boards: sampleBoards,
   currentBoardId: sampleBoardId,
 

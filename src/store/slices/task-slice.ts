@@ -1,13 +1,7 @@
-import type { MoveTaskPayload, Tasks, Void } from '@/types';
-import {
-  arrayMove,
-  getISODate,
-  sampleTasks,
-  type TaskFields,
-  type TaskId,
-  type TitleField,
-} from '@/lib';
-import type { KanbanSliceCreator } from '@/store';
+import { type TaskFields, type TaskId, type TitleField } from '@/schema';
+import { type MoveTaskPayload, type Tasks, type Void } from '@/types';
+import { type KanbanSliceCreator } from '@/store';
+import { arrayMove, getISODate, sampleTasks } from '@/lib';
 
 export interface TaskSlice {
   tasks: Tasks;
@@ -18,9 +12,9 @@ export interface TaskSlice {
   moveTask: Void<[MoveTaskPayload]>;
 }
 
-type TaskStateCreator = KanbanSliceCreator<TaskSlice>;
+type TaskSliceCreator = KanbanSliceCreator<TaskSlice>;
 
-export const createTaskSlice: TaskStateCreator = (set) => ({
+export const createTaskSlice: TaskSliceCreator = (set) => ({
   tasks: sampleTasks,
 
   addTask: (task) => {

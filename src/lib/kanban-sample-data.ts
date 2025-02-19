@@ -1,5 +1,6 @@
 import { type Boards, type Columns, type Tasks } from '@/types';
-import { type BoardId } from '@/lib';
+
+import { type BoardId } from '@/schema';
 
 export const sampleTasks = {
   'Task-3uGbWTjDch-4b-w5dHeNB': {

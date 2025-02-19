@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 import { useKanbanStore } from '@/store';
-import { type BoardId } from '@/lib';
 import { useHydration } from '@/hooks/use-hydration';
 import { useRouter } from 'next/navigation';
+import { type BoardId } from '@/schema';
 
 export const useInitBoard = (boardId: BoardId) => {
   const router = useRouter();
