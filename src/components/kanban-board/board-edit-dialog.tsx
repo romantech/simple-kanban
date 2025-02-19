@@ -28,7 +28,7 @@ const editBoardSchema = addBoardSchema.omit({ preset: true });
 type EditBoardSchema = z.infer<typeof editBoardSchema>;
 const [titleField] = editBoardSchema.keyof().options;
 
-export const BoardEditDialog = ({ board, children, onCancel }: BoardEditDialogProps) => {
+export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
