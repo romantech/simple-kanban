@@ -51,7 +51,7 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger>{children}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="capitalize">보드 수정</DialogTitle>
           <DialogDescription></DialogDescription>
