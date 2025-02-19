@@ -1,12 +1,9 @@
 'use client';
 
 import { Kanban } from '@/components';
-import { useHydration } from '@/hooks';
 import { type BoardId } from '@/lib';
-import { use, useEffect } from 'react';
-import { useKanbanStore } from '@/store';
-import { notFound } from 'next/navigation';
-import { Skeleton } from '@/components/ui/skeleton';
+import { use } from 'react';
+import { useInitBoard } from '@/hooks/use-init-board';
 
 interface Props {
   params: Promise<{ boardId: BoardId }>;
@@ -15,17 +12,9 @@ interface Props {
 export default function BoardPage({ params }: Props) {
   const { boardId } = use(params);
 
-  const isHydrated = useHydration();
+  const isHydrated = useInitBoard(boardId);
 
-  useEffect(() => {
-    if (!isHydrated) return;
-
-    const { setCurrentBoard, boards } = useKanbanStore.getState();
-    if (boards[boardId]) setCurrentBoard(boardId);
-    else notFound();
-  }, [boardId, isHydrated]);
-
-  if (!isHydrated) return <Skeleton />;
+  if (!isHydrated) return null;
 
   return <Kanban />;
 }
