@@ -11,6 +11,15 @@ export default {
   ],
   theme: {
     extend: {
+      keyframes: {
+        progress: {
+          '0%, 60%': { transform: 'translateY(0px)' },
+          '30%': { transform: 'translateY(-30px)' },
+        },
+      },
+      animation: {
+        progress: 'progress 1s linear infinite',
+      },
       colors: {
         baltic: {
           '50': '#f6f6f9',
