@@ -26,6 +26,7 @@ interface KanbanActions {
   initialize: Void<[KanbanState?]>;
 
   addBoard: Void<[BoardFields, boolean]>;
+  editBoard: Void<[BoardId, TitleField]>;
   setCurrentBoard: Void<[BoardId]>;
   deleteBoard: Void<[BoardId]>;
   getBoardCount: () => number;
@@ -67,6 +68,13 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
                 state.columns[column.id] = column;
                 board.columnIds.push(column.id);
               });
+            });
+          },
+          editBoard: (boardId, title) => {
+            set((state) => {
+              const board = state.boards[boardId];
+              board.title = title;
+              board.updatedAt = getISODate();
             });
           },
           deleteBoard: (boardId) => {

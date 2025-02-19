@@ -14,6 +14,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { useState } from 'react';
 import { useKanbanStore } from '@/store';
 import { useRouter } from 'next/navigation';
+import { BoardEditDialog } from '@/components';
 
 const HeaderDropdown = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -21,11 +22,14 @@ const HeaderDropdown = () => {
   const router = useRouter();
 
   const currentBoardId = useKanbanStore.use.currentBoardId();
-  const deleteBoard = useKanbanStore.use.deleteBoard();
-  const getBoardCount = useKanbanStore.use.getBoardCount();
-  const shouldDisableDelete = getBoardCount() <= 1;
+  const boards = useKanbanStore.use.boards();
+  const board = boards[currentBoardId];
 
-  const onConformDelete = () => {
+  const boardCount = Object.keys(boards).length;
+  const deleteBoard = useKanbanStore.use.deleteBoard();
+  const shouldDisableDelete = boardCount <= 1;
+
+  const onConfirmDelete = () => {
     deleteBoard(currentBoardId);
     setOpenMenu(false);
     router.replace(useKanbanStore.getState().currentBoardId);
@@ -40,12 +44,14 @@ const HeaderDropdown = () => {
         <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem disabled>보드 수정 (미구현)</DropdownMenuItem>
+          <BoardEditDialog board={board}>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>보드 수정</DropdownMenuItem>
+          </BoardEditDialog>
           <ConfirmDialog
             disabled={shouldDisableDelete}
             title="보드를 삭제할까요?"
             description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
-            onConfirm={onConformDelete}
+            onConfirm={onConfirmDelete}
           >
             <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
               보드 삭제
