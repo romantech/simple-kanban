@@ -7,7 +7,7 @@ import {
   type BoardId,
   type ColumnFields,
   type ColumnId,
-  generateBaseColumns,
+  generatePresetColumns,
   getISODate,
   type TaskFields,
   type TaskId,
@@ -25,7 +25,7 @@ interface KanbanState extends KanbanData {
 interface KanbanActions {
   initialize: Void<[KanbanState?]>;
 
-  addBoard: Void<[BoardFields]>;
+  addBoard: Void<[BoardFields, boolean]>;
   setCurrentBoard: Void<[BoardId]>;
   deleteBoard: Void<[BoardId]>;
   getBoardCount: () => number;
@@ -57,11 +57,13 @@ const useKanbanStoreBase = create<KanbanActions & KanbanState>()(
           // 액션
           initialize: (data) => set(data ?? initialState),
           getBoardCount: () => Object.keys(get().boards).length,
-          addBoard: (board) => {
+          addBoard: (board, preset) => {
             set((state) => {
               state.boards[board.id] = board;
               state.currentBoardId = board.id;
-              generateBaseColumns(board.id).forEach((column) => {
+              if (!preset) return;
+
+              generatePresetColumns(board.id).forEach((column) => {
                 state.columns[column.id] = column;
                 board.columnIds.push(column.id);
               });
