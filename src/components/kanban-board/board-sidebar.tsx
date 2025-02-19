@@ -25,7 +25,7 @@ const BoardSidebar = () => {
               { 'text-charade-100 font-bold': board.id === currentBoardId },
             )}
           >
-            <Link href={board.id} className="block">
+            <Link href={board.id} className="block" prefetch>
               <SquareKanban className="inline size-[26px] pr-2" />
               {board.title}
             </Link>
