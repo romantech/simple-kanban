@@ -11,7 +11,7 @@ import { useDragState } from '@/hooks/use-drag-state';
 import { useId } from 'react';
 import { computeTargetTaskIdx, getDragTypes } from '@/lib';
 import { type ColumnSortable, type TaskSortable, toColumnId, toTaskId } from '@/types';
-import { arrayMove } from '@dnd-kit/sortable';
+import { arraySwap } from '@dnd-kit/sortable';
 import { useKanbanStore } from '@/store';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -45,18 +45,19 @@ const useKanbanDnd = () => {
 
   /** 컬럼 이동 */
   const onDragEnd = ({ active, over }: DragEndEvent) => {
-    resetDragState(); // early return 있으므로 최상단에서 초기화 필요
+    // 드래그 중인 아이템이 DragOverlay에서 렌더링 되지 않도록 dragColumnId, dragTaskId 초기화
+    // 하단에 early return 있으므로 최상단에서 초기화
+    resetDragState();
 
-    if (active.id === over?.id) return;
+    if (!over) return; // 드롭 영역 벗어났을 때
+    if (active.id === over?.id) return; // 같은 위치는 스킵
+    if (!getDragTypes(active).isActiveColumn) return; // Column 드래그가 아니면 스킵
 
     const activeSort = active.data.current?.sortable as ColumnSortable;
     const overSort = over?.data.current?.sortable as ColumnSortable;
-    if (!activeSort || !overSort) return;
 
-    if (getDragTypes(active).isActiveColumn) {
-      const newColumnIds = arrayMove(activeSort.items, activeSort.index, overSort.index);
-      moveColumn(activeSort.containerId, newColumnIds);
-    }
+    const newColumnIds = arraySwap(activeSort.items, activeSort.index, overSort.index);
+    moveColumn(activeSort.containerId, newColumnIds);
   };
 
   /** Task 카드 이동 */
@@ -66,7 +67,7 @@ const useKanbanDnd = () => {
 
     const { isActiveTask, isOverTask, isOverColumn } = getDragTypes(active, over);
 
-    if (!isActiveTask) return; // Task Card 드래그가 아니라면 무시
+    if (!isActiveTask) return; // Task 드래그가 아니라면 무시
 
     const activeSort = active.data.current?.sortable as TaskSortable;
     const overSort = over.data.current?.sortable as TaskSortable;
