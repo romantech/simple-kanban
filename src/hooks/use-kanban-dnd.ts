@@ -63,11 +63,11 @@ const useKanbanDnd = () => {
   /** Task 카드 이동 */
   const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
     if (!over) return; // 드롭 영역 벗어났을 때
-    if (active.id === over.id) return; // 같은 위치일 때
+    if (active.id === over.id) return; // 같은 위치는 스킵
 
     const { isActiveTask, isOverTask, isOverColumn } = getDragTypes(active, over);
 
-    if (!isActiveTask) return; // Task 드래그가 아니라면 무시
+    if (!isActiveTask) return; // Task 드래그가 아니면 스킵
 
     const activeSort = active.data.current?.sortable as TaskSortable;
     const overSort = over.data.current?.sortable as TaskSortable;
@@ -75,7 +75,7 @@ const useKanbanDnd = () => {
     const sourceTaskId = toTaskId(active.id);
     const sourceColumnId = activeSort.containerId;
     // 드롭 영역이 Task 카드이면 해당 카드의 컨테이너는 컬럼이므로 overSort.containerId 에서 ID 획득
-    // 드롭 영역이 컬럼이면 over 는 컬럼을 가리키므로 over.id 에서 ID 획득
+    // 드롭 영역이 컬럼이면 over 자체는 컬럼을 참조하므로 over.id 에서 ID 획득
     const targetColumnId = isOverTask ? overSort.containerId : toColumnId(over.id);
 
     const targetColumn = columns[targetColumnId];
