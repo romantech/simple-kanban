@@ -81,17 +81,17 @@ const useKanbanDnd = () => {
     const targetColumnId = isOverTask ? overSort.containerId : toColumnId(over.id);
     const targetColumn = columns[targetColumnId];
 
-    const clientY = (activatorEvent as MouseEvent).clientY;
+    // 드래그 시작 위치(clientY)와 이동 거리(deltaY) 합산 (타겟 인덱스를 결정하기 위해)
+    const currentY = (activatorEvent as MouseEvent).clientY + delta.y;
 
     // 드롭 대상 카드의 인덱스
-    const targetTaskIdx = computeTargetTaskIdx(
+    const targetTaskIdx = computeTargetTaskIdx({
       isOverColumn,
       targetColumn,
       overSort,
       sourceTaskId,
-      delta.y,
-      clientY,
-    );
+      currentY,
+    });
 
     debouncedMoveTask({
       sourceTaskId,
