@@ -81,7 +81,7 @@ const useKanbanDnd = () => {
     const targetColumnId = isOverTask ? overSort.containerId : toColumnId(over.id);
     const targetColumn = columns[targetColumnId];
 
-    // 드래그 시작 위치(clientY)와 이동 거리(deltaY) 합산 (타겟 인덱스를 결정하기 위해)
+    // 드래그 시작 위치(clientY)와 이동 거리(delta.y)를 합산해서 현재 Y 위치 계산
     const currentY = (activatorEvent as MouseEvent).clientY + delta.y;
 
     // 드롭 대상 카드의 인덱스
