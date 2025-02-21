@@ -73,14 +73,14 @@ const useKanbanDnd = () => {
     const overSort = over.data.current?.sortable as TaskSortable;
 
     const sourceTaskId = toTaskId(active.id);
+    const sourceTaskIdx = activeSort.index; // 드래그를 시작한 카드의 인덱스
+
     const sourceColumnId = activeSort.containerId;
     // 드롭 영역이 Task 카드이면 해당 카드의 컨테이너는 컬럼이므로 overSort.containerId 에서 ID 획득
     // 드롭 영역이 컬럼이면 over 자체는 컬럼을 참조하므로 over.id 에서 ID 획득
     const targetColumnId = isOverTask ? overSort.containerId : toColumnId(over.id);
-
     const targetColumn = columns[targetColumnId];
 
-    const sourceTaskIdx = activeSort.index; // 드래그를 시작한 카드의 인덱스
     const clientY = (activatorEvent as MouseEvent).clientY;
 
     // 드롭 대상 카드의 인덱스
