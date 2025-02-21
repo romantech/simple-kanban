@@ -116,7 +116,7 @@ export const computeTargetTaskIdx = ({
 
   // 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나 태스크가 아닌 다른 영역에 위치했을 때)
   const index = targetColumn.taskIds.indexOf(sourceTaskId);
-  // (드래그 상태) 컬럼 영역 진입 → 아이템 목록 업데이트 상태에서 다시 움직였을 때 (드롭 Placeholder 표시)
+  // (드래그 중) 컬럼 영역 진입 → 아이템 목록 업데이트한 상태에서 다시 움직였을 때 (드롭 Placeholder 표시)
   if (index !== -1) return index;
 
   // 대상 컬럼의 첫번째 카드보다 위로 드래그 했을 땐 첫번째로, 그 외엔 마지막 인덱스로 설정
