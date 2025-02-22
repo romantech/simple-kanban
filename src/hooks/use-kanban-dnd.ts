@@ -4,8 +4,10 @@ import {
   type DragEndEvent,
   type DragOverEvent,
   type DragStartEvent,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
+  useSensors,
 } from '@dnd-kit/core';
 import { useDragState } from '@/hooks/use-drag-state';
 import { useId } from 'react';
@@ -25,10 +27,6 @@ const useKanbanDnd = () => {
    * @see https://github.com/clauderic/dnd-kit/issues/900
    * */
   const debouncedMoveTask = useDebouncedCallback(moveTask, 0);
-
-  const mouseSensor = useSensor(PointerSensor, {
-    activationConstraint: { distance: 10 }, // 드래그 핸들에 있는 버튼 클릭 가능하도록 10px 이동했을때만 활성
-  });
 
   const { dragColumnId, setDragState, dragTaskId, resetDragState } = useDragState();
 
@@ -102,12 +100,32 @@ const useKanbanDnd = () => {
     });
   };
 
+  // 데스크톱 최적화
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      // 드래그 시작을 위해 요소 클릭 후 커서를 이동시켜야 하는 최소 거리(px)
+      distance: 10, // 클릭 후 10px 이상 움직여야 드래그 시작 (의도치 않은 클릭 방지)
+    },
+  });
+
+  // 모바일 최적화
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      // 드래그 시작을 위해 터치를 유지해야 하는 최소 시간(ms)
+      delay: 250, // 250ms 터치 유지 필요 (일반적인 모바일 앱의 롱프레스 대기 시간)
+      // delay 동안 허용되는 최대 이동 거리(px). 초과시 드래그 취소됨.
+      tolerance: 5, // 5px 이내 움직임 허용 (손떨림이나 미세한 움직임 허용)
+    },
+  });
+
+  const sensors = useSensors(touchSensor, mouseSensor);
+
   return {
     dndContextId,
     dragColumnId,
     dragTaskId,
+    sensors,
     handlers: { onDragStart, onDragEnd, onDragOver },
-    sensors: [mouseSensor],
   };
 };
 
