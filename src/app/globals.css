@@ -96,12 +96,14 @@ body {
 
 @layer utilities {
   .draggable-item {
-    /* 패닝, 핀치줌은 허용하지만 더블탭 확대 같은 비표준 제스처는 비활성화하여 터치 드래그 반응성 개선 */
+    /* 패닝/핀치줌은 허용하지만 더블탭 확대 같은 비표준 제스처는 비활성화하여 터치 드래그 반응성 개선 */
     touch-action: manipulation;
     /* 텍스트 선택 방지 */
     user-select: none;
     /* 텍스트 선택 방지 for iOS Safari */
     -webkit-user-select: none;
+    /* 텍스트 선택 방지 for Firefox */
+    -moz-user-select: none;
   }
 
   .progress {
