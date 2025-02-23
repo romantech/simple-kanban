@@ -1,9 +1,8 @@
+# Simple Kanban
+
 ![desktop-demo](./public/screenshot/demo.gif)
 
-> [!NOTE]
->
-> - 드래그앤드롭 가능한 칸반 보드
-> - 데모 사이트: https://simple-kanban-iota.vercel.app
+> 데모 사이트: https://simple-kanban-iota.vercel.app
 
 ## 기술 스택
 
@@ -23,6 +22,20 @@
 4. 컬럼/작업 드래그앤드롭 이동 (드롭 대상 영역 Placeholder 표시)
 5. 보드 검색 커맨드 (헤더)
 6. 모바일 대응
+
+## 구현 과정 목차
+
+- [칸반 데이터 모델](#칸반-데이터-모델)
+- [드래그앤드롭](#드래그앤드롭)
+- [컬럼 순서 변경](#컬럼-순서-변경)
+- [태스크 순서 변경 / 컬럼 간 이동](#태스크-순서-변경--컬럼-간-이동)
+  - [컬럼 ID 확인](#컬럼-id-확인)
+  - [아이템 인덱스 확인](#아이템-인덱스-확인)
+  - [드래그 아이템 Y 좌표 계산](#드래그-아이템-Y-좌표-계산)
+- [센서 조정](#센서-조정)
+- [이슈 해결](#이슈-해결)
+  - [하이드레이션 에러](#하이드레이션-에러)
+  - [무한 루프](#무한-루프)
 
 ## 칸반 데이터 모델
 
@@ -186,29 +199,29 @@ const onDragEnd = ({ active, over }: DragEndEvent) => {
 
 Sortable 프리셋을 사용하면 `active`, `over` 객체에 `sortable`이라는 유용한 속성이 추가된다. 이 속성을 활용하면 드래그 중인 아이템이 속한 컨테이너 ID, 인덱스, 컨테이너 내의 전체 아이템 목록을 바로 참조할 수 있어서 코드를 더 간결하게 작성할 수 있다.
 
-```json
+```js
 // active
-{
-  "id": "Column-rYZJ5DsW8WyWUrIZ-tN9p", // 현재 아이템 id (useSortable 인자로 넘겼던 id)
-  "data": {
-    "current": {
-      "sortable": {
+const active = {
+  id: 'Column-rYZJ5DsW8WyWUrIZ-tN9p', // 현재 아이템 id (useSortable 인자로 넘겼던 id)
+  data: {
+    current: {
+      sortable: {
         // 현재 아이템이 속한 컨테이너 ID (SortableContext에 넘겼던 id)
-        "containerId": "Board-q0tzC2fGuBReTjYuzdUHL",
+        containerId: 'Board-q0tzC2fGuBReTjYuzdUHL',
         // 컨테이너 내에서 현재 아이템의 인덱스
-        "index": 0,
+        index: 0,
         // 컨테이너의 전체 아이템 목록 (SortableContext에 넘겼던 items)
-        "items": [
-          "Column-rYZJ5DsW8WyWUrIZ-tN9p", // 현재 아이템
-          "Column-uh6jGsYnCfu3peUX5ZF-O"
-        ]
+        items: [
+          'Column-rYZJ5DsW8WyWUrIZ-tN9p', // 현재 아이템
+          'Column-uh6jGsYnCfu3peUX5ZF-O',
+        ],
       },
       // ...
-      "type": "column" // 현재 아이템 type (useSortable 인자로 넘겼던 type)
-    }
-  }
+      type: 'column', // 현재 아이템 type (useSortable 인자로 넘겼던 type)
+    },
+  },
   // ...
-}
+};
 ```
 
 💡 dnd-kit 라이브러리 자체적으로 `arraySwap`, `arrayMove` 유틸리티 함수를 제공한다. `arraySwap`은 배열 내 두 요소의 위치를 교환하고, `arrayMove`는 지정한 인덱스로 요소를 이동시킨 후 나머지 요소를 밀어낸다.
@@ -277,9 +290,9 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 
 1. 드래그 아이템의 `task.columnId` (변경된 컬럼 ID로 교체)
 2. 드래그 중인 아이템이 속했던 컬럼의 `column.taskIds`
-3. 동일 컬럼 내에서 드래그했다면 인덱스 순서만 변경
-4. 다른 컬럼으로 드래그했다면 해당 태스크 ID 제거
-5. 드롭 대상 컬럼의 `column.taskIds` (인덱스 순서 변경)
+   1. 동일 컬럼 내에서 드래그했다면 인덱스 순서만 변경
+   2. 다른 컬럼으로 드래그했다면 해당 태스크 ID 제거
+3. 드롭 대상 컬럼의 `column.taskIds` (인덱스 순서 변경)
 
 위 상태를 업데이트하기 위해선 소스 컬럼 ID, 타겟 컬럼 ID, 드래그 아이템(태스크) ID, 컬럼 내에서 순서를 변경할 두 아이템(소스/타겟 태스크)의 인덱스 정보를 확인해야 한다.
 
@@ -287,24 +300,19 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 
 1. 소스 컬럼 ID: `active` 객체의 `sortable.containerId`
 2. 타겟 컬럼 ID:
-3. 드롭 대상 - 태스크: `over` 객체의 `sortable.containerId` (태스크의 컨테이너는 컬럼이므로)
-4. 드롭 대상 - 컬럼: `over.id` (이때 `over` 객체는 컬럼을 참조하므로)
+   1. 드롭 대상 - 태스크: `over` 객체의 `sortable.containerId` (태스크의 컨테이너는 컬럼이므로)
+   2. 드롭 대상 - 컬럼: `over.id` (이때 `over` 객체는 컬럼을 참조하므로)
 
 ### 아이템 인덱스 확인
 
 1. 소스 태스크(드래그 아이템): `active` 객체 `sortable.index`
-2. 타겟 태스크(드롭 영역에 위치한 아이템)
-3. 드롭 대상이 태스크일 때: `over` 객체 `sortable.index`
-4. 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나, 컬럼 위/아래쪽 위치)
-5. [첫 진입이 아닐 때] 컬럼.아이템 목록에 드래그 아이템 ID 有 → 조회한 인덱스 반환
-6. [첫 진입일 때] 컬럼.아이템 목록에 드래그 아이템 ID 無
+2. 타겟 태스크(드롭 영역에 위치한 아이템) 3. 드롭 대상이 태스크일 때: `over` 객체 `sortable.index` 4. 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나, 컬럼 위/아래쪽 위치)
+   1. [첫 진입이 아닐 때] 컬럼.아이템 목록에 드래그 아이템 ID 有 → 조회한 인덱스 반환
+   2. [첫 진입일 때] 컬럼.아이템 목록에 드래그 아이템 ID 無
+      - 대상 컬럼의 첫 번째 태스크보다 위쪽으로 드래그했을 때: 첫 번째 위치 (인덱스 = `0`)
+      - 그 외 상황: 마지막 위치 (인덱스 = `taskIds.length`)
 
-   - 대상 컬럼의 첫 번째 태스크보다 위쪽으로 드래그했을 때: 첫 번째 위치 (인덱스 = `0`)
-   - 그 외 상황: 마지막 위치 (인덱스 = `taskIds.length`)
-
----
-
-타겟 태스크의 인덱스 확인 과정을 시각화한 플로우차트
+> 타겟 태스크의 인덱스 확인 과정을 시각화한 플로우차트
 
 ```mermaid
 flowchart TD
@@ -330,7 +338,7 @@ flowchart TD
 
 ```
 
-### 드래그 중인 아이템의 Y 위치 계산
+### 드래그 아이템 Y 좌표 계산
 
 `onDragOver` 핸들러는 `delta`, `activatorEvent` 객체를 인자로 받는다. `activatorEvent.clientY`는 드래그를 시작했을 때 y 좌표를 나타내고, `delta.y`는 이동한 거리를 나타낸다. 이 두 값을 더하면 현재 드래그 중인 아이템의 y 좌표를 계산할 수 있다.
 
