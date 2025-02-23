@@ -25,7 +25,11 @@ const BoardSidebar = () => {
               { 'text-charade-100 font-bold': board.id === currentBoardId },
             )}
           >
-            <Link href={board.id} className="block" prefetch>
+            <Link
+              href={{ pathname: board.id, query: { title: board.title } }}
+              className="block"
+              prefetch
+            >
               <SquareKanban className="inline size-[26px] pr-2" />
               {board.title}
             </Link>
@@ -33,7 +37,7 @@ const BoardSidebar = () => {
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <BoardAddDialog onConfirm={({ id }) => router.push(id)}>
+        <BoardAddDialog onConfirm={({ id, title }) => router.push(`${id}?title=${title}`)}>
           <Button className="w-full font-bold capitalize">add board</Button>
         </BoardAddDialog>
       </div>

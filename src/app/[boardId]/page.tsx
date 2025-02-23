@@ -1,20 +1,19 @@
-'use client';
-
 import { Kanban } from '@/components';
-import { use } from 'react';
-import { useInitBoard } from '@/hooks/use-init-board';
 import { type BoardId } from '@/schema';
 
 interface Props {
   params: Promise<{ boardId: BoardId }>;
+  searchParams: Promise<{ title?: string }>;
 }
 
-export default function BoardPage({ params }: Props) {
-  const { boardId } = use(params);
+export async function generateMetadata({ searchParams }: Props) {
+  const { title } = await searchParams;
 
-  const isHydrated = useInitBoard(boardId);
+  return { title };
+}
 
-  if (!isHydrated) return null;
+export default async function BoardPage({ params }: Props) {
+  const { boardId } = await params;
 
-  return <Kanban />;
+  return <Kanban boardId={boardId} />;
 }

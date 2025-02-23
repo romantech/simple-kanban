@@ -17,7 +17,7 @@ export const useInitBoard = (boardId: BoardId) => {
     const { setCurrentBoard, boards, currentBoardId } = useKanbanStore.getState();
 
     if (boards[boardId]) setCurrentBoard(boardId);
-    else router.replace(currentBoardId);
+    else router.replace(`/${currentBoardId}?title=${boards[currentBoardId].title}`);
   }, [boardId, isHydrated, router]);
 
   return isHydrated;

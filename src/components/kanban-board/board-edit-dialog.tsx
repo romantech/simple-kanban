@@ -1,3 +1,5 @@
+'use client';
+
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ReactNode, useState } from 'react';
@@ -18,6 +20,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { addBoardSchema, type BoardFields } from '@/schema';
+import { useRouter } from 'next/navigation';
 
 interface BoardEditDialogProps {
   children: ReactNode;
@@ -30,6 +33,7 @@ const [titleField] = editBoardSchema.keyof().options;
 
 export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -45,6 +49,7 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
   const onSubmit: SubmitHandler<EditBoardSchema> = ({ title }) => {
     editBoard(board.id, title);
     setIsDialogOpen(false);
+    router.replace(`/${board.id}?title=${title}`);
   };
 
   return (
