@@ -13,9 +13,16 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Simple Kanban',
-  description: 'Organize your tasks effortlessly with Simple Kanban',
+  title: {
+    template: '%s | Simple Kanban',
+    default: 'Simple Kanban',
+  },
+  applicationName: 'Simple Kanban',
+  description: 'Simple Kanban board with dnd-kit',
   icons: { icon: '/favicon.png' },
+  creator: 'Romantech',
+  metadataBase: new URL('https://simple-kanban-iota.vercel.app'),
+  keywords: ['Kanban', 'Task Management', 'dnd-kit', 'Drag and Drop'],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
