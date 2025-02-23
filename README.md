@@ -1,9 +1,6 @@
 ![desktop-demo](./public/screenshot/demo.gif)
 
-> [!NOTE]
->
-> - 드래그앤드롭 가능한 칸반 보드
-> - 데모 사이트: https://simple-kanban-iota.vercel.app
+> 데모 사이트: https://simple-kanban-iota.vercel.app
 
 ## 기술 스택
 
@@ -186,7 +183,7 @@ const onDragEnd = ({ active, over }: DragEndEvent) => {
 
 Sortable 프리셋을 사용하면 `active`, `over` 객체에 `sortable`이라는 유용한 속성이 추가된다. 이 속성을 활용하면 드래그 중인 아이템이 속한 컨테이너 ID, 인덱스, 컨테이너 내의 전체 아이템 목록을 바로 참조할 수 있어서 코드를 더 간결하게 작성할 수 있다.
 
-```json
+```js
 // active
 {
   "id": "Column-rYZJ5DsW8WyWUrIZ-tN9p", // 현재 아이템 id (useSortable 인자로 넘겼던 id)
@@ -277,9 +274,9 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 
 1. 드래그 아이템의 `task.columnId` (변경된 컬럼 ID로 교체)
 2. 드래그 중인 아이템이 속했던 컬럼의 `column.taskIds`
-3. 동일 컬럼 내에서 드래그했다면 인덱스 순서만 변경
-4. 다른 컬럼으로 드래그했다면 해당 태스크 ID 제거
-5. 드롭 대상 컬럼의 `column.taskIds` (인덱스 순서 변경)
+   1. 동일 컬럼 내에서 드래그했다면 인덱스 순서만 변경
+   2. 다른 컬럼으로 드래그했다면 해당 태스크 ID 제거
+3. 드롭 대상 컬럼의 `column.taskIds` (인덱스 순서 변경)
 
 위 상태를 업데이트하기 위해선 소스 컬럼 ID, 타겟 컬럼 ID, 드래그 아이템(태스크) ID, 컬럼 내에서 순서를 변경할 두 아이템(소스/타겟 태스크)의 인덱스 정보를 확인해야 한다.
 
@@ -287,24 +284,21 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 
 1. 소스 컬럼 ID: `active` 객체의 `sortable.containerId`
 2. 타겟 컬럼 ID:
-3. 드롭 대상 - 태스크: `over` 객체의 `sortable.containerId` (태스크의 컨테이너는 컬럼이므로)
-4. 드롭 대상 - 컬럼: `over.id` (이때 `over` 객체는 컬럼을 참조하므로)
+   1. 드롭 대상 - 태스크: `over` 객체의 `sortable.containerId` (태스크의 컨테이너는 컬럼이므로)
+   2. 드롭 대상 - 컬럼: `over.id` (이때 `over` 객체는 컬럼을 참조하므로)
 
 ### 아이템 인덱스 확인
 
 1. 소스 태스크(드래그 아이템): `active` 객체 `sortable.index`
-2. 타겟 태스크(드롭 영역에 위치한 아이템)
-3. 드롭 대상이 태스크일 때: `over` 객체 `sortable.index`
-4. 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나, 컬럼 위/아래쪽 위치)
-5. [첫 진입이 아닐 때] 컬럼.아이템 목록에 드래그 아이템 ID 有 → 조회한 인덱스 반환
-6. [첫 진입일 때] 컬럼.아이템 목록에 드래그 아이템 ID 無
-
-   - 대상 컬럼의 첫 번째 태스크보다 위쪽으로 드래그했을 때: 첫 번째 위치 (인덱스 = `0`)
-   - 그 외 상황: 마지막 위치 (인덱스 = `taskIds.length`)
+2. 타겟 태스크(드롭 영역에 위치한 아이템) 3. 드롭 대상이 태스크일 때: `over` 객체 `sortable.index` 4. 드롭 대상이 컬럼 영역일 때 (컬럼에 카드가 없거나, 컬럼 위/아래쪽 위치)
+   1. [첫 진입이 아닐 때] 컬럼.아이템 목록에 드래그 아이템 ID 有 → 조회한 인덱스 반환
+   2. [첫 진입일 때] 컬럼.아이템 목록에 드래그 아이템 ID 無
+      - 대상 컬럼의 첫 번째 태스크보다 위쪽으로 드래그했을 때: 첫 번째 위치 (인덱스 = `0`)
+      - 그 외 상황: 마지막 위치 (인덱스 = `taskIds.length`)
 
 ---
 
-타겟 태스크의 인덱스 확인 과정을 시각화한 플로우차트
+> 타겟 태스크의 인덱스 확인 과정을 시각화한 플로우차트
 
 ```mermaid
 flowchart TD
