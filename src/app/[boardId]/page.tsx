@@ -7,7 +7,7 @@ interface Props {
 }
 
 export async function generateMetadata({ searchParams }: Props) {
-  const { title } = await searchParams;
+  const { title = 'Board' } = await searchParams;
 
   return { title };
 }

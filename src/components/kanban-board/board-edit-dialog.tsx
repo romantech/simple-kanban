@@ -49,6 +49,7 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
   const onSubmit: SubmitHandler<EditBoardSchema> = ({ title }) => {
     editBoard(board.id, title);
     setIsDialogOpen(false);
+    // 수정한 타이틀이 페이지 제목에 반영되도록 router.replace -> generateMetadata 함수로 title 전달
     router.replace(`/${board.id}?title=${title}`);
   };
 
