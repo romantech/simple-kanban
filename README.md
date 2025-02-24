@@ -464,3 +464,8 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 - 칸반 디자인: https://kanban-app-jay.netlify.app
 - 전역 폰트: [Pretendard](https://github.com/orioncactus/pretendard)
 - 드래그앤드롭: [Dnd Kit Sortable](https://docs.dndkit.com/presets/sortable)
+
+## 스크린샷
+
+![desktop-screenshot](./public/screenshot/desktop.png)
+![mobile-screenshot](./public/screenshot/mobile.png)
