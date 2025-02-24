@@ -17,11 +17,11 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { type PropsWithChildren, useState } from 'react';
-import { generateColumn } from '@/lib';
+import { ColumnConfig, generateColumn } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { addColumnSchema, type AddColumnSchema, type BoardId } from '@/schema';
 
-const [fieldName] = addColumnSchema.keyof().options;
+const [titleField] = addColumnSchema.keyof().options;
 
 const ColumnAddDialog = ({ children, boardId }: PropsWithChildren<{ boardId: BoardId }>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,11 +48,16 @@ const ColumnAddDialog = ({ children, boardId }: PropsWithChildren<{ boardId: Boa
           </DialogHeader>
 
           <div className="space-y-2 py-7">
-            <Label htmlFor={fieldName}>컬럼 이름</Label>
-            <Input {...register(fieldName)} placeholder="최대 50자까지 입력할 수 있어요" />
+            <Label htmlFor={titleField}>컬럼 이름</Label>
+            <Input
+              {...register(titleField)}
+              placeholder={`최대 ${ColumnConfig.title.max}자까지 입력할 수 있어요`}
+              maxLength={ColumnConfig.title.max}
+              minLength={ColumnConfig.title.min}
+            />
             <ErrorMessage
               errors={formState.errors}
-              name={fieldName}
+              name={titleField}
               render={({ message }) => <p className="text-sm text-baltic-400">{message}</p>}
             />
           </div>

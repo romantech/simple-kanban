@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { timestampsSchema, titleSchema } from '@/schema/base';
+import { createTitleSchema, timestampsSchema } from '@/schema/base';
+import { BoardConfig, ColumnConfig, TaskConfig } from '@/lib';
 
 export enum KanbanBrandType {
   Task = 'Task',
@@ -16,10 +17,10 @@ export const boardId = z.string().brand<KanbanBrandType.Board>();
 export const taskSchema = timestampsSchema.extend({
   id: taskId,
   columnId: columnId,
-  title: titleSchema,
+  title: createTitleSchema({ max: TaskConfig.title.max, min: TaskConfig.title.min }),
   description: z
     .string()
-    .max(500, { message: '설명은 최대 500자까지만 입력할 수 있어요' })
+    .max(TaskConfig.desc.max, { message: `최대 ${TaskConfig.desc.max}자까지 입력할 수 있어요` })
     .transform((val) => (val === '' ? undefined : val))
     .optional(),
 });
@@ -27,13 +28,13 @@ export const taskSchema = timestampsSchema.extend({
 export const columnSchema = timestampsSchema.extend({
   id: columnId,
   boardId: boardId,
-  title: titleSchema,
+  title: createTitleSchema({ max: ColumnConfig.title.max, min: ColumnConfig.title.min }),
   taskIds: z.array(taskId),
 });
 
 export const boardSchema = timestampsSchema.extend({
   id: boardId,
-  title: titleSchema,
+  title: createTitleSchema({ max: BoardConfig.title.max, min: BoardConfig.title.min }),
   columnIds: z.array(columnId),
 });
 
@@ -43,7 +44,7 @@ export type BoardId = z.infer<typeof boardId>;
 export type TaskFields = z.infer<typeof taskSchema>;
 export type ColumnFields = z.infer<typeof columnSchema>;
 export type BoardFields = z.infer<typeof boardSchema>;
-export type TitleField = z.infer<typeof titleSchema>;
+export type TitleField = z.infer<ReturnType<typeof createTitleSchema>>;
 
 export const addTaskSchema = taskSchema.pick({ title: true, description: true });
 export type AddTaskSchema = z.infer<typeof addTaskSchema>;

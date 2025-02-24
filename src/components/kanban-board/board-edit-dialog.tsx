@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { addBoardSchema, type BoardFields } from '@/schema';
 import { useRouter } from 'next/navigation';
+import { BoardConfig } from '@/lib';
 
 interface BoardEditDialogProps {
   children: ReactNode;
@@ -65,7 +66,12 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           <div className="flex flex-col gap-2 py-4">
             <Label htmlFor={titleField}>보드 이름</Label>
-            <Input {...register(titleField)} placeholder="최대 50자까지 입력할 수 있어요" />
+            <Input
+              {...register(titleField)}
+              placeholder={`최대 ${BoardConfig.title.max}자까지 입력할 수 있어요`}
+              maxLength={BoardConfig.title.max}
+              minLength={BoardConfig.title.min}
+            />
             <ErrorMessage
               errors={errors}
               name={titleField}

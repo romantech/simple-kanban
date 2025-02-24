@@ -5,8 +5,10 @@ export const timestampsSchema = z.object({
   updatedAt: z.string().datetime({ offset: true }),
 });
 
-export const titleSchema = z
-  .string()
-  .trim()
-  .min(1, { message: '최소 1글자 이상 입력해주세요' })
-  .max(50, { message: '최대 50자까지만 입력할 수 있어요' });
+export const createTitleSchema = ({ min = 1, max = 30 } = {}) => {
+  return z
+    .string()
+    .trim()
+    .min(min, { message: `최소 ${min}자 이상 입력해주세요` })
+    .max(max, { message: `최대 ${max}자까지 입력할 수 있어요` });
+};
