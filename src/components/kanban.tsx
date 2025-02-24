@@ -2,8 +2,14 @@
 
 import { HeaderNav } from '@/components/kanban-header';
 import { Board, BoardSidebar } from '@/components/kanban-board';
+import { useInitBoard } from '@/hooks';
+import { type BoardId } from '@/schema';
 
-const Kanban = () => {
+const Kanban = ({ boardId }: { boardId: BoardId }) => {
+  const isHydrated = useInitBoard(boardId);
+
+  if (!isHydrated) return null;
+
   return (
     <div className="flex size-full flex-col">
       <HeaderNav />

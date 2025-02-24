@@ -10,7 +10,8 @@ export default function Home() {
 
   useEffect(() => {
     // 현재 스토어에 있는 샘플 데이터 조회(useStore.getState() 사용하면 반응성 없음)
-    router.replace(useKanbanStore.getState().currentBoardId);
+    const { boards, currentBoardId } = useKanbanStore.getState();
+    router.replace(`/${currentBoardId}?title=${boards[currentBoardId].title}`);
   }, [router]);
 
   return <Skeleton />;

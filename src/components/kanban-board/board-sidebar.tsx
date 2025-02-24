@@ -17,23 +17,23 @@ const BoardSidebar = () => {
   return (
     <Sidebar>
       <ul className="flex flex-col divide-y divide-baltic-900">
-        {Object.values(boards).map((board) => (
+        {Object.values(boards).map(({ title, id }) => (
           <li
-            key={board.id}
+            key={id}
             className={cn(
               'font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 truncate py-2',
-              { 'text-charade-100 font-bold': board.id === currentBoardId },
+              { 'text-charade-100 font-bold': id === currentBoardId },
             )}
           >
-            <Link href={board.id} className="block" prefetch>
+            <Link href={{ pathname: id, query: { title } }} className="block" prefetch>
               <SquareKanban className="inline size-[26px] pr-2" />
-              {board.title}
+              {title}
             </Link>
           </li>
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <BoardAddDialog onConfirm={({ id }) => router.push(id)}>
+        <BoardAddDialog onConfirm={({ id, title }) => router.push(`${id}?title=${title}`)}>
           <Button className="w-full font-bold capitalize">add board</Button>
         </BoardAddDialog>
       </div>

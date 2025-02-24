@@ -55,7 +55,7 @@ const HeaderCommand = () => {
             <CommandEmpty>입력한 보드가 없어요</CommandEmpty>
             <CommandGroup className="p-2">
               {boardList.map(({ id, title }) => (
-                <Link className="block" key={id} href={id} prefetch>
+                <Link className="block" key={id} href={{ pathname: id, query: { title } }} prefetch>
                   <CommandItem value={id} className="flex gap-2">
                     <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
                     <span className="truncate">{title}</span>
@@ -64,7 +64,7 @@ const HeaderCommand = () => {
               ))}
             </CommandGroup>
           </CommandList>
-          <BoardAddDialog onConfirm={({ id }) => router.push(id)}>
+          <BoardAddDialog onConfirm={({ id, title }) => router.push(`${id}?title=${title}`)}>
             <Button className="rounded-none font-bold capitalize lg:hidden">add board</Button>
           </BoardAddDialog>
         </Command>

@@ -16,7 +16,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
 import { type ReactNode, useState } from 'react';
-import { generateBoard } from '@/lib';
+import { BoardConfig, generateBoard } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { useKanbanStore } from '@/store';
 import { type Void } from '@/types';
@@ -77,7 +77,9 @@ const BoardAddDialog = ({ children, onConfirm }: BoardAddDialogProps) => {
                 <Label htmlFor={titleField}>보드 이름</Label>
                 <Input
                   {...form.register(titleField)}
-                  placeholder="최대 50자까지 입력할 수 있어요"
+                  placeholder={`최대 ${BoardConfig.title.max}자까지 입력할 수 있어요`}
+                  maxLength={BoardConfig.title.max}
+                  minLength={BoardConfig.title.min}
                 />
                 <ErrorMessage
                   errors={form.formState.errors}

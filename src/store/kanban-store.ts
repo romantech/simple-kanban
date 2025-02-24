@@ -42,7 +42,10 @@ const useKanbanStoreBase = create<KanbanState>()(
           }),
           { name: 'kanban-store' },
         ),
-        { name: 'kanban-storage' },
+        {
+          name: 'kanban-storage',
+          version: 1,
+        },
       ),
     ),
   ),

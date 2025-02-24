@@ -4,7 +4,7 @@ import { type ChangeEvent, type HTMLAttributes, type KeyboardEvent, useState } f
 import { EditIcon, GripVertical, Save, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { cn } from '@/lib';
+import { cn, ColumnConfig } from '@/lib';
 import { IconButton } from '@/components/ui/icon-button';
 import { AnimatePresence, motion, type MotionProps } from 'motion/react';
 
@@ -80,6 +80,9 @@ const ColumnHeader = ({
               onBlur={saveTitle}
               onKeyDown={onKeyDown}
               className="h-6 px-2 font-bold focus-visible:ring-0"
+              maxLength={ColumnConfig.title.max}
+              minLength={ColumnConfig.title.min}
+              placeholder={`최소 ${ColumnConfig.title.min} 최대 ${ColumnConfig.title.max} 글자`}
               autoFocus
             />
           </motion.div>

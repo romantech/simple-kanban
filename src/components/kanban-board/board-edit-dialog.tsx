@@ -1,3 +1,5 @@
+'use client';
+
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type ReactNode, useState } from 'react';
@@ -18,6 +20,8 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { addBoardSchema, type BoardFields } from '@/schema';
+import { useRouter } from 'next/navigation';
+import { BoardConfig } from '@/lib';
 
 interface BoardEditDialogProps {
   children: ReactNode;
@@ -30,6 +34,7 @@ const [titleField] = editBoardSchema.keyof().options;
 
 export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -45,6 +50,8 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
   const onSubmit: SubmitHandler<EditBoardSchema> = ({ title }) => {
     editBoard(board.id, title);
     setIsDialogOpen(false);
+    // 수정한 타이틀이 페이지 제목에 반영되도록 router.replace -> generateMetadata 함수로 title 전달
+    router.replace(`/${board.id}?title=${title}`);
   };
 
   return (
@@ -59,7 +66,12 @@ export const BoardEditDialog = ({ board, children }: BoardEditDialogProps) => {
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           <div className="flex flex-col gap-2 py-4">
             <Label htmlFor={titleField}>보드 이름</Label>
-            <Input {...register(titleField)} placeholder="최대 50자까지 입력할 수 있어요" />
+            <Input
+              {...register(titleField)}
+              placeholder={`최대 ${BoardConfig.title.max}자까지 입력할 수 있어요`}
+              maxLength={BoardConfig.title.max}
+              minLength={BoardConfig.title.min}
+            />
             <ErrorMessage
               errors={errors}
               name={titleField}
