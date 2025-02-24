@@ -41,14 +41,14 @@ const HeaderCommand = () => {
         <Button
           variant="outline"
           role="combobox"
-          className="w-full max-w-60 justify-between gap-x-0"
+          className="w-full max-w-44 justify-between gap-x-0 sm:max-w-60"
           aria-expanded={openCommand}
         >
           <span className="truncate">{board.title}</span>
           <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="min-w-full max-w-60 p-0">
+      <PopoverContent className="min-w-full max-w-44 p-0 sm:max-w-60">
         <Command filter={onSearch}>
           <CommandInput placeholder="보드 이름을 입력하세요" className="h-9" />
           <CommandList>
