@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createTitleSchema, timestampsSchema } from '@/schema/base';
-import { BoardConfig, ColumnConfig, TaskConfig } from '@/lib';
+import { BoardConfig, ColumnConfig, TaskConfig } from '@/lib/kanban-config';
 
 export enum KanbanBrandType {
   Task = 'Task',
