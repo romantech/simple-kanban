@@ -1,7 +1,7 @@
 'use client';
 
 import { useKanbanStore } from '@/store';
-import { SquarePlus } from 'lucide-react';
+import { Github, SquarePlus } from 'lucide-react';
 import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
 import { Header } from '@/components/ui/header';
 
@@ -18,6 +18,15 @@ const HeaderNav = () => {
               <SquarePlus className="size-6" />
             </button>
           </ColumnAddDialog>
+          <a
+            href="https://github.com/romantech/simple-kanban"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden lg:block"
+            title="GitHub Repository"
+          >
+            <Github />
+          </a>
           <HeaderDropdown />
         </div>
       </nav>
