@@ -9,7 +9,7 @@ export const Logo = ({ size = 36, className, ...props }: LogoProps) => {
   return (
     <Image
       priority
-      src="/favicon.png"
+      src="/images/favicon.png"
       alt="logo"
       width={size}
       height={size}

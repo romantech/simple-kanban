@@ -312,7 +312,7 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
       - 대상 컬럼의 첫 번째 태스크보다 위쪽으로 드래그했을 때: 첫 번째 위치 (인덱스 = `0`)
       - 그 외 상황: 마지막 위치 (인덱스 = `taskIds.length`)
 
-> 타겟 태스크의 인덱스 확인 과정을 시각화한 플로우차트
+타겟 태스크의 인덱스 확인 과정을 플로우차트로 시각화해보면 다음과 같다.
 
 ```mermaid
 flowchart TD
