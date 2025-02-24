@@ -342,7 +342,7 @@ flowchart TD
 
 `onDragOver` 핸들러는 `delta`, `activatorEvent` 객체를 인자로 받는다. `activatorEvent.clientY`는 드래그를 시작했을 때 y 좌표를 나타내고, `delta.y`는 이동한 거리를 나타낸다. 이 두 값을 더하면 현재 드래그 중인 아이템의 y 좌표를 계산할 수 있다.
 
-![drag-position.png](./public/screenshot/drag-position.png)
+![drag-position.png](public/images/drag-position.png)
 
 위 이미지의 Top Boundary는 첫 번째 태스크 위쪽의 경계를 의미한다. 만약 계산한 y 좌표가 이 경계보다 작으면(Drag Position 1) 드래그 아이템을 첫 번째 아이템으로 위치시키고(인덱스 = 0), 그 외엔(Drag Position 2) 마지막 아이템(taskIds.length)으로 위치시킨다.
 
@@ -464,3 +464,8 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 - 칸반 디자인: https://kanban-app-jay.netlify.app
 - 전역 폰트: [Pretendard](https://github.com/orioncactus/pretendard)
 - 드래그앤드롭: [Dnd Kit Sortable](https://docs.dndkit.com/presets/sortable)
+
+## 스크린샷
+
+![desktop-screenshot](./public/screenshot/desktop.png)
+![mobile-screenshot](./public/screenshot/mobile.png)
