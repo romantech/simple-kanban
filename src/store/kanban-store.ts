@@ -40,7 +40,7 @@ const useKanbanStoreBase = create<KanbanState>()(
             ...createColumnSlice(...methods),
             ...createTaskSlice(...methods),
           }),
-          { name: 'kanban-store' },
+          { name: 'kanban-store', enabled: process.env.NODE_ENV === 'development' },
         ),
         {
           name: 'kanban-storage',
