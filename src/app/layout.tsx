@@ -12,17 +12,23 @@ const pretendard = localFont({
   variable: '--font-pretendard',
 });
 
+const sharedMetadata = {
+  title: { template: '%s | Simple Kanban', default: 'Simple Kanban' },
+  description: 'Simple Kanban board built with Next.js and dnd-kit',
+};
+
 export const metadata: Metadata = {
-  title: {
-    template: '%s | Simple Kanban',
-    default: 'Simple Kanban',
-  },
+  ...sharedMetadata,
   applicationName: 'Simple Kanban',
-  description: 'Simple Kanban board with dnd-kit',
   icons: { icon: '/favicon.png' },
   creator: 'Romantech',
   metadataBase: new URL('https://simple-kanban-iota.vercel.app'),
   keywords: ['Kanban', 'Task Management', 'dnd-kit', 'Drag and Drop'],
+  openGraph: {
+    ...sharedMetadata,
+    siteName: 'Simple Kanban',
+    images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'Simple Kanban' }],
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
