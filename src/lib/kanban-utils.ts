@@ -17,7 +17,10 @@ import {
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];
-  return z.string().brand(brand).parse(`${entity}-${nanoid()}`);
+  return z
+    .string()
+    .brand(brand)
+    .parse(`${entity}-${nanoid(8)}`);
 };
 
 export const generateKanbanIds = <T extends KanbanEntity>(type: T, count: number) => {
