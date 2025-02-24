@@ -10,7 +10,7 @@ const HeaderNav = () => {
 
   return (
     <Header>
-      <nav className="flex w-full items-center justify-between p-6">
+      <nav className="flex w-full items-center justify-between lg:p-6">
         <HeaderCommand />
         <div className="flex gap-4">
           <ColumnAddDialog boardId={board.id}>

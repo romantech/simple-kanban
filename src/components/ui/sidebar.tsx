@@ -1,8 +1,19 @@
-import type { PropsWithChildren } from 'react';
+import type { HTMLAttributes } from 'react';
+import { cn } from '@/lib';
 
-const Sidebar = ({ children, title = 'all boards' }: PropsWithChildren<{ title?: string }>) => {
+interface SidebarProps extends HTMLAttributes<HTMLDivElement> {
+  title?: string;
+}
+
+const Sidebar = ({ children, title = 'all boards', className, ...divProps }: SidebarProps) => {
   return (
-    <div className="scroll-custom invisible w-0 max-w-72 space-y-4 overflow-y-auto border-r border-baltic-900 bg-charade-950 p-0 opacity-0 transition-all lg:visible lg:block lg:w-full lg:p-6 lg:opacity-100">
+    <div
+      className={cn(
+        'scroll-custom w-full max-w-72 space-y-4 overflow-y-auto border-r border-baltic-900 bg-charade-950 transition-all duration-300 p-6',
+        className,
+      )}
+      {...divProps}
+    >
       <h3 className="text-sm font-bold uppercase text-baltic-400">{title}</h3>
       {children}
     </div>
