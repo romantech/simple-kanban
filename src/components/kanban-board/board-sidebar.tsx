@@ -50,7 +50,7 @@ const BoardSidebar = () => {
         type="button"
         onClick={toggleSidebar}
         className={cn(
-          'hidden h-[36px] px-3 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-6 absolute bottom-6 hover:bg-baltic-900',
+          'hidden h-[36px] px-2 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-[22px] absolute bottom-6 hover:bg-baltic-900',
           { 'translate-x-[288px] rounded-r-xl': openPanel, 'rotate-180 rounded-l-xl': !openPanel },
         )}
       >
