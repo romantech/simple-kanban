@@ -31,7 +31,7 @@ const Task = ({ taskId, className }: TaskProps) => {
             className="p-4"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
-            <small className="text-xs text-baltic-400">{formatKoDate(task.createdAt)}</small>
+            <small className="text-xs text-baltic-400">{formatKoDate(task.updatedAt)}</small>
           </motion.div>
         </TaskEditViewDialog>
       )}

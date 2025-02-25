@@ -10,7 +10,7 @@ const TaskViewContent = ({ task }: { task: TaskFields }) => {
       </div>
       <div className="space-y-1">
         <span className="font-semibold text-baltic-400">업데이트 날짜</span>
-        <p>{formatKoDate(task.createdAt)}</p>
+        <p>{formatKoDate(task.updatedAt)}</p>
       </div>
     </div>
   );
