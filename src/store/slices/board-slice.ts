@@ -10,7 +10,7 @@ export interface BoardSlice {
   addBoard: Void<[BoardFields, boolean]>;
   editBoard: Void<[BoardId, TitleField]>;
   setCurrentBoard: Void<[BoardId]>;
-  deleteBoard: Void<[BoardId]>;
+  deleteBoard: (boardId: BoardId) => BoardFields;
   getBoardCount: () => number;
 }
 
@@ -58,6 +58,9 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
 
       delete state.boards[boardId];
     });
+    // 상태 변경 후 실행됨
+    const { boards, currentBoardId } = get();
+    return boards[currentBoardId];
   },
   setCurrentBoard: (boardId) => {
     set((state) => {
