@@ -30,9 +30,9 @@ const HeaderDropdown = () => {
   const shouldDisableDelete = boardCount <= 1;
 
   const onConfirmDelete = () => {
-    deleteBoard(currentBoardId);
+    const { id, title } = deleteBoard(currentBoardId);
     setOpenMenu(false);
-    router.replace(useKanbanStore.getState().currentBoardId);
+    router.replace(`${id}?title=${title}`);
   };
 
   return (

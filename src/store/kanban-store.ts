@@ -15,13 +15,13 @@ export type KanbanState = BoardSlice & ColumnSlice & TaskSlice;
 export type KanbanStateUnion = BoardSlice | ColumnSlice | TaskSlice;
 
 export type KanbanSliceCreator<T extends KanbanStateUnion> = StateCreator<
-  BoardSlice & ColumnSlice & TaskSlice, // Kanban 보드의 전체 상태
+  KanbanState, // Kanban 보드의 전체 상태
   [
-    ['zustand/subscribeWithSelector', never], // Zustand 미들웨어
+    ['zustand/subscribeWithSelector', never],
     ['zustand/immer', never],
     ['zustand/persist', unknown],
     ['zustand/devtools', never],
-  ],
+  ], // Zustand 미들웨어
   [],
   T // 개별 Slice 상태
 >;
