@@ -25,7 +25,7 @@ const fadeScaleAnimation: MotionProps = {
 const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { triggerShake, shakeClass } = useShakeAnimation();
+  const { triggerShake, isShaking } = useShakeAnimation();
 
   const deleteColumn = useKanbanStore.use.deleteColumn();
   const editColumn = useKanbanStore.use.editColumn();
@@ -67,7 +67,11 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
       <GripVertical className="size-5 flex-none" />
       <AnimatePresence mode="wait">
         {isEditMode ? (
-          <motion.div key="input" {...fadeScaleAnimation} className={cn('grow', shakeClass)}>
+          <motion.div
+            key="input"
+            {...fadeScaleAnimation}
+            className={cn('grow', { 'animate-shake': isShaking })}
+          >
             <Input
               ref={inputRef}
               defaultValue={column.title}
