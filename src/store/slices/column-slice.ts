@@ -1,14 +1,14 @@
 import type { Columns, Void } from '@/types';
 import { getISODate, sampleColumns } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
-import { type BoardId, type ColumnFields, type ColumnId, type TitleField } from '@/schema';
+import { type BoardId, type ColumnDef, type ColumnId, type TitleDef } from '@/schema';
 
 export interface ColumnSlice {
   columns: Columns;
 
-  addColumn: Void<[ColumnFields]>;
-  deleteColumn: Void<[ColumnFields]>;
-  editColumn: Void<[ColumnId, TitleField]>;
+  addColumn: Void<[ColumnDef]>;
+  deleteColumn: Void<[ColumnDef]>;
+  editColumn: Void<[ColumnId, TitleDef]>;
   moveColumn: Void<[BoardId, ColumnId[]]>;
 }
 

@@ -1,23 +1,24 @@
 import { createBrandedParser } from '@/types/common';
 import {
-  type BoardFields,
-  boardId,
+  type BoardDef,
   type BoardId,
-  type ColumnFields,
+  type ColumnDef,
   columnId,
   type ColumnId,
-  type TaskFields,
+  type SubtaskDef,
+  type SubtaskId,
+  type TaskDef,
   taskId,
   type TaskId,
 } from '@/schema';
 
-export type Tasks = Record<TaskId, TaskFields>;
-export type Columns = Record<ColumnId, ColumnFields>;
-export type Boards = Record<BoardId, BoardFields>;
+export type Tasks = Record<TaskId, TaskDef>;
+export type Subtasks = Record<SubtaskId, SubtaskDef>;
+export type Columns = Record<ColumnId, ColumnDef>;
+export type Boards = Record<BoardId, BoardDef>;
 
 export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
-export const toBoardId = createBrandedParser(boardId);
 
 export interface Sortable<TContainer, TItem> {
   index: number;

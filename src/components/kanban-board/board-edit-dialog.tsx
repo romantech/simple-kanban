@@ -19,13 +19,13 @@ import { Input } from '@/components/ui/input';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
-import { addBoardSchema, type BoardFields } from '@/schema';
+import { addBoardSchema, type BoardDef } from '@/schema';
 import { useRouter } from 'next/navigation';
 import { BoardConfig } from '@/lib';
 
 interface BoardEditDialogProps {
   children: ReactNode;
-  board: BoardFields;
+  board: BoardDef;
 }
 
 const editBoardSchema = addBoardSchema.omit({ preset: true });

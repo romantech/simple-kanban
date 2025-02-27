@@ -1,16 +1,16 @@
 import { type Boards, type Void } from '@/types';
 import { generatePresetColumns, getISODate, sampleBoardId, sampleBoards } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
-import { type BoardFields, type BoardId, type TitleField } from '@/schema';
+import { type BoardDef, type BoardId, type TitleDef } from '@/schema';
 
 export interface BoardSlice {
   boards: Boards;
   currentBoardId: BoardId;
 
-  addBoard: Void<[BoardFields, boolean]>;
-  editBoard: Void<[BoardId, TitleField]>;
+  addBoard: Void<[BoardDef, boolean]>;
+  editBoard: Void<[BoardId, TitleDef]>;
   setCurrentBoard: Void<[BoardId]>;
-  deleteBoard: (boardId: BoardId) => BoardFields;
+  deleteBoard: (boardId: BoardId) => BoardDef;
   getBoardCount: () => number;
 }
 

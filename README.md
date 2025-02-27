@@ -70,7 +70,7 @@ erDiagram
     }
 ```
 
-- `Record<TaskId, TaskFields>` 형태로 저장하면 O(1) 시간 복잡도로 데이터 조회 가능
+- `Record<TaskId, TaskDef>` 형태로 저장하면 O(1) 시간 복잡도로 데이터 조회 가능
 - `boardId`, `columnId` 같은 FK(Foreign Key, 외래 키)를 사용하여 참조 무결성 보장
 - 필요에 따라 `assigneeId`, `priority` 같은 필드를 쉽게 추가할 수 있음
 

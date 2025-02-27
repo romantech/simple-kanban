@@ -29,12 +29,12 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
-import { addBoardSchema, type AddBoardSchema, type BoardFields } from '@/schema';
+import { addBoardSchema, type AddBoardSchema, type BoardDef } from '@/schema';
 
 const [titleField, presetField] = addBoardSchema.keyof().options;
 
 interface BoardAddDialogProps {
-  onConfirm?: Void<[BoardFields]>;
+  onConfirm?: Void<[BoardDef]>;
   children: ReactNode;
 }
 
