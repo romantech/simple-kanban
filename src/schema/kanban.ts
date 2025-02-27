@@ -6,6 +6,7 @@ export enum KanbanBrandType {
   Task = 'Task',
   Column = 'Column',
   Board = 'Board',
+  Subtask = 'Subtask',
 }
 
 export type KanbanEntity = keyof typeof KanbanBrandType;
@@ -13,6 +14,17 @@ export type KanbanEntity = keyof typeof KanbanBrandType;
 export const taskId = z.string().brand<KanbanBrandType.Task>();
 export const columnId = z.string().brand<KanbanBrandType.Column>();
 export const boardId = z.string().brand<KanbanBrandType.Board>();
+export const subtaskId = z.string().brand<KanbanBrandType.Subtask>();
+
+export const subtaskSchema = timestampsSchema.extend({
+  id: subtaskId,
+  taskId: taskId,
+  title: createTitleSchema({
+    max: TaskConfig.subtask.title.max,
+    min: TaskConfig.subtask.title.min,
+  }),
+  completed: z.boolean().default(false),
+});
 
 export const taskSchema = timestampsSchema.extend({
   id: taskId,
@@ -23,6 +35,7 @@ export const taskSchema = timestampsSchema.extend({
     .max(TaskConfig.desc.max, { message: `최대 ${TaskConfig.desc.max}자까지 입력할 수 있어요` })
     .transform((val) => (val === '' ? undefined : val))
     .optional(),
+  subtasks: z.array(subtaskSchema),
 });
 
 export const columnSchema = timestampsSchema.extend({
@@ -39,9 +52,12 @@ export const boardSchema = timestampsSchema.extend({
 });
 
 export type TaskId = z.infer<typeof taskId>;
+export type SubtaskId = z.infer<typeof subtaskId>;
 export type ColumnId = z.infer<typeof columnId>;
 export type BoardId = z.infer<typeof boardId>;
+
 export type TaskFields = z.infer<typeof taskSchema>;
+export type SubtaskFields = z.infer<typeof subtaskSchema>;
 export type ColumnFields = z.infer<typeof columnSchema>;
 export type BoardFields = z.infer<typeof boardSchema>;
 export type TitleField = z.infer<ReturnType<typeof createTitleSchema>>;
