@@ -32,7 +32,7 @@ export const Subtask = ({ subtaskId }: SubtaskProps) => {
       <Input
         placeholder="제목 없음"
         className={cn('border-none focus-visible:ring-0', {
-          'line-through text-charade-400': subtask.completed,
+          'line-through text-charade-500': subtask.completed,
         })}
         defaultValue={subtask.title}
         onChange={onInputChange}

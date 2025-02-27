@@ -47,7 +47,7 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
             추가
           </Button>
         </div>
-        <ul className="scroll-custom max-h-72 space-y-2 overflow-y-auto">
+        <ul className="scroll-custom max-h-[274px] space-y-2 overflow-y-auto">
           {task.subtaskIds.map((subtaskId) => (
             <Subtask key={subtaskId} subtaskId={subtaskId} />
           ))}
