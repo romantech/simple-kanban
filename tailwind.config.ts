@@ -16,9 +16,16 @@ export default {
           '0%, 60%': { transform: 'translateY(0px)' },
           '30%': { transform: 'translateY(-30px)' },
         },
+        shake: {
+          '0%': { transform: 'translateX(0px)' },
+          '25%': { transform: 'translateX(5px)' },
+          '75%': { transform: 'translateX(-5px)' },
+          '100%': { transform: 'translateX(0px)' },
+        },
       },
       animation: {
         progress: 'progress 1s linear infinite',
+        shake: 'shake 0.15s ease-in-out 3;',
       },
       colors: {
         baltic: {

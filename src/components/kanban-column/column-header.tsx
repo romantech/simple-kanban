@@ -9,6 +9,7 @@ import { IconButton } from '@/components/ui/icon-button';
 import { AnimatePresence, motion, type MotionProps } from 'motion/react';
 import { type ColumnDef, columnSchema } from '@/schema';
 import { useKanbanStore } from '@/store';
+import { useShakeAnimation } from '@/hooks';
 
 interface ColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
   column: ColumnDef;
@@ -24,6 +25,7 @@ const fadeScaleAnimation: MotionProps = {
 const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { triggerShake, shakeClass } = useShakeAnimation();
 
   const deleteColumn = useKanbanStore.use.deleteColumn();
   const editColumn = useKanbanStore.use.editColumn();
@@ -32,7 +34,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
     if (inputRef.current === null) return;
 
     const result = columnSchema.shape.title.safeParse(inputRef.current.value);
-    if (!result.success) return;
+    if (!result.success) return triggerShake();
 
     editColumn(column.id, result.data);
     setIsEditMode(false);
@@ -65,12 +67,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
       <GripVertical className="size-5 flex-none" />
       <AnimatePresence mode="wait">
         {isEditMode ? (
-          <motion.div
-            key="input"
-            {...fadeScaleAnimation}
-            style={{ transformOrigin: 'right' }}
-            className="grow"
-          >
+          <motion.div key="input" {...fadeScaleAnimation} className={cn('grow', shakeClass)}>
             <Input
               ref={inputRef}
               defaultValue={column.title}
