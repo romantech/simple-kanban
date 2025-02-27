@@ -3,7 +3,7 @@
 import { subtaskSchema, type TaskDef } from '@/schema';
 import { type KeyboardEvent, useRef } from 'react';
 import { Input } from '@/components/ui/input';
-import { generateSubtask, TaskConfig } from '@/lib';
+import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { Subtask } from './subtask';
@@ -12,7 +12,7 @@ import { useShakeAnimation } from '@/hooks';
 const TaskViewContent = ({ task }: { task: TaskDef }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const addSubtask = useKanbanStore.use.addSubtask();
-  const { triggerShake, shakeClass } = useShakeAnimation();
+  const { triggerShake, isShaking } = useShakeAnimation();
 
   const onAddSubtask = () => {
     if (!inputRef.current) return;
@@ -44,7 +44,7 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
             ref={inputRef}
             placeholder={`하위 작업 추가 (최소 ${TaskConfig.subtask.title.min} 최대 ${TaskConfig.subtask.title.max}글자)`}
             onKeyDown={onKeyDown}
-            className={shakeClass}
+            className={cn({ 'animate-shake': isShaking })}
           />
           <Button type="button" onClick={onAddSubtask}>
             추가
