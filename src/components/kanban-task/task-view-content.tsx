@@ -7,16 +7,18 @@ import { generateSubtask, TaskConfig } from '@/lib';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { Subtask } from './subtask';
+import { useShakeAnimation } from '@/hooks';
 
 const TaskViewContent = ({ task }: { task: TaskDef }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const addSubtask = useKanbanStore.use.addSubtask();
+  const { triggerShake, shakeClass } = useShakeAnimation();
 
   const onAddSubtask = () => {
     if (!inputRef.current) return;
 
     const result = subtaskSchema.shape.title.safeParse(inputRef.current.value);
-    if (!result.success) return;
+    if (!result.success) return triggerShake();
 
     const subtask = generateSubtask(task.id, result.data);
     addSubtask(subtask);
@@ -40,8 +42,9 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
         <div className="flex gap-2 pb-1.5">
           <Input
             ref={inputRef}
-            placeholder={`하위 작업 추가 (최대 ${TaskConfig.subtask.title.max}자)`}
+            placeholder={`하위 작업 추가 (최소 ${TaskConfig.subtask.title.min} 최대 ${TaskConfig.subtask.title.max}글자)`}
             onKeyDown={onKeyDown}
+            className={shakeClass}
           />
           <Button type="button" onClick={onAddSubtask}>
             추가

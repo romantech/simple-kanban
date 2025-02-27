@@ -1,18 +1,18 @@
 'use client';
 
-import { type ChangeEvent, type HTMLAttributes, type KeyboardEvent, useState } from 'react';
+import { type HTMLAttributes, type KeyboardEvent, useRef, useState } from 'react';
 import { EditIcon, GripVertical, Save, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { cn, ColumnConfig } from '@/lib';
 import { IconButton } from '@/components/ui/icon-button';
 import { AnimatePresence, motion, type MotionProps } from 'motion/react';
+import { type ColumnDef, columnSchema } from '@/schema';
+import { useKanbanStore } from '@/store';
+import { useShakeAnimation } from '@/hooks';
 
 interface ColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  title: string;
-  taskCount: number;
-  onDelete: () => void;
-  onTitleChange: (title: string) => void;
+  column: ColumnDef;
 }
 
 const fadeScaleAnimation: MotionProps = {
@@ -22,40 +22,39 @@ const fadeScaleAnimation: MotionProps = {
   transition: { duration: 0.15 },
 };
 
-const ColumnHeader = ({
-  title,
-  taskCount,
-  onDelete,
-  onTitleChange,
-  className,
-  ...divProps
-}: ColumnHeaderProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(title);
+const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { triggerShake, shakeClass } = useShakeAnimation();
+
+  const deleteColumn = useKanbanStore.use.deleteColumn();
+  const editColumn = useKanbanStore.use.editColumn();
 
   const saveTitle = () => {
-    const trimmed = editedTitle.trim();
-    if (trimmed.length === 0) return;
+    if (inputRef.current === null) return;
 
-    onTitleChange(trimmed);
-    setIsEditing(false);
+    const result = columnSchema.shape.title.safeParse(inputRef.current.value);
+    if (!result.success) return triggerShake();
+
+    editColumn(column.id, result.data);
+    setIsEditMode(false);
   };
 
-  const toggleIsEditing = () => {
-    if (isEditing) saveTitle();
-    else setIsEditing(true);
+  const handleEditOrSave = () => {
+    if (isEditMode) saveTitle();
+    else setIsEditMode(true);
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') saveTitle();
-    else if (event.key === 'Escape') setIsEditing(false);
+    else if (event.key === 'Escape') setIsEditMode(false);
   };
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setEditedTitle(event.target.value);
-  };
+  const onBlur = () => setIsEditMode(false);
 
-  const Icon = isEditing ? Save : EditIcon;
+  const onConfirmDelete = () => deleteColumn(column);
+
+  const Icon = isEditMode ? Save : EditIcon;
 
   return (
     <div
@@ -67,19 +66,14 @@ const ColumnHeader = ({
     >
       <GripVertical className="size-5 flex-none" />
       <AnimatePresence mode="wait">
-        {isEditing ? (
-          <motion.div
-            key="input"
-            {...fadeScaleAnimation}
-            style={{ transformOrigin: 'right' }}
-            className="grow"
-          >
+        {isEditMode ? (
+          <motion.div key="input" {...fadeScaleAnimation} className={cn('grow', shakeClass)}>
             <Input
-              value={editedTitle}
-              onChange={onInputChange}
-              onBlur={saveTitle}
+              ref={inputRef}
+              defaultValue={column.title}
+              onBlur={onBlur}
               onKeyDown={onKeyDown}
-              className="h-6 px-2 font-bold focus-visible:ring-0"
+              className="h-7 px-2 font-bold focus-visible:ring-0"
               maxLength={ColumnConfig.title.max}
               minLength={ColumnConfig.title.min}
               placeholder={`최소 ${ColumnConfig.title.min} 최대 ${ColumnConfig.title.max} 글자`}
@@ -93,7 +87,7 @@ const ColumnHeader = ({
             style={{ transformOrigin: 'left' }}
             className="line-clamp-1 grow text-[15px] font-bold"
           >
-            {`${title} (${taskCount})`}
+            {`${column.title} (${column.taskIds.length})`}
           </motion.h3>
         )}
       </AnimatePresence>
@@ -102,12 +96,12 @@ const ColumnHeader = ({
         <ConfirmDialog
           title="컬럼을 삭제할까요?"
           description="컬럼을 삭제하면 해당 컬럼에 있는 모든 작업이 삭제돼요."
-          onConfirm={onDelete}
+          onConfirm={onConfirmDelete}
           asChild
         >
-          {!isEditing && <IconButton Icon={Trash2} />}
+          {!isEditMode && <IconButton Icon={Trash2} />}
         </ConfirmDialog>
-        <IconButton onClick={toggleIsEditing} Icon={Icon} />
+        <IconButton onClick={handleEditOrSave} Icon={Icon} />
       </div>
     </div>
   );
