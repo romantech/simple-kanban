@@ -18,17 +18,20 @@ const Task = ({ taskId, className }: TaskProps) => {
       data={task}
       type="task"
       element="li"
+      rootDndConfig={{ listeners: false, attributes: false }}
       className={cn(
         'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md flex flex-col gap-1',
         className,
       )}
     >
-      {() => (
+      {({ listeners, attributes }) => (
         <TaskEditViewDialog task={task}>
           <motion.div
+            {...listeners}
+            {...attributes}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-4"
+            className="p-4 text-left"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <small className="text-xs text-baltic-400">{formatKoDate(task.updatedAt)}</small>

@@ -42,7 +42,7 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
         <div className="flex gap-2 pb-1.5">
           <Input
             ref={inputRef}
-            placeholder={`하위 작업 추가 (최소 ${TaskConfig.subtask.title.min} 최대 ${TaskConfig.subtask.title.max}글자)`}
+            placeholder={`하위 작업 추가 (${TaskConfig.subtask.title.min} ~ ${TaskConfig.subtask.title.max}자)`}
             onKeyDown={onKeyDown}
             className={cn({ 'animate-shake': isShaking })}
           />

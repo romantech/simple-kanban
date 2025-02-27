@@ -80,7 +80,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
               className="h-7 px-2 font-bold focus-visible:ring-0"
               maxLength={ColumnConfig.title.max}
               minLength={ColumnConfig.title.min}
-              placeholder={`최소 ${ColumnConfig.title.min} 최대 ${ColumnConfig.title.max} 글자`}
+              placeholder={`${ColumnConfig.title.min} ~ ${ColumnConfig.title.max} 글자`}
               autoFocus
             />
           </motion.div>
