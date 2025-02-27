@@ -18,13 +18,20 @@ import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { TaskViewContent } from '@/components/kanban-task/task-view-content';
 import { useKanbanStore } from '@/store';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, type AnimationProps, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
 import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
 
 interface SharedTaskProps {
   task: TaskDef;
 }
+
+const animationVariants: AnimationProps = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.95 },
+  transition: { duration: 0.08 },
+};
 
 const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
@@ -56,7 +63,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="text-left">{children}</DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
@@ -64,7 +71,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
             <DialogTitle className="capitalize">{title}</DialogTitle>
             <DialogDescription></DialogDescription>
 
-            <div className="-ml-1 flex gap-4 text-baltic-300">
+            <div className="-ml-1 flex w-fit gap-4 text-baltic-300">
               <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
               <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
                 <IconButton as="div" Icon={Trash2} label="삭제" />
@@ -78,10 +85,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
           <motion.div
             key={isEditing ? 'edit' : 'view'} // key 변경 시 기존 컴포넌트 퇴장 애니메이션 -> 새 컴포넌트 입장 애니메이션
             layout // 레이아웃(크기/위치 등) 변경될 때 애니메이션
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.08 }}
+            {...animationVariants}
           >
             {isEditing ? (
               <FormProvider {...methods}>
