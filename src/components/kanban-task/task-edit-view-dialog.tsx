@@ -20,10 +20,10 @@ import { TaskViewContent } from '@/components/kanban-task/task-view-content';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
-import { addTaskSchema, type AddTaskSchema, type TaskFields } from '@/schema';
+import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
 
 interface SharedTaskProps {
-  task: TaskFields;
+  task: TaskDef;
 }
 
 const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {

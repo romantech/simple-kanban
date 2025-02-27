@@ -4,15 +4,16 @@ import { getISODate } from '@/lib/utils';
 import type { Active, Over } from '@dnd-kit/core';
 import type { TaskSortable } from '@/types';
 import {
-  type BoardFields,
+  type BoardDef,
   type BoardId,
-  type ColumnFields,
+  type ColumnDef,
   type ColumnId,
   KanbanBrandType,
   type KanbanEntity,
-  type TaskFields,
+  type SubtaskDef,
+  type TaskDef,
   type TaskId,
-  type TitleField,
+  type TitleDef,
 } from '@/schema';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
@@ -27,11 +28,24 @@ export const generateKanbanIds = <T extends KanbanEntity>(type: T, count: number
   return Array.from({ length: count }, () => generateKanbanId(type));
 };
 
+export const generateSubtask = (taskId: TaskId, title: TitleDef = ''): SubtaskDef => {
+  const now = getISODate();
+
+  return {
+    id: generateKanbanId('Subtask'),
+    taskId,
+    title,
+    createdAt: now,
+    updatedAt: now,
+    completed: false,
+  };
+};
+
 export const generateTask = (
   columnId: ColumnId,
-  title: TitleField,
+  title: TitleDef,
   description?: string,
-): TaskFields => {
+): TaskDef => {
   const now = getISODate();
 
   return {
@@ -41,10 +55,11 @@ export const generateTask = (
     description,
     createdAt: now,
     updatedAt: now,
+    subtaskIds: [],
   };
 };
 
-export const generateColumn = (boardId: BoardId, title: TitleField): ColumnFields => {
+export const generateColumn = (boardId: BoardId, title: TitleDef): ColumnDef => {
   const now = getISODate();
 
   return {
@@ -62,7 +77,7 @@ export const generatePresetColumns = (boardId: BoardId) => {
   return defaultTitles.map((title) => generateColumn(boardId, title));
 };
 
-export const generateBoard = (title: TitleField): BoardFields => {
+export const generateBoard = (title: TitleDef): BoardDef => {
   const now = getISODate();
 
   return {
@@ -96,7 +111,7 @@ interface ComputeTargetTaskIdxParams {
   /** 드롭 대상이 컬럼인지 여부 */
   isOverColumn: boolean;
   /** 드롭할 대상 컬럼 */
-  targetColumn: ColumnFields;
+  targetColumn: ColumnDef;
   /** 드롭 대상 태스크의 정렬 정보 */
   overSort: TaskSortable;
   /** 드래그 중인 태스크의 ID */

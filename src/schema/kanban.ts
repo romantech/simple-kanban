@@ -12,9 +12,9 @@ export enum KanbanBrandType {
 export type KanbanEntity = keyof typeof KanbanBrandType;
 
 export const taskId = z.string().brand<KanbanBrandType.Task>();
+export const subtaskId = z.string().brand<KanbanBrandType.Subtask>();
 export const columnId = z.string().brand<KanbanBrandType.Column>();
 export const boardId = z.string().brand<KanbanBrandType.Board>();
-export const subtaskId = z.string().brand<KanbanBrandType.Subtask>();
 
 export const subtaskSchema = timestampsSchema.extend({
   id: subtaskId,
@@ -35,20 +35,20 @@ export const taskSchema = timestampsSchema.extend({
     .max(TaskConfig.desc.max, { message: `최대 ${TaskConfig.desc.max}자까지 입력할 수 있어요` })
     .transform((val) => (val === '' ? undefined : val))
     .optional(),
-  subtasks: z.array(subtaskSchema),
+  subtaskIds: z.array(subtaskId).default([]),
 });
 
 export const columnSchema = timestampsSchema.extend({
   id: columnId,
   boardId: boardId,
   title: createTitleSchema({ max: ColumnConfig.title.max, min: ColumnConfig.title.min }),
-  taskIds: z.array(taskId),
+  taskIds: z.array(taskId).default([]),
 });
 
 export const boardSchema = timestampsSchema.extend({
   id: boardId,
   title: createTitleSchema({ max: BoardConfig.title.max, min: BoardConfig.title.min }),
-  columnIds: z.array(columnId),
+  columnIds: z.array(columnId).default([]),
 });
 
 export type TaskId = z.infer<typeof taskId>;
@@ -56,11 +56,11 @@ export type SubtaskId = z.infer<typeof subtaskId>;
 export type ColumnId = z.infer<typeof columnId>;
 export type BoardId = z.infer<typeof boardId>;
 
-export type TaskFields = z.infer<typeof taskSchema>;
-export type SubtaskFields = z.infer<typeof subtaskSchema>;
-export type ColumnFields = z.infer<typeof columnSchema>;
-export type BoardFields = z.infer<typeof boardSchema>;
-export type TitleField = z.infer<ReturnType<typeof createTitleSchema>>;
+export type TaskDef = z.infer<typeof taskSchema>;
+export type SubtaskDef = z.infer<typeof subtaskSchema>;
+export type ColumnDef = z.infer<typeof columnSchema>;
+export type BoardDef = z.infer<typeof boardSchema>;
+export type TitleDef = z.infer<ReturnType<typeof createTitleSchema>>;
 
 export const addTaskSchema = taskSchema.pick({ title: true, description: true });
 export type AddTaskSchema = z.infer<typeof addTaskSchema>;

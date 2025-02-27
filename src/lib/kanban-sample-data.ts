@@ -10,6 +10,7 @@ export const sampleTasks = {
     description: '프로젝트 개요 및 요구사항을 정리한 기획서 초안을 작성합니다.',
     createdAt: '2025-02-10T09:00:00Z',
     updatedAt: '2025-02-11T14:30:00Z',
+    subtaskIds: [],
   },
   'Task-0WmrHwcw': {
     id: 'Task-0WmrHwcw',
@@ -18,6 +19,7 @@ export const sampleTasks = {
     description: '디자이너와 협업하여 첫 번째 UI 디자인 시안을 제작합니다.',
     createdAt: '2025-02-10T11:00:00Z',
     updatedAt: '2025-02-12T10:00:00Z',
+    subtaskIds: [],
   },
   'Task-ylr--OK9': {
     id: 'Task-ylr--OK9',
@@ -26,6 +28,7 @@ export const sampleTasks = {
     description: '백엔드 API의 엔드포인트 및 응답 구조를 설계하고 문서화합니다.',
     createdAt: '2025-02-11T09:20:00Z',
     updatedAt: '2025-02-13T15:10:00Z',
+    subtaskIds: [],
   },
   'Task-Gy0uMXah': {
     id: 'Task-Gy0uMXah',
@@ -34,6 +37,7 @@ export const sampleTasks = {
     description: 'React 기반의 핵심 UI 컴포넌트를 개발하고 스토리북 문서화를 진행합니다.',
     createdAt: '2025-02-12T13:30:00Z',
     updatedAt: '2025-02-14T09:45:00Z',
+    subtaskIds: [],
   },
   'Task-sOCz2HC0': {
     id: 'Task-sOCz2HC0',
@@ -42,6 +46,7 @@ export const sampleTasks = {
     description: 'Node.js 기반의 RESTful API',
     createdAt: '2025-02-13T10:00:00Z',
     updatedAt: '2025-02-14T12:00:00Z',
+    subtaskIds: [],
   },
   'Task-cy26Iz32': {
     id: 'Task-cy26Iz32',
@@ -50,6 +55,7 @@ export const sampleTasks = {
     description: '유산소, 무산소 운동 각각 30분',
     createdAt: '2025-02-14T09:00:00Z',
     updatedAt: '2025-02-15T16:30:00Z',
+    subtaskIds: [],
   },
 } as Tasks;
 
