@@ -1,12 +1,11 @@
 'use client';
 
 import { useKanbanStore } from '@/store';
-// import { Github, SquarePlus } from 'lucide-react';
+import { SquarePlus } from 'lucide-react';
 import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
 import { Header } from '@/components/ui/header';
 import { IconButton } from '@/components/ui/icon-button';
-import Github from '@/assets/github-mark-white.svg';
-import { SquarePlus } from 'lucide-react';
+import { Github } from '@/assets';
 
 const HeaderNav = () => {
   const board = useKanbanStore((state) => state.boards[state.currentBoardId]);
