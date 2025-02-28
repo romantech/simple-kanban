@@ -44,19 +44,19 @@ const HeaderDropdown = () => {
         <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <BoardEditDialog board={board}>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>보드 수정</DropdownMenuItem>
-          </BoardEditDialog>
-          <ConfirmDialog
-            disabled={shouldDisableDelete}
-            title="보드를 삭제할까요?"
-            description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
-            onConfirm={onConfirmDelete}
-          >
-            <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+            <BoardEditDialog board={board}>보드 수정</BoardEditDialog>
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
+            <ConfirmDialog
+              disabled={shouldDisableDelete}
+              title="보드를 삭제할까요?"
+              description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
+              onConfirm={onConfirmDelete}
+            >
               보드 삭제
-            </DropdownMenuItem>
-          </ConfirmDialog>
+            </ConfirmDialog>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

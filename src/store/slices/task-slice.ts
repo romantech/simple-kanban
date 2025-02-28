@@ -20,6 +20,7 @@ export interface TaskSlice {
   addSubtask: Void<[SubtaskDef]>;
   editSubtaskTitle: Void<[SubtaskId, TitleDef]>;
   editSubtaskStatus: Void<[SubtaskId, boolean]>;
+  deleteSubtask: Void<[SubtaskId]>;
 
   moveTask: Void<[MoveTaskPayload]>;
 }
@@ -73,6 +74,14 @@ export const createTaskSlice: TaskSliceCreator = (set) => ({
       const subtask = state.subtasks[subtaskId];
       subtask.completed = completed;
       subtask.updatedAt = getISODate();
+    });
+  },
+  deleteSubtask: (subtaskId) => {
+    set((state) => {
+      const subtask = state.subtasks[subtaskId];
+      const task = state.tasks[subtask.taskId];
+      task.subtaskIds.splice(task.subtaskIds.indexOf(subtaskId), 1);
+      delete state.subtasks[subtaskId];
     });
   },
 

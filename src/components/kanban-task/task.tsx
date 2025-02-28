@@ -38,7 +38,7 @@ const Task = ({ taskId, className }: TaskProps) => {
             className="cursor-grab p-4 text-left"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
-            <small className="text-baltic-400">{`하위작업: ${subtaskCountLabel}`}</small>
+            <small className="text-baltic-400">{`하위 작업 ${subtaskCountLabel}`}</small>
           </motion.div>
         </TaskEditViewDialog>
       )}
