@@ -7,11 +7,11 @@ import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { Subtask } from './subtask';
-import { useCompletedSubtaskCount, useShakeAnimation } from '@/hooks';
+import { useShakeAnimation, useSubtaskCountLabel } from '@/hooks';
 
 const TaskViewContent = ({ task }: { task: TaskDef }) => {
   const addSubtask = useKanbanStore.use.addSubtask();
-  const subtaskCount = useCompletedSubtaskCount(task.id);
+  const subtaskCountLabel = useSubtaskCountLabel(task.id);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { triggerShake, isShaking } = useShakeAnimation();
@@ -33,9 +33,6 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
     onAddSubtask();
   };
 
-  const totalSubtask = task.subtaskIds.length;
-  const label = totalSubtask > 0 ? `${subtaskCount}/${totalSubtask}` : '0';
-
   return (
     <div className="flex flex-col gap-4 py-4 text-sm">
       <div className="space-y-1.5">
@@ -43,7 +40,7 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
         <p className="whitespace-pre-wrap">{task.description ?? '설명이 없어요'}</p>
       </div>
       <div className="space-y-1.5">
-        <span className="font-semibold text-baltic-400">{`하위 작업 (${label})`}</span>
+        <span className="font-semibold text-baltic-400">{`하위 작업 (${subtaskCountLabel})`}</span>
         <div className="flex gap-2 pb-1.5">
           <Input
             ref={inputRef}

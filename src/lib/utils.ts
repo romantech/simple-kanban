@@ -11,8 +11,9 @@ export const getISODate = () => {
   return new Date().toISOString();
 };
 
-export const formatKoDate = (date: string | Date) => {
-  return format(date, 'yyyy-MM-dd(eee) HH:mm', { locale: ko });
+export const formatKoDate = (date: string | Date, includeTime?: boolean) => {
+  const formatStr = includeTime ? 'yyyy-MM-dd(eee) HH:mm' : 'yyyy-MM-dd(eee)';
+  return format(date, formatStr, { locale: ko });
 };
 
 export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[] => {

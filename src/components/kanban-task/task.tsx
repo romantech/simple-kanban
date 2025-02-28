@@ -1,8 +1,11 @@
-import { cn, formatKoDate } from '@/lib';
+'use client';
+
+import { cn } from '@/lib';
 import { Draggable, TaskEditViewDialog } from '@/components';
 import { useKanbanStore } from '@/store';
 import { motion } from 'motion/react';
 import { type TaskId } from '@/schema';
+import { useSubtaskCountLabel } from '@/hooks';
 
 interface TaskProps {
   taskId: TaskId;
@@ -11,6 +14,7 @@ interface TaskProps {
 
 const Task = ({ taskId, className }: TaskProps) => {
   const task = useKanbanStore((state) => state.tasks[taskId]);
+  const subtaskCountLabel = useSubtaskCountLabel(task.id);
 
   return (
     <Draggable
@@ -20,7 +24,7 @@ const Task = ({ taskId, className }: TaskProps) => {
       element="li"
       rootDndConfig={{ listeners: false, attributes: false }}
       className={cn(
-        'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md flex flex-col gap-1',
+        'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md flex flex-col gap-1 hover:bg-baltic-900',
         className,
       )}
     >
@@ -31,10 +35,10 @@ const Task = ({ taskId, className }: TaskProps) => {
             {...attributes}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-4 text-left"
+            className="cursor-grab p-4 text-left"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
-            <small className="text-xs text-baltic-400">{formatKoDate(task.updatedAt)}</small>
+            <small className="text-baltic-400">{`하위작업: ${subtaskCountLabel}`}</small>
           </motion.div>
         </TaskEditViewDialog>
       )}
