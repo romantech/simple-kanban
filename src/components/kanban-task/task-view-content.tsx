@@ -39,7 +39,7 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
         <span className="font-semibold text-baltic-400">작업 설명</span>
         <p className="whitespace-pre-wrap">{task.description ?? '설명이 없어요'}</p>
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         <span className="font-semibold text-baltic-400">{`하위 작업 (${subtaskCountLabel})`}</span>
         <div className="flex gap-2 pb-1.5">
           <Input
