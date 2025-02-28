@@ -1,5 +1,5 @@
 # https://github.com/qodo-ai/pr-agent/blob/main/pr_agent/settings/configuration.toml
 [config]
-model = "gpt-4o"
-fallback_models = ["gpt-4o-mini"]
+model = "gpt-4o-mini"
+fallback_models = ["gpt-4o"]
 
