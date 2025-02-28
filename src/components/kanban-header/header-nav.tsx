@@ -1,9 +1,12 @@
 'use client';
 
 import { useKanbanStore } from '@/store';
-import { Github, SquarePlus } from 'lucide-react';
+// import { Github, SquarePlus } from 'lucide-react';
 import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
 import { Header } from '@/components/ui/header';
+import { IconButton } from '@/components/ui/icon-button';
+import Github from '@/assets/github-mark-white.svg';
+import { SquarePlus } from 'lucide-react';
 
 const HeaderNav = () => {
   const board = useKanbanStore((state) => state.boards[state.currentBoardId]);
@@ -14,18 +17,16 @@ const HeaderNav = () => {
         <HeaderCommand />
         <div className="flex gap-4">
           <ColumnAddDialog boardId={board.id}>
-            <button className="text-charade-200 transition-all hover:bg-baltic-900/50 active:scale-95 lg:hidden">
-              <SquarePlus className="size-6" />
-            </button>
+            <IconButton Icon={SquarePlus} iconSize={24} className="p-1 lg:hidden" />
           </ColumnAddDialog>
           <a
             href="https://github.com/romantech/simple-kanban"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden lg:block"
+            className="hidden p-1 focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring lg:block"
             title="GitHub Repository"
           >
-            <Github />
+            <Github width={24} />
           </a>
           <HeaderDropdown />
         </div>
