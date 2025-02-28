@@ -55,7 +55,12 @@ const HeaderCommand = () => {
             <CommandEmpty>입력한 보드가 없어요</CommandEmpty>
             <CommandGroup className="p-2">
               {boardList.map(({ id, title }) => (
-                <Link className="block" key={id} href={{ pathname: id, query: { title } }} prefetch>
+                <Link
+                  className="block py-px focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  key={id}
+                  href={{ pathname: id, query: { title } }}
+                  prefetch
+                >
                   <CommandItem value={id} className="flex gap-2">
                     <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
                     <span className="truncate">{title}</span>

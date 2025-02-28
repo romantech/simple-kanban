@@ -32,7 +32,11 @@ const ConfirmDialog = ({
 }: PropsWithChildren<AlertProps>) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="focus-visible:rounded" disabled={disabled} asChild={asChild}>
+      <AlertDialogTrigger
+        className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring "
+        disabled={disabled}
+        asChild={asChild}
+      >
         {children}
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-md">

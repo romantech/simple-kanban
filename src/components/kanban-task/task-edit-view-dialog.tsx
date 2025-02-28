@@ -25,6 +25,7 @@ import { formatKoDate } from '@/lib';
 
 interface SharedTaskProps {
   task: TaskDef;
+  asChild?: boolean;
 }
 
 const animationVariants: AnimationProps = {
@@ -34,7 +35,7 @@ const animationVariants: AnimationProps = {
   transition: { duration: 0.08 },
 };
 
-const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProps>) => {
+const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
   const editTask = useKanbanStore.use.editTask();
 
@@ -64,7 +65,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>

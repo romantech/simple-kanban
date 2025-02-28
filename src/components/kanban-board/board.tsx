@@ -49,7 +49,7 @@ const Board = () => {
 
       <div className="ml-auto mt-11 flex">
         <ColumnAddDialog boardId={board.id}>
-          <Button className="hidden h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md outline-none transition-all hover:bg-baltic-900/50 active:scale-95 lg:flex">
+          <Button className="hidden h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md transition-all hover:bg-baltic-900/50 active:scale-95 lg:flex">
             add column
           </Button>
         </ColumnAddDialog>

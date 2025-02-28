@@ -19,7 +19,7 @@ const IconButton = ({
   return (
     <Component
       className={cn(
-        'flex min-w-fit gap-1.5 items-center rounded transition-all hover:text-charade-200 active:scale-95',
+        'flex min-w-fit gap-1.5 items-center rounded transition-all hover:text-charade-200 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring p-0.5',
         className,
       )}
       {...props}

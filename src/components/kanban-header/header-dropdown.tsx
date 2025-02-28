@@ -37,7 +37,7 @@ const HeaderDropdown = () => {
 
   return (
     <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
         <EllipsisVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="p-2">

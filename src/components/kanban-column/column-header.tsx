@@ -59,7 +59,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
   return (
     <div
       className={cn(
-        'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400',
+        'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:rounded',
         className,
       )}
       {...divProps}
@@ -77,7 +77,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
               defaultValue={column.title}
               onBlur={onBlur}
               onKeyDown={onKeyDown}
-              className="h-7 px-2 font-bold focus-visible:ring-0"
+              className="h-7 px-2 font-bold"
               maxLength={ColumnConfig.title.max}
               minLength={ColumnConfig.title.min}
               placeholder={`${ColumnConfig.title.min} ~ ${ColumnConfig.title.max} 글자`}

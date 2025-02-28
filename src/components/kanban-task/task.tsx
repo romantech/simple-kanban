@@ -24,22 +24,22 @@ const Task = ({ taskId, className }: TaskProps) => {
       element="li"
       rootDndConfig={{ listeners: false, attributes: false }}
       className={cn(
-        'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md flex flex-col gap-1 hover:bg-baltic-900',
+        'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md flex flex-col gap-1 hover:bg-baltic-900 p-0.5',
         className,
       )}
     >
       {({ listeners, attributes }) => (
-        <TaskEditViewDialog task={task}>
-          <motion.div
+        <TaskEditViewDialog task={task} asChild>
+          <motion.button
             {...listeners}
             {...attributes}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="cursor-grab p-4 text-left"
+            className="cursor-grab p-3.5 text-left focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <small className="text-baltic-400">{`하위 작업 ${subtaskCountLabel}`}</small>
-          </motion.div>
+          </motion.button>
         </TaskEditViewDialog>
       )}
     </Draggable>

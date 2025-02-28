@@ -85,10 +85,6 @@ body {
     @apply bg-background text-foreground;
   }
 
-  *:focus-visible {
-    @apply outline-none ring-1 ring-charade-400;
-  }
-
   .scroll-custom {
     @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-charade-900 scrollbar-track-transparent;
   }
