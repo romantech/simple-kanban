@@ -21,6 +21,7 @@ import { useKanbanStore } from '@/store';
 import { AnimatePresence, type AnimationProps, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
 import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
+import { formatKoDate } from '@/lib';
 
 interface SharedTaskProps {
   task: TaskDef;
@@ -57,7 +58,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
     setIsOpen(false);
   };
 
-  const title = isEditing ? 'edit task' : task.title;
+  const title = isEditing ? '작업 수정' : task.title;
   const Icon = isEditing ? Save : EditIcon;
   const editText = isEditing ? '저장' : '수정';
 
@@ -68,14 +69,17 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
       <DialogContent>
         <DialogHeader>
           <div className="flex flex-col gap-2">
-            <DialogTitle className="capitalize">{title}</DialogTitle>
+            <DialogTitle className="mr-auto capitalize">{title}</DialogTitle>
             <DialogDescription></DialogDescription>
 
-            <div className="flex w-fit gap-4 text-baltic-300">
-              <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
-              <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
-                <IconButton as="div" Icon={Trash2} label="삭제" />
-              </ConfirmDialog>
+            <div className="flex justify-between text-baltic-300">
+              <div className="flex gap-4">
+                <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
+                <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
+                  <IconButton as="div" Icon={Trash2} label="삭제" />
+                </ConfirmDialog>
+              </div>
+              <small className="text-sm">{`생성일: ${formatKoDate(task.createdAt)}`}</small>
             </div>
           </div>
         </DialogHeader>
@@ -91,7 +95,7 @@ const TaskEditViewDialog = ({ children, task }: PropsWithChildren<SharedTaskProp
               <FormProvider {...methods}>
                 <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
                   <TaskEditFormContent className="py-7" />
-                  <DialogFooter className="gap-3">
+                  <DialogFooter className="gap-2">
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소
                     </Button>
