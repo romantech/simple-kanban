@@ -17,7 +17,9 @@ const TaskEditFormContent = ({ className }: EditTaskFormContentProps) => {
   return (
     <div className={cn('space-y-4', className)}>
       <div className="space-y-2">
-        <Label htmlFor="title">작업 이름 (필수)</Label>
+        <Label htmlFor="title" className="text-baltic-400">
+          작업 이름 (필수)
+        </Label>
         <Input
           {...register('title')}
           placeholder={`최대 ${TaskConfig.title.max}자까지 입력할 수 있어요`}
@@ -32,7 +34,9 @@ const TaskEditFormContent = ({ className }: EditTaskFormContentProps) => {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="description">작업 설명 (선택)</Label>
+        <Label htmlFor="description" className="text-baltic-400">
+          작업 설명 (선택)
+        </Label>
         <Textarea
           {...register('description')}
           placeholder={`최대 ${TaskConfig.desc.max}자까지 입력할 수 있어요`}
