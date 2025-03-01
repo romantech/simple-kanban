@@ -100,7 +100,7 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
               <FormProvider {...methods}>
                 <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
                   <TaskEditFormContent className="py-7" />
-                  <DialogFooter className="gap-2 sm:gap-0">
+                  <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소
                     </Button>

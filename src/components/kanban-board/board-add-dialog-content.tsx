@@ -92,7 +92,7 @@ const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
               )}
             />
           </div>
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">취소</Button>
             </DialogClose>
