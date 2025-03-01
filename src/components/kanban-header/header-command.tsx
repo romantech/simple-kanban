@@ -14,9 +14,10 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib';
 import { useKanbanStore } from '@/store';
-import { BoardAddDialog } from '@/components';
+import { BoardAddDialogContent } from '@/components';
 import Link from 'next/link';
 import { type BoardId } from '@/schema';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 
 const HeaderCommand = () => {
   const [openCommand, setOpenCommand] = useState(false);
@@ -67,9 +68,12 @@ const HeaderCommand = () => {
               ))}
             </CommandGroup>
           </CommandList>
-          <BoardAddDialog asChild>
-            <Button className="m-2 font-bold capitalize lg:hidden">add board</Button>
-          </BoardAddDialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="m-2 font-bold capitalize lg:hidden">add board</Button>
+            </DialogTrigger>
+            <BoardAddDialogContent />
+          </Dialog>
         </Command>
       </PopoverContent>
     </Popover>

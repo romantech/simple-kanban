@@ -3,11 +3,12 @@
 import { useKanbanStore } from '@/store';
 import { cn } from '@/lib';
 import { ChevronsLeft, SquareKanban } from 'lucide-react';
-import { BoardAddDialog } from '@/components';
+import { BoardAddDialogContent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 
 const BoardSidebar = () => {
   const boards = useKanbanStore.use.boards();
@@ -43,9 +44,12 @@ const BoardSidebar = () => {
           ))}
         </ul>
         <div className="sticky bottom-0">
-          <BoardAddDialog asChild>
-            <Button className="w-full font-bold capitalize">add board</Button>
-          </BoardAddDialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-full font-bold capitalize">add board</Button>
+            </DialogTrigger>
+            <BoardAddDialogContent />
+          </Dialog>
         </div>
       </Sidebar>
       <button
