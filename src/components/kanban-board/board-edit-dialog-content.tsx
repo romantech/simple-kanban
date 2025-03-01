@@ -35,6 +35,7 @@ export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProp
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<EditBoardSchema>({
     resolver: zodResolver(editBoardSchema),
@@ -50,7 +51,11 @@ export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProp
   };
 
   return (
-    <DialogContent className={cn('sm:max-w-[425px]', className)}>
+    <DialogContent
+      className={cn('sm:max-w-[425px]', className)}
+      onEscapeKeyDown={() => reset()}
+      onPointerDownOutside={() => reset()}
+    >
       <DialogHeader>
         <DialogTitle className="capitalize">보드 수정</DialogTitle>
         <DialogDescription></DialogDescription>
@@ -72,7 +77,7 @@ export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProp
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="outline">
+            <Button variant="outline" onClick={() => reset()}>
               취소
             </Button>
           </DialogClose>
