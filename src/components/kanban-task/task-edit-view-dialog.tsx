@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { type PropsWithChildren, useState } from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
@@ -36,52 +36,63 @@ const animationVariants: AnimationProps = {
   transition: { duration: 0.08 },
 };
 
+const FORM_ID = 'task-edit-form';
+
 const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
   const editTask = useKanbanStore.use.editTask();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleEditMode = () => setIsEditing((prev) => !prev);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const methods = useForm<AddTaskSchema>({
     resolver: zodResolver(addTaskSchema),
-    defaultValues: task,
+    // 변경 > 저장 > 편집 모드로 다시 진입하면 처음 defaultValues로 전달했던 (변경 전)task 값이 그대로 표시됨
+    // defaultValues는 언마운트되지 않는 이상 캐시한 값을 그대로 사용하기 때문(캐시 값 변경하려면 reset 사용).
+    // 반면, values는 외부에서 전달한 데이터가 변경될 때마다 폼 값을 업데이트함.
+    values: task,
   });
+
+  const toggleEditMode = () => setIsEditing((prev) => !prev);
 
   const onSubmit: SubmitHandler<AddTaskSchema> = ({ title, description }) => {
     editTask(task.id, title, description);
     toggleEditMode();
   };
 
-  const onDelete = () => {
+  const onDeleteTask = () => {
     deleteTask(task);
-    setIsOpen(false);
+    setIsModalOpen(false);
   };
 
-  const title = isEditing ? '작업 수정' : task.title;
-  const Icon = isEditing ? Save : EditIcon;
-  const editText = isEditing ? '저장' : '수정';
+  useEffect(() => {
+    // 모달이 닫힐 때 편집 모드 변경
+    if (!isModalOpen) setIsEditing(false);
+    // 편집 모드로 변경될 때 폼 초기화
+    else if (isEditing) methods.reset();
+  }, [isModalOpen, isEditing, methods]);
+
+  const dialogTitle = isEditing ? '작업 수정' : task.title;
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
       <DialogContent className="min-h-80 outline-none">
         <DialogHeader>
           <div className="flex flex-col gap-2">
-            <DialogTitle className="mr-auto capitalize">{title}</DialogTitle>
+            <DialogTitle className="mr-auto capitalize">{dialogTitle}</DialogTitle>
             <DialogDescription />
 
             <div className="flex justify-between text-baltic-300">
               <div className="flex gap-4">
-                <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
+                {!isEditing && <IconButton onClick={toggleEditMode} Icon={EditIcon} label="수정" />}
+                {isEditing && <IconButton Icon={Save} label="저장" type="submit" form={FORM_ID} />}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <IconButton Icon={Trash2} label="삭제" />
                   </AlertDialogTrigger>
-                  <AlertDialogBaseContent title="작업을 삭제할까요?" onConfirm={onDelete} />
+                  <AlertDialogBaseContent title="작업을 삭제할까요?" onConfirm={onDeleteTask} />
                 </AlertDialog>
               </div>
               <small className="text-sm">{`생성일: ${formatKoDate(task.createdAt)}`}</small>
@@ -98,7 +109,7 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
           >
             {isEditing ? (
               <FormProvider {...methods}>
-                <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
+                <form id={FORM_ID} onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
                   <TaskEditFormContent className="pb-7 pt-3" />
                   <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
