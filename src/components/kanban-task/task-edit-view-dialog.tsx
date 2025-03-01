@@ -15,13 +15,14 @@ import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { TaskViewContent } from '@/components/kanban-task/task-view-content';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, type AnimationProps, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
 import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
 import { formatKoDate } from '@/lib';
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 interface SharedTaskProps {
   task: TaskDef;
@@ -67,7 +68,7 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className="outline-none">
         <DialogHeader>
           <div className="flex flex-col gap-2">
             <DialogTitle className="mr-auto capitalize">{title}</DialogTitle>
@@ -76,9 +77,12 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
             <div className="flex justify-between text-baltic-300">
               <div className="flex gap-4">
                 <IconButton onClick={toggleEditMode} Icon={Icon} label={editText} />
-                <ConfirmDialog title="작업을 삭제할까요?" onConfirm={onDelete}>
-                  <IconButton as="div" Icon={Trash2} label="삭제" />
-                </ConfirmDialog>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <IconButton Icon={Trash2} label="삭제" />
+                  </AlertDialogTrigger>
+                  <AlertDialogBaseContent title="작업을 삭제할까요?" onConfirm={onDelete} />
+                </AlertDialog>
               </div>
               <small className="text-sm">{`생성일: ${formatKoDate(task.createdAt)}`}</small>
             </div>
@@ -96,7 +100,7 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
               <FormProvider {...methods}>
                 <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
                   <TaskEditFormContent className="py-7" />
-                  <DialogFooter className="gap-2">
+                  <DialogFooter className="gap-2 sm:gap-0">
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소
                     </Button>

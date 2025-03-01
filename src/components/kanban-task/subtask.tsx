@@ -7,7 +7,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib';
 import { X } from 'lucide-react';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { IconButton } from '@/components/ui/icon-button';
 
 interface SubtaskProps {
   subtaskId: SubtaskId;
@@ -29,6 +31,8 @@ export const Subtask = ({ subtaskId }: SubtaskProps) => {
     editSubtaskStatus(subtaskId, Boolean(checked));
   };
 
+  const onConfirmDelete = () => deleteSubtask(subtaskId);
+
   return (
     <li className="flex items-center rounded-md bg-baltic-950 px-3 py-1 focus-within:bg-baltic-900">
       <Checkbox id={subtask.id} checked={subtask.completed} onCheckedChange={onCheckboxChange} />
@@ -40,9 +44,16 @@ export const Subtask = ({ subtaskId }: SubtaskProps) => {
         defaultValue={subtask.title}
         onChange={onInputChange}
       />
-      <ConfirmDialog title="하위 작업을 삭제할까요?" onConfirm={() => deleteSubtask(subtaskId)}>
-        <X className="size-4 stroke-current text-charade-500" />
-      </ConfirmDialog>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <IconButton
+            Icon={X}
+            iconSize={16}
+            className="size-4 stroke-current px-1 py-2.5 text-charade-500"
+          />
+        </AlertDialogTrigger>
+        <AlertDialogBaseContent title="하위 작업을 삭제할까요?" onConfirm={onConfirmDelete} />
+      </AlertDialog>
     </li>
   );
 };

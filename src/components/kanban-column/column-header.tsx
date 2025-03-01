@@ -3,13 +3,14 @@
 import { type HTMLAttributes, type KeyboardEvent, useRef, useState } from 'react';
 import { EditIcon, GripVertical, Save, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { cn, ColumnConfig } from '@/lib';
 import { IconButton } from '@/components/ui/icon-button';
 import { AnimatePresence, motion, type MotionProps } from 'motion/react';
 import { type ColumnDef, columnSchema } from '@/schema';
 import { useKanbanStore } from '@/store';
 import { useShakeAnimation } from '@/hooks';
+import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
 
 interface ColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
   column: ColumnDef;
@@ -69,8 +70,8 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         {isEditMode ? (
           <motion.div
             key="input"
+            className={cn('grow origin-right', { 'animate-shake': isShaking })}
             {...fadeScaleAnimation}
-            className={cn('grow', { 'animate-shake': isShaking })}
           >
             <Input
               ref={inputRef}
@@ -87,9 +88,8 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         ) : (
           <motion.h3
             key="title"
+            className="line-clamp-1 grow origin-left text-[15px] font-bold"
             {...fadeScaleAnimation}
-            style={{ transformOrigin: 'left' }}
-            className="line-clamp-1 grow text-[15px] font-bold"
           >
             {`${column.title} (${column.taskIds.length})`}
           </motion.h3>
@@ -97,14 +97,16 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
       </AnimatePresence>
 
       <div className="flex gap-3">
-        <ConfirmDialog
-          title="컬럼을 삭제할까요?"
-          description="컬럼을 삭제하면 해당 컬럼에 있는 모든 작업이 삭제돼요."
-          onConfirm={onConfirmDelete}
-          asChild
-        >
-          {!isEditMode && <IconButton Icon={Trash2} />}
-        </ConfirmDialog>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            {!isEditMode && <IconButton Icon={Trash2} />}
+          </AlertDialogTrigger>
+          <AlertDialogBaseContent
+            title="컬럼을 삭제할까요?"
+            description="컬럼에 있는 모든 작업도 함께 삭제돼요."
+            onConfirm={onConfirmDelete}
+          />
+        </AlertDialog>
         <IconButton onClick={handleEditOrSave} Icon={Icon} />
       </div>
     </div>

@@ -10,15 +10,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { useState } from 'react';
 import { useKanbanStore } from '@/store';
 import { useRouter } from 'next/navigation';
-import { BoardEditDialog } from '@/components';
+import { Dialog, DialogTrigger } from '../ui/dialog';
+import { BoardEditDialogContent } from '@/components';
+import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
+import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 
 const HeaderDropdown = () => {
-  const [openMenu, setOpenMenu] = useState(false);
-
   const router = useRouter();
 
   const currentBoardId = useKanbanStore.use.currentBoardId();
@@ -27,39 +26,40 @@ const HeaderDropdown = () => {
 
   const boardCount = Object.keys(boards).length;
   const deleteBoard = useKanbanStore.use.deleteBoard();
-  const shouldDisableDelete = boardCount <= 1;
 
   const onConfirmDelete = () => {
     const { id, title } = deleteBoard(currentBoardId);
-    setOpenMenu(false);
     router.replace(`${id}?title=${title}`);
   };
 
   return (
-    <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
-      <DropdownMenuTrigger className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-        <EllipsisVertical />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-2">
-        <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            <BoardEditDialog board={board}>보드 수정</BoardEditDialog>
-          </DropdownMenuItem>
-          <DropdownMenuItem disabled={shouldDisableDelete} onSelect={(e) => e.preventDefault()}>
-            <ConfirmDialog
-              disabled={shouldDisableDelete}
-              title="보드를 삭제할까요?"
-              description="보드에 있는 모든 컬럼과 작업들도 삭제돼요"
-              onConfirm={onConfirmDelete}
-            >
-              보드 삭제
-            </ConfirmDialog>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Dialog>
+      <AlertDialog>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+            <EllipsisVertical />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="p-2">
+            <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DialogTrigger asChild>
+                <DropdownMenuItem>보드 수정</DropdownMenuItem>
+              </DialogTrigger>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem disabled={boardCount <= 1}>보드 삭제</DropdownMenuItem>
+              </AlertDialogTrigger>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <BoardEditDialogContent board={board} />
+        <AlertDialogBaseContent
+          title="보드를 삭제할까요?"
+          description="보드에 있는 모든 컬럼과 작업도 함께 삭제돼요."
+          onConfirm={onConfirmDelete}
+        />
+      </AlertDialog>
+    </Dialog>
   );
 };
 

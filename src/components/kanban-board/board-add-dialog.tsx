@@ -15,11 +15,10 @@ import { Button } from '@/components/ui/button';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
-import { type ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { BoardConfig, generateBoard } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { useKanbanStore } from '@/store';
-import { type Void } from '@/types';
 import {
   Form,
   FormControl,
@@ -29,16 +28,18 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
-import { addBoardSchema, type AddBoardSchema, type BoardDef } from '@/schema';
+import { addBoardSchema, type AddBoardSchema } from '@/schema';
+import { useRouter } from 'next/navigation';
 
 const [titleField, presetField] = addBoardSchema.keyof().options;
 
 interface BoardAddDialogProps {
-  onConfirm?: Void<[BoardDef]>;
-  children: ReactNode;
+  children: React.ReactNode;
+  asChild?: boolean;
 }
 
-const BoardAddDialog = ({ children, onConfirm }: BoardAddDialogProps) => {
+const BoardAddDialog = ({ children, asChild }: BoardAddDialogProps) => {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const addBoard = useKanbanStore.use.addBoard();
@@ -52,12 +53,12 @@ const BoardAddDialog = ({ children, onConfirm }: BoardAddDialogProps) => {
     addBoard(newBoard, preset);
     form.reset();
     setIsDialogOpen(false);
-    onConfirm?.(newBoard);
+    router.push(`${newBoard.id}?title=${newBoard.title}`);
   };
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
       <DialogContent
         className="sm:max-w-[425px]"
         onKeyDown={(e) => {
