@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
-import { BoardConfig, generateBoard } from '@/lib';
+import { BoardConfig, cn, generateBoard } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { useKanbanStore } from '@/store';
 import {
@@ -30,7 +30,11 @@ import { useRouter } from 'next/navigation';
 
 const [titleField, presetField] = addBoardSchema.keyof().options;
 
-const BoardAddDialogContent = () => {
+interface BoardAddDialogContentProps {
+  className?: string;
+}
+
+const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
   const router = useRouter();
 
   const addBoard = useKanbanStore.use.addBoard();
@@ -47,13 +51,7 @@ const BoardAddDialogContent = () => {
   };
 
   return (
-    <DialogContent
-      className="sm:max-w-[425px]"
-      onKeyDown={(e) => {
-        // Dialog 컴포넌트에서 엔터 누르면 Command 컴포넌트의 onSelect 핸들러 실행되는 문제 해결
-        if (e.key === 'Enter') e.stopPropagation();
-      }}
-    >
+    <DialogContent className={cn('sm:max-w-[425px]', className)}>
       <Form {...form}>
         <form onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
           <DialogHeader>
@@ -94,11 +92,9 @@ const BoardAddDialogContent = () => {
               )}
             />
           </div>
-          <DialogFooter className="gap-3">
+          <DialogFooter className="gap-2 sm:gap-0">
             <DialogClose asChild>
-              <Button type="button" variant="outline">
-                취소
-              </Button>
+              <Button variant="outline">취소</Button>
             </DialogClose>
             <Button type="submit">추가</Button>
           </DialogFooter>
