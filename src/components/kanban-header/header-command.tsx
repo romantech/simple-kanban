@@ -14,9 +14,10 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib';
 import { useKanbanStore } from '@/store';
-import { BoardAddDialog } from '@/components';
+import { BoardAddDialogContent } from '@/components';
 import Link from 'next/link';
 import { type BoardId } from '@/schema';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 
 const HeaderCommand = () => {
   const [openCommand, setOpenCommand] = useState(false);
@@ -34,45 +35,48 @@ const HeaderCommand = () => {
   };
 
   return (
-    <Popover open={openCommand} onOpenChange={setOpenCommand}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          className="w-full max-w-44 justify-between gap-x-0 sm:max-w-60"
-          aria-expanded={openCommand}
-        >
-          <span className="truncate">{board.title}</span>
-          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="min-w-full max-w-44 p-0 sm:max-w-60">
-        <Command filter={onSearch}>
-          <CommandInput placeholder="보드 이름을 입력하세요" className="h-9" />
-          <CommandList>
-            <CommandEmpty>입력한 보드가 없어요</CommandEmpty>
-            <CommandGroup className="p-2">
-              {boardList.map(({ id, title }) => (
-                <Link
-                  className="block py-px focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  key={id}
-                  href={{ pathname: id, query: { title } }}
-                  prefetch
-                >
-                  <CommandItem value={id} className="flex gap-2">
-                    <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
-                    <span className="truncate">{title}</span>
-                  </CommandItem>
-                </Link>
-              ))}
-            </CommandGroup>
-          </CommandList>
-          <BoardAddDialog asChild>
-            <Button className="m-2 font-bold capitalize lg:hidden">add board</Button>
-          </BoardAddDialog>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <Dialog>
+      <Popover open={openCommand} onOpenChange={setOpenCommand}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            className="w-full max-w-44 justify-between gap-x-0 sm:max-w-60"
+            aria-expanded={openCommand}
+          >
+            <span className="truncate">{board.title}</span>
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="min-w-full max-w-44 p-0 sm:max-w-60">
+          <Command filter={onSearch}>
+            <CommandInput placeholder="보드 이름을 입력하세요" className="h-9" />
+            <CommandList>
+              <CommandEmpty>입력한 보드가 없어요</CommandEmpty>
+              <CommandGroup className="p-2">
+                {boardList.map(({ id, title }) => (
+                  <Link
+                    className="block py-px focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    key={id}
+                    href={{ pathname: id, query: { title } }}
+                    prefetch
+                  >
+                    <CommandItem value={id} className="flex gap-2">
+                      <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
+                      <span className="truncate">{title}</span>
+                    </CommandItem>
+                  </Link>
+                ))}
+              </CommandGroup>
+            </CommandList>
+            <DialogTrigger asChild>
+              <Button className="m-2 font-bold capitalize lg:hidden">add board</Button>
+            </DialogTrigger>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      <BoardAddDialogContent />
+    </Dialog>
   );
 };
 

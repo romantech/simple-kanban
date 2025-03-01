@@ -10,7 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../ui/dialog';
+} from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { ErrorMessage } from '@hookform/error-message';
@@ -70,7 +70,7 @@ export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProp
             render={({ message }) => <p className="text-sm text-baltic-400">{message}</p>}
           />
         </div>
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="outline">
               취소

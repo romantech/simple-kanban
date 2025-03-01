@@ -68,11 +68,11 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
-      <DialogContent className="outline-none">
+      <DialogContent className="min-h-80 outline-none">
         <DialogHeader>
           <div className="flex flex-col gap-2">
             <DialogTitle className="mr-auto capitalize">{title}</DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogDescription />
 
             <div className="flex justify-between text-baltic-300">
               <div className="flex gap-4">
@@ -99,8 +99,8 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
             {isEditing ? (
               <FormProvider {...methods}>
                 <form onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
-                  <TaskEditFormContent className="py-7" />
-                  <DialogFooter className="gap-2 sm:gap-0">
+                  <TaskEditFormContent className="pb-7 pt-3" />
+                  <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소
                     </Button>
