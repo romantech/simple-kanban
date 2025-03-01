@@ -6,7 +6,6 @@ import { ChevronsLeft, SquareKanban } from 'lucide-react';
 import { BoardAddDialog } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
@@ -15,7 +14,6 @@ const BoardSidebar = () => {
   const currentBoardId = useKanbanStore.use.currentBoardId();
 
   const [openPanel, setOpenPanel] = useState(true);
-  const router = useRouter();
 
   const toggleSidebar = () => setOpenPanel((prev) => !prev);
 
@@ -45,7 +43,7 @@ const BoardSidebar = () => {
           ))}
         </ul>
         <div className="sticky bottom-0">
-          <BoardAddDialog onConfirm={({ id, title }) => router.push(`${id}?title=${title}`)}>
+          <BoardAddDialog asChild>
             <Button className="w-full font-bold capitalize">add board</Button>
           </BoardAddDialog>
         </div>
