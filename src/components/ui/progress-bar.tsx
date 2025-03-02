@@ -8,17 +8,20 @@ interface ProgressBarProps {
 
 export const ProgressBar = ({ maxValue, progress, className }: ProgressBarProps) => {
   const percent = maxValue !== 0 ? (progress / maxValue) * 100 : 0;
+  const percentText = `${percent.toFixed(0)}%`;
 
   return (
-    <div
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={maxValue}
-      aria-valuenow={progress}
-      aria-label={`Progress: ${percent.toFixed(0)}%`}
-      className={cn('flex w-full h-1 rounded-full overflow-hidden bg-charade-900', className)}
-    >
-      <div className="bg-charade-700 transition-all" style={{ width: `${percent}%` }} />
-    </div>
+    <progress
+      value={progress}
+      max={maxValue}
+      aria-label={`진행률: ${percentText}`}
+      className={cn(
+        'w-full h-1 rounded-full overflow-hidden',
+        '[&::-webkit-progress-bar]:bg-charade-900', // Track (background)
+        '[&::-webkit-progress-value]:bg-charade-700', // Progress value
+        '[&::-moz-progress-bar]:bg-charade-700', // Firefox fallback
+        className,
+      )}
+    />
   );
 };

@@ -40,7 +40,7 @@ const Task = ({ taskId, className }: TaskProps) => {
             {...attributes}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="cursor-grab space-y-2 p-3.5 text-left focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="flex cursor-grab flex-col gap-2.5 p-3.5 text-left focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <div
