@@ -5,7 +5,8 @@ import { Draggable, TaskEditViewDialog } from '@/components';
 import { useKanbanStore } from '@/store';
 import { motion } from 'motion/react';
 import { type TaskId } from '@/schema';
-import { useSubtaskCountLabel } from '@/hooks';
+import { useSubtaskCount } from '@/hooks';
+import { ProgressBar } from '@/components/ui/progress-bar';
 
 interface TaskProps {
   taskId: TaskId;
@@ -14,7 +15,8 @@ interface TaskProps {
 
 const Task = ({ taskId, className }: TaskProps) => {
   const task = useKanbanStore((state) => state.tasks[taskId]);
-  const subtaskCountLabel = useSubtaskCountLabel(task.id);
+
+  const { label, completed, total } = useSubtaskCount(taskId);
 
   return (
     <Draggable
@@ -35,10 +37,11 @@ const Task = ({ taskId, className }: TaskProps) => {
             {...attributes}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="cursor-grab p-3.5 text-left focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="cursor-grab space-y-1 p-3.5 text-left focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
-            <small className="text-baltic-400">{`하위 작업 ${subtaskCountLabel}`}</small>
+            <small className="text-baltic-400">{`하위 작업 ${label}`}</small>
+            {total > 0 && <ProgressBar progress={completed} maxValue={total} />}
           </motion.button>
         </TaskEditViewDialog>
       )}
