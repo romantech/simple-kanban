@@ -34,8 +34,13 @@ export const Subtask = ({ subtaskId }: SubtaskProps) => {
   const onConfirmDelete = () => deleteSubtask(subtaskId);
 
   return (
-    <li className="flex items-center rounded-md bg-baltic-950 px-3 py-1 focus-within:bg-baltic-900">
-      <Checkbox id={subtask.id} checked={subtask.completed} onCheckedChange={onCheckboxChange} />
+    <li className="flex items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-700">
+      <Checkbox
+        className="data-[state=checked]:border-charade-500 data-[state=checked]:bg-charade-500 data-[state=checked]:text-baltic-950"
+        id={subtask.id}
+        checked={subtask.completed}
+        onCheckedChange={onCheckboxChange}
+      />
       <Input
         placeholder="제목 없음"
         className={cn('border-none focus-visible:ring-0', {

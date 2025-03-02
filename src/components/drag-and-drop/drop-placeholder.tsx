@@ -6,7 +6,7 @@ const dropPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
   variants: {
     variant: {
       column: 'min-w-72',
-      task: 'min-h-[78.5px]',
+      task: 'min-h-[90px]',
     },
   },
   defaultVariants: {
