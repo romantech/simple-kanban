@@ -41,7 +41,7 @@ const Task = ({ taskId, className }: TaskProps) => {
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <small className="text-baltic-400">{`하위 작업 ${label}`}</small>
-            <ProgressBar completed={completed} total={total} />
+            {total > 0 && <ProgressBar progress={completed} maxValue={total} />}
           </motion.button>
         </TaskEditViewDialog>
       )}
