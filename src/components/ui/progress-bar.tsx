@@ -16,9 +16,9 @@ export const ProgressBar = ({ maxValue, progress, className }: ProgressBarProps)
       aria-valuemax={maxValue}
       aria-valuenow={progress}
       aria-label={`Progress: ${percent.toFixed(0)}%`}
-      className={cn('flex overflow-hidden rounded bg-charade-900', className)}
+      className={cn('flex w-full h-1 rounded-full overflow-hidden bg-charade-900', className)}
     >
-      <div className="h-1 w-full bg-charade-600 transition-all" style={{ width: `${percent}%` }} />
+      <div className="bg-charade-700 transition-all" style={{ width: `${percent}%` }} />
     </div>
   );
 };
