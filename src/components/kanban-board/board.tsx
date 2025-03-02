@@ -2,7 +2,6 @@
 
 import { Column, ColumnAddDialog, Task } from '@/components';
 import { useKanbanStore } from '@/store';
-import { useShallow } from 'zustand/react/shallow';
 import { Button } from '@/components/ui/button';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
@@ -13,10 +12,7 @@ import { AnimatePresence } from 'motion/react';
 import { Empty } from '@/components/ui/empty';
 
 const Board = () => {
-  // useShallow: 셀렉터 반환값의 얕은 비교(1depth 프로퍼티 비교) 수행
-  // 객체/배열 반환 시 내부 프로퍼티 변경을 감지하여 불필요한 리렌더링 방지
-  // 단일 원시 타입 값은 기본 Object.is 비교로 충분하므로 useShallow 불필요
-  const board = useKanbanStore(useShallow(({ boards, currentBoardId }) => boards[currentBoardId]));
+  const board = useKanbanStore(({ boards, currentBoardId }) => boards[currentBoardId]);
 
   const { handlers, dndContextId, dragColumnId, dragTaskId, sensors } = useKanbanDnd();
 

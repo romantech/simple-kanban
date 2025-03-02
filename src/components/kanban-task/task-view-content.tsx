@@ -7,11 +7,11 @@ import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { Subtask } from './subtask';
-import { useShakeAnimation, useSubtaskCountLabel } from '@/hooks';
+import { useShakeAnimation, useSubtaskCount } from '@/hooks';
 
 const TaskViewContent = ({ task }: { task: TaskDef }) => {
   const addSubtask = useKanbanStore.use.addSubtask();
-  const subtaskCountLabel = useSubtaskCountLabel(task.id);
+  const { label } = useSubtaskCount(task.id);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { triggerShake, isShaking } = useShakeAnimation();
@@ -40,7 +40,7 @@ const TaskViewContent = ({ task }: { task: TaskDef }) => {
         <p className="whitespace-pre-wrap">{task.description ?? '설명이 없어요'}</p>
       </div>
       <div className="space-y-2">
-        <span className="font-semibold text-baltic-400">{`하위 작업 (${subtaskCountLabel})`}</span>
+        <span className="font-semibold text-baltic-400">{`하위 작업 (${label})`}</span>
         <div className="flex gap-2 pb-1.5">
           <Input
             ref={inputRef}
