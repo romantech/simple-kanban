@@ -2,7 +2,7 @@ import { cn } from '@/lib';
 import type { ComponentProps, ElementType, FunctionComponent, SVGProps } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-type IconButtonProps<T extends ElementType = 'button'> = {
+type IconButtonProps<T extends ElementType> = {
   Icon: FunctionComponent<SVGProps<SVGSVGElement>>;
   iconSize?: number;
   as?: T;

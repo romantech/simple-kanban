@@ -24,9 +24,9 @@ const HeaderNav = () => {
             />
           </ColumnAddDialog>
           <IconButton
+            as="a"
             Icon={Github}
             iconSize={24}
-            as="a"
             href="https://github.com/romantech/simple-kanban"
             target="_blank"
             rel="noopener noreferrer"

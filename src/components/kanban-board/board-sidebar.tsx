@@ -9,6 +9,7 @@ import { Sidebar } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { IconButton } from '@/components/ui/icon-button';
 
 const BoardSidebar = () => {
   const boards = useKanbanStore.use.boards();
@@ -52,16 +53,15 @@ const BoardSidebar = () => {
           </Dialog>
         </div>
       </Sidebar>
-      <button
-        type="button"
+      <IconButton
+        tooltipContent="사이드바 토글"
         onClick={toggleSidebar}
+        Icon={ChevronsLeft}
         className={cn(
           'hidden h-[36px] px-2 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-[22px] absolute bottom-6 hover:bg-baltic-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
           { 'translate-x-[288px] rounded-r-xl': openPanel, 'rotate-180 rounded-l-xl': !openPanel },
         )}
-      >
-        <ChevronsLeft />
-      </button>
+      />
     </Fragment>
   );
 };

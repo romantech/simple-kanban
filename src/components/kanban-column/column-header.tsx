@@ -55,7 +55,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
 
   const onConfirmDelete = () => deleteColumn(column);
 
-  const Icon = isEditMode ? Save : EditIcon;
+  const EditOrSaveIcon = isEditMode ? Save : EditIcon;
   const tooltipContent = isEditMode ? '저장' : '컬럼 제목 수정';
 
   return (
@@ -108,7 +108,11 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
             onConfirm={onConfirmDelete}
           />
         </AlertDialog>
-        <IconButton onClick={handleEditOrSave} Icon={Icon} tooltipContent={tooltipContent} />
+        <IconButton
+          onClick={handleEditOrSave}
+          Icon={EditOrSaveIcon}
+          tooltipContent={tooltipContent}
+        />
       </div>
     </div>
   );
