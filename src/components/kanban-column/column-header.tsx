@@ -55,7 +55,8 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
 
   const onConfirmDelete = () => deleteColumn(column);
 
-  const Icon = isEditMode ? Save : EditIcon;
+  const EditOrSaveIcon = isEditMode ? Save : EditIcon;
+  const tooltipContent = isEditMode ? '저장' : '컬럼 제목 수정';
 
   return (
     <div
@@ -99,7 +100,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
       <div className="flex gap-3">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            {!isEditMode && <IconButton Icon={Trash2} />}
+            {!isEditMode && <IconButton Icon={Trash2} tooltipContent="컬럼 삭제" />}
           </AlertDialogTrigger>
           <AlertDialogBaseContent
             title="컬럼을 삭제할까요?"
@@ -107,7 +108,11 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
             onConfirm={onConfirmDelete}
           />
         </AlertDialog>
-        <IconButton onClick={handleEditOrSave} Icon={Icon} />
+        <IconButton
+          onClick={handleEditOrSave}
+          Icon={EditOrSaveIcon}
+          tooltipContent={tooltipContent}
+        />
       </div>
     </div>
   );

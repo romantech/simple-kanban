@@ -16,17 +16,23 @@ const HeaderNav = () => {
         <HeaderCommand />
         <div className="flex gap-4">
           <ColumnAddDialog boardId={board.id}>
-            <IconButton Icon={SquarePlus} iconSize={24} className="p-1 lg:hidden" />
+            <IconButton
+              Icon={SquarePlus}
+              iconSize={24}
+              className="p-1 lg:hidden"
+              tooltipContent="컬럼 추가"
+            />
           </ColumnAddDialog>
-          <a
+          <IconButton
+            as="a"
+            Icon={Github}
+            iconSize={24}
             href="https://github.com/romantech/simple-kanban"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden p-1 focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring lg:block"
-            title="GitHub Repository"
-          >
-            <Github width={24} />
-          </a>
+            tooltipContent="레포지토리"
+          />
           <HeaderDropdown />
         </div>
       </nav>

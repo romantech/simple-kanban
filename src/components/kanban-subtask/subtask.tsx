@@ -61,6 +61,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
             Icon={X}
             iconSize={16}
             className="size-4 stroke-current px-1 py-2.5 text-charade-500"
+            tooltipContent="삭제"
           />
         </AlertDialogTrigger>
         <AlertDialogBaseContent title="하위 작업을 삭제할까요?" onConfirm={onConfirmDelete} />
