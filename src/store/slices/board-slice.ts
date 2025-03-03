@@ -1,17 +1,19 @@
 import { type Boards, type Void } from '@/types';
 import { generatePresetColumns, getISODate, sampleBoardId, sampleBoards } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
-import { type BoardDef, type BoardId, type TitleDef } from '@/schema';
+import { type BoardDef, type BoardId, type ColumnDef, type TitleDef } from '@/schema';
 
 export interface BoardSlice {
   boards: Boards;
   currentBoardId: BoardId;
 
   addBoard: Void<[BoardDef, boolean]>;
+  deleteBoard: (boardId: BoardId) => BoardDef;
   editBoard: Void<[BoardId, TitleDef]>;
   setCurrentBoard: Void<[BoardId]>;
-  deleteBoard: (boardId: BoardId) => BoardDef;
+
   getBoardCount: () => number;
+  getCurrentBoardColumns: () => ColumnDef[];
 }
 
 type BoardSliceCreator = KanbanSliceCreator<BoardSlice>;
@@ -20,7 +22,6 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
   boards: sampleBoards,
   currentBoardId: sampleBoardId,
 
-  getBoardCount: () => Object.keys(get().boards).length,
   addBoard: (board, preset) => {
     set((state) => {
       state.boards[board.id] = board;
@@ -31,13 +32,6 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
         state.columns[column.id] = column;
         board.columnIds.push(column.id);
       });
-    });
-  },
-  editBoard: (boardId, title) => {
-    set((state) => {
-      const board = state.boards[boardId];
-      board.title = title;
-      board.updatedAt = getISODate();
     });
   },
   deleteBoard: (boardId) => {
@@ -62,10 +56,24 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
     const { boards, currentBoardId } = get();
     return boards[currentBoardId];
   },
+  editBoard: (boardId, title) => {
+    set((state) => {
+      const board = state.boards[boardId];
+      board.title = title;
+      board.updatedAt = getISODate();
+    });
+  },
   setCurrentBoard: (boardId) => {
     set((state) => {
       if (state.currentBoardId === boardId) return;
       state.currentBoardId = boardId;
     });
+  },
+
+  getBoardCount: () => Object.keys(get().boards).length,
+  getCurrentBoardColumns: () => {
+    const { boards, currentBoardId, columns } = get();
+    const board = boards[currentBoardId];
+    return board.columnIds.map((columnId) => columns[columnId]);
   },
 });
