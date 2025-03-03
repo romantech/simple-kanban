@@ -6,16 +6,17 @@ import type { CheckedState } from '@radix-ui/react-checkbox';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib';
-import { X } from 'lucide-react';
-import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { IconButton } from '@/components/ui/icon-button';
+import { X } from 'lucide-react';
+import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 
 interface SubtaskProps {
   subtaskId: SubtaskId;
+  className?: string;
 }
 
-export const Subtask = ({ subtaskId }: SubtaskProps) => {
+export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
   const subtask = useKanbanStore((state) => state.subtasks[subtaskId]);
   const editSubtaskTitle = useKanbanStore.use.editSubtaskTitle();
   const editSubtaskStatus = useKanbanStore.use.editSubtaskStatus();
@@ -34,7 +35,12 @@ export const Subtask = ({ subtaskId }: SubtaskProps) => {
   const onConfirmDelete = () => deleteSubtask(subtaskId);
 
   return (
-    <li className="flex items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600">
+    <li
+      className={cn(
+        'flex items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600',
+        className,
+      )}
+    >
       <Checkbox
         className="data-[state=checked]:border-charade-500 data-[state=checked]:bg-charade-500 data-[state=checked]:text-baltic-950"
         id={subtask.id}
