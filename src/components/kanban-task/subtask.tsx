@@ -34,7 +34,7 @@ export const Subtask = ({ subtaskId }: SubtaskProps) => {
   const onConfirmDelete = () => deleteSubtask(subtaskId);
 
   return (
-    <li className="flex items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-700">
+    <li className="flex items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600">
       <Checkbox
         className="data-[state=checked]:border-charade-500 data-[state=checked]:bg-charade-500 data-[state=checked]:text-baltic-950"
         id={subtask.id}
