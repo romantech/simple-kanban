@@ -16,7 +16,7 @@ import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { type PropsWithChildren, useState } from 'react';
-import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
+import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId } from '@/schema';
 
 interface AddTaskProps {
@@ -47,7 +47,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
               <DialogTitle>새로운 작업 추가</DialogTitle>
               <DialogDescription></DialogDescription>
             </DialogHeader>
-            <TaskEditFormContent className="py-7" />
+            <TaskEditForm className="py-7" />
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="outline">

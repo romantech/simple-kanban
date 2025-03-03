@@ -12,11 +12,11 @@ import {
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
-import { TaskEditFormContent } from '@/components/kanban-task/task-edit-form-content';
+import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
-import { TaskViewContent } from '@/components/kanban-task/task-view-content';
+import { TaskDetails } from '@/components/kanban-task/task-details';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, type AnimationProps, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
@@ -38,7 +38,7 @@ const animationVariants: AnimationProps = {
 
 const FORM_ID = 'task-edit-form';
 
-const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<SharedTaskProps>) => {
+const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
   const editTask = useKanbanStore.use.editTask();
 
@@ -110,7 +110,7 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
             {isEditing ? (
               <FormProvider {...methods}>
                 <form id={FORM_ID} onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
-                  <TaskEditFormContent className="pb-7 pt-3" />
+                  <TaskEditForm className="pb-7 pt-3" />
                   <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소
@@ -120,7 +120,7 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
                 </form>
               </FormProvider>
             ) : (
-              <TaskViewContent task={task} />
+              <TaskDetails task={task} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -129,4 +129,4 @@ const TaskEditViewDialog = ({ children, task, asChild }: PropsWithChildren<Share
   );
 };
 
-export { TaskEditViewDialog };
+export { TaskDetailDialog };

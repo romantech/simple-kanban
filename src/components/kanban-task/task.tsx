@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib';
-import { Draggable, TaskEditViewDialog } from '@/components';
+import { Draggable, TaskDetailDialog } from '@/components';
 import { useKanbanStore } from '@/store';
 import { motion } from 'motion/react';
 import { type TaskId } from '@/schema';
@@ -34,7 +34,7 @@ const Task = ({ taskId, className }: TaskProps) => {
       )}
     >
       {({ listeners, attributes }) => (
-        <TaskEditViewDialog task={task} asChild>
+        <TaskDetailDialog task={task} asChild>
           <motion.button
             {...listeners}
             {...attributes}
@@ -53,7 +53,7 @@ const Task = ({ taskId, className }: TaskProps) => {
             </div>
             {hasSubtask && <ProgressBar value={completed} max={total} />}
           </motion.button>
-        </TaskEditViewDialog>
+        </TaskDetailDialog>
       )}
     </Draggable>
   );
