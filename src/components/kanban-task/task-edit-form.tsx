@@ -11,7 +11,7 @@ interface EditTaskFormContentProps {
   className?: string;
 }
 
-const TaskEditFormContent = ({ className }: EditTaskFormContentProps) => {
+const TaskEditForm = ({ className }: EditTaskFormContentProps) => {
   const { register, formState } = useFormContext();
 
   return (
@@ -54,4 +54,4 @@ const TaskEditFormContent = ({ className }: EditTaskFormContentProps) => {
   );
 };
 
-export { TaskEditFormContent };
+export { TaskEditForm };
