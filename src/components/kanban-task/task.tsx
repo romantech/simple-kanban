@@ -51,7 +51,7 @@ const Task = ({ taskId, className }: TaskProps) => {
               {hasDesc && <AlignLeft className="size-4" />}
               {hasSubtask && <small>{`하위 작업 ${label}`}</small>}
             </div>
-            {hasSubtask && <ProgressBar progress={completed} maxValue={total} />}
+            {hasSubtask && <ProgressBar value={completed} max={total} />}
           </motion.button>
         </TaskEditViewDialog>
       )}
