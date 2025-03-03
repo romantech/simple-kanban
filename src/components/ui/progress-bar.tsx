@@ -8,7 +8,7 @@ interface ProgressBarProps {
 }
 export const ProgressBar = ({ max, value, className, valueClassName }: ProgressBarProps) => {
   const clampedProgress = Math.min(Math.max(value, 0), max);
-  const percent = max !== 0 ? (clampedProgress / max) * 100 : 0;
+  const percent = max > 0 ? (clampedProgress / max) * 100 : 0;
   const percentText = `${percent.toFixed(0)}%`;
 
   return (
