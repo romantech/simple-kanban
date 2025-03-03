@@ -1,27 +1,29 @@
 import { cn } from '@/lib';
 
 interface ProgressBarProps {
-  maxValue: number;
-  progress: number;
+  max: number;
+  value: number;
   className?: string;
+  valueClassName?: string;
 }
-
-export const ProgressBar = ({ maxValue, progress, className }: ProgressBarProps) => {
-  const percent = maxValue !== 0 ? (progress / maxValue) * 100 : 0;
+export const ProgressBar = ({ max, value, className, valueClassName }: ProgressBarProps) => {
+  const clampedProgress = Math.min(Math.max(value, 0), max);
+  const percent = max !== 0 ? (clampedProgress / max) * 100 : 0;
   const percentText = `${percent.toFixed(0)}%`;
 
   return (
-    <progress
-      value={progress}
-      max={maxValue}
-      aria-label={`진행률: ${percentText}`}
-      className={cn(
-        'w-full h-1 rounded-full overflow-hidden',
-        '[&::-webkit-progress-bar]:bg-charade-900', // Track (background)
-        '[&::-webkit-progress-value]:bg-charade-700', // Progress value
-        '[&::-moz-progress-bar]:bg-charade-700', // Firefox fallback
-        className,
-      )}
-    />
+    <div
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={max}
+      aria-valuenow={clampedProgress}
+      aria-label={`Progress: ${percent.toFixed(0)}%`}
+      className={cn('flex overflow-hidden rounded bg-charade-900', className)}
+    >
+      <div
+        className={cn('h-1 w-full bg-charade-600 transition-all', valueClassName)}
+        style={{ width: percentText }}
+      />
+    </div>
   );
 };
