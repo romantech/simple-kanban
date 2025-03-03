@@ -3,7 +3,9 @@ import {
   type ColumnSlice,
   createBoardSlice,
   createColumnSlice,
+  createSubtaskSlice,
   createTaskSlice,
+  type SubtaskSlice,
   type TaskSlice,
 } from '@/store/slices';
 import { create, type StateCreator } from 'zustand';
@@ -11,8 +13,8 @@ import { devtools, persist, subscribeWithSelector } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { createSelectors } from '@/store/helpers';
 
-export type KanbanState = BoardSlice & ColumnSlice & TaskSlice;
-export type KanbanStateUnion = BoardSlice | ColumnSlice | TaskSlice;
+export type KanbanState = BoardSlice & ColumnSlice & TaskSlice & SubtaskSlice;
+export type KanbanStateUnion = BoardSlice | ColumnSlice | TaskSlice | SubtaskSlice;
 
 export type KanbanSliceCreator<T extends KanbanStateUnion> = StateCreator<
   KanbanState, // Kanban 보드의 전체 상태
@@ -39,6 +41,7 @@ const useKanbanStoreBase = create<KanbanState>()(
             ...createBoardSlice(...methods),
             ...createColumnSlice(...methods),
             ...createTaskSlice(...methods),
+            ...createSubtaskSlice(...methods),
           }),
           { name: 'kanban-store', enabled: process.env.NODE_ENV === 'development' },
         ),

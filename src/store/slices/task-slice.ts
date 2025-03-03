@@ -1,26 +1,14 @@
-import {
-  type SubtaskDef,
-  type SubtaskId,
-  type TaskDef,
-  type TaskId,
-  type TitleDef,
-} from '@/schema';
-import { type MoveTaskPayload, type Subtasks, type Tasks, type Void } from '@/types';
+import { type TaskDef, type TaskId, type TitleDef } from '@/schema';
+import { type MoveTaskPayload, type Tasks, type Void } from '@/types';
 import { type KanbanSliceCreator } from '@/store';
 import { arrayMove, getISODate, sampleTasks } from '@/lib';
 
 export interface TaskSlice {
   tasks: Tasks;
-  subtasks: Subtasks;
 
   addTask: Void<[TaskDef]>;
   deleteTask: Void<[TaskDef]>;
   editTask: Void<[TaskId, TitleDef, string?]>;
-
-  addSubtask: Void<[SubtaskDef]>;
-  editSubtaskTitle: Void<[SubtaskId, TitleDef]>;
-  editSubtaskStatus: Void<[SubtaskId, boolean]>;
-  deleteSubtask: Void<[SubtaskId]>;
 
   moveTask: Void<[MoveTaskPayload]>;
 }
@@ -52,36 +40,6 @@ export const createTaskSlice: TaskSliceCreator = (set) => ({
       task.title = title;
       task.description = description;
       task.updatedAt = getISODate();
-    });
-  },
-
-  addSubtask: (subtask) => {
-    set((state) => {
-      const task = state.tasks[subtask.taskId];
-      task.subtaskIds.unshift(subtask.id);
-      state.subtasks[subtask.id] = subtask;
-    });
-  },
-  editSubtaskTitle: (subtaskId, title) => {
-    set((state) => {
-      const subtask = state.subtasks[subtaskId];
-      subtask.title = title;
-      subtask.updatedAt = getISODate();
-    });
-  },
-  editSubtaskStatus: (subtaskId, completed) => {
-    set((state) => {
-      const subtask = state.subtasks[subtaskId];
-      subtask.completed = completed;
-      subtask.updatedAt = getISODate();
-    });
-  },
-  deleteSubtask: (subtaskId) => {
-    set((state) => {
-      const subtask = state.subtasks[subtaskId];
-      const task = state.tasks[subtask.taskId];
-      task.subtaskIds.splice(task.subtaskIds.indexOf(subtaskId), 1);
-      delete state.subtasks[subtaskId];
     });
   },
 
