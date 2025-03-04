@@ -1,9 +1,13 @@
 import { Inbox } from 'lucide-react';
 import { cn } from '@/lib';
 import { motion } from 'motion/react';
-import { type ComponentProps } from 'react';
+import { type ComponentProps, type ReactNode } from 'react';
 
-const Empty = ({ className, ...divProps }: ComponentProps<typeof motion.div>) => {
+interface EmptyProps extends ComponentProps<typeof motion.div> {
+  children?: ReactNode;
+}
+
+const Empty = ({ className, children, ...divProps }: EmptyProps) => {
   return (
     <motion.div
       layout
@@ -18,7 +22,7 @@ const Empty = ({ className, ...divProps }: ComponentProps<typeof motion.div>) =>
       {...divProps}
     >
       <Inbox width={100} height={100} />
-      <p className="text-xl font-bold capitalize">this board is empty</p>
+      {children}
     </motion.div>
   );
 };

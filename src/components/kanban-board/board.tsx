@@ -13,6 +13,7 @@ import { Empty } from '@/components/ui/empty';
 
 const Board = () => {
   const board = useKanbanStore(({ boards, currentBoardId }) => boards[currentBoardId]);
+  const addPreset = useKanbanStore.use.addPreset();
 
   const { handlers, dndContextId, dragColumnId, dragTaskId, sensors } = useKanbanDnd();
 
@@ -22,7 +23,11 @@ const Board = () => {
     <div className="scroll-custom flex w-full gap-4 overflow-x-auto px-6 py-5">
       <AnimatePresence mode="wait">
         {isEmpty ? (
-          <Empty key={board.id} />
+          <Empty key={board.id}>
+            <Button onClick={() => addPreset(board.id)} className="font-bold">
+              기본 컬럼 추가
+            </Button>
+          </Empty>
         ) : (
           <DndContext
             id={dndContextId}

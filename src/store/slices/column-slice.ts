@@ -1,5 +1,5 @@
 import type { Columns, Void } from '@/types';
-import { getISODate, sampleColumns } from '@/lib';
+import { generateColumnPreset, getISODate, sampleColumns } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
 import { type BoardId, type ColumnDef, type ColumnId, type TitleDef } from '@/schema';
 
@@ -7,6 +7,7 @@ export interface ColumnSlice {
   columns: Columns;
 
   addColumn: Void<[ColumnDef]>;
+  addPreset: Void<[BoardId]>;
   deleteColumn: Void<[ColumnDef]>;
   editColumn: Void<[ColumnId, TitleDef]>;
   moveColumn: Void<[BoardId, ColumnId[]]>;
@@ -24,6 +25,17 @@ export const createColumnSlice: ColumnSliceCreator = (set) => ({
       state.columns[column.id] = column;
     });
   },
+  addPreset: (boardId) => {
+    set((state) => {
+      const board = state.boards[boardId];
+
+      generateColumnPreset(boardId).forEach((column) => {
+        state.columns[column.id] = column;
+        board.columnIds.push(column.id);
+      });
+    });
+  },
+
   deleteColumn: (column) => {
     set((state) => {
       const board = state.boards[column.boardId];
