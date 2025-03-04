@@ -1,6 +1,3 @@
-'use client';
-
-import { useKanbanStore } from '@/store';
 import { Grid2x2Plus } from 'lucide-react';
 import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
 import { Header } from '@/components/ui/header';
@@ -8,14 +5,12 @@ import { IconButton } from '@/components/ui/icon-button';
 import { Github } from '@/assets';
 
 const HeaderNav = () => {
-  const board = useKanbanStore((state) => state.boards[state.currentBoardId]);
-
   return (
     <Header>
       <nav className="flex w-full items-center justify-between lg:p-6">
         <HeaderCommand />
         <div className="flex gap-4">
-          <ColumnAddDialog boardId={board.id}>
+          <ColumnAddDialog>
             <IconButton
               Icon={Grid2x2Plus}
               iconSize={24}

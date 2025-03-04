@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown, SquarePlus } from 'lucide-react';
@@ -15,17 +14,21 @@ import {
 import { cn } from '@/lib';
 import { useKanbanStore } from '@/store';
 import { BoardAddDialogContent } from '@/components';
-import Link from 'next/link';
 import { type BoardId } from '@/schema';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { useDisclosure } from '@/hooks';
+import { useRouter } from 'next/navigation';
 
 const HeaderCommand = () => {
-  const [openCommand, setOpenCommand] = useState(false);
+  const router = useRouter();
+
+  const command = useDisclosure();
+  const dialog = useDisclosure();
 
   const currentBoardId = useKanbanStore.use.currentBoardId();
   const boards = useKanbanStore.use.boards();
-  const board = boards[currentBoardId];
 
+  const board = boards[currentBoardId];
   const boardList = Object.values(boards);
 
   const onSearch = (boardId: string, term: string) => {
@@ -34,15 +37,19 @@ const HeaderCommand = () => {
     return item?.title.toLowerCase().includes(term.toLowerCase()) ? 1 : 0;
   };
 
+  const onSelect = (boardId: string, title: string) => {
+    router.push(`/${boardId}?title=${title}`);
+  };
+
   return (
-    <Dialog>
-      <Popover open={openCommand} onOpenChange={setOpenCommand}>
+    <Dialog {...dialog}>
+      <Popover {...command}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             className="w-full max-w-44 justify-between gap-x-0 sm:max-w-60"
-            aria-expanded={openCommand}
+            aria-expanded={command.open}
           >
             <span className="truncate">{board.title}</span>
             <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
@@ -55,17 +62,15 @@ const HeaderCommand = () => {
               <CommandEmpty>입력한 보드가 없어요</CommandEmpty>
               <CommandGroup className="p-2">
                 {boardList.map(({ id, title }) => (
-                  <Link
-                    className="block py-px focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  <CommandItem
                     key={id}
-                    href={{ pathname: id, query: { title } }}
-                    prefetch
+                    value={id}
+                    className="flex h-9 gap-2"
+                    onSelect={(boardId) => onSelect(boardId, title)}
                   >
-                    <CommandItem value={id} className="flex gap-2">
-                      <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
-                      <span className="truncate">{title}</span>
-                    </CommandItem>
-                  </Link>
+                    <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
+                    <span className="truncate">{title}</span>
+                  </CommandItem>
                 ))}
               </CommandGroup>
             </CommandList>
@@ -78,7 +83,7 @@ const HeaderCommand = () => {
           </Command>
         </PopoverContent>
       </Popover>
-      <BoardAddDialogContent />
+      <BoardAddDialogContent {...dialog} />
     </Dialog>
   );
 };

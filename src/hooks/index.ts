@@ -4,3 +4,4 @@ export * from './use-hydration';
 export * from './use-init-board';
 export * from './use-shake-animation';
 export * from './use-subtask-count';
+export * from './use-disclosure';

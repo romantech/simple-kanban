@@ -7,22 +7,24 @@ import { BoardAddDialogContent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { IconButton } from '@/components/ui/icon-button';
+import { useDisclosure } from '@/hooks';
 
 const BoardSidebar = () => {
   const boards = useKanbanStore.use.boards();
   const currentBoardId = useKanbanStore.use.currentBoardId();
 
-  const [openPanel, setOpenPanel] = useState(true);
-
-  const toggleSidebar = () => setOpenPanel((prev) => !prev);
+  const dialog = useDisclosure();
+  const panel = useDisclosure(true);
 
   return (
     <Fragment>
       <Sidebar
-        className={cn('hidden lg:block', { 'w-0 invisible opacity-0 border-none p-0': !openPanel })}
+        className={cn('hidden lg:block', {
+          'w-0 invisible opacity-0 border-none p-0': !panel.open,
+        })}
       >
         <ul className="flex flex-col divide-y divide-baltic-900">
           {Object.values(boards).map(({ title, id }) => (
@@ -45,24 +47,27 @@ const BoardSidebar = () => {
           ))}
         </ul>
         <div className="sticky bottom-0">
-          <Dialog>
+          <Dialog {...dialog}>
             <DialogTrigger asChild>
               <Button className="w-full font-bold capitalize">
                 <SquarePlus />
                 보드 추가
               </Button>
             </DialogTrigger>
-            <BoardAddDialogContent />
+            <BoardAddDialogContent {...dialog} />
           </Dialog>
         </div>
       </Sidebar>
       <IconButton
         tooltipContent="사이드바 토글"
-        onClick={toggleSidebar}
+        onClick={panel.toggle}
         Icon={ChevronsLeft}
         className={cn(
           'hidden h-[36px] px-2 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-[22px] absolute bottom-6 hover:bg-baltic-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-none shadow-md',
-          { 'translate-x-[288px] rounded-r-xl': openPanel, 'rotate-180 rounded-l-xl': !openPanel },
+          {
+            'translate-x-[288px] rounded-r-xl': panel.open,
+            'rotate-180 rounded-l-xl': !panel.open,
+          },
         )}
       />
     </Fragment>
