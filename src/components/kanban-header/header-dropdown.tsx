@@ -30,8 +30,8 @@ const HeaderDropdown = () => {
   const deleteBoard = useKanbanStore.use.deleteBoard();
 
   const onBoardDelete = () => {
-    const { id: toBoardId, title: toBoardTitle } = deleteBoard(currentBoardId);
-    router.replace(`/${toBoardId}?title=${toBoardTitle}`);
+    const { id: nextBoardId, title: nextBoardTitle } = deleteBoard(currentBoardId);
+    router.replace(`/${nextBoardId}?title=${nextBoardTitle}`);
   };
 
   return (
