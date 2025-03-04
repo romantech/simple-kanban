@@ -1,7 +1,7 @@
 import type { Subtasks, Void } from '@/types';
 import type { SubtaskDef, SubtaskId, TitleDef } from '@/schema';
 import type { KanbanSliceCreator } from '@/store';
-import { getISODate } from '@/lib';
+import { getISODate, sampleSubtasks } from '@/lib';
 
 export interface SubtaskSlice {
   subtasks: Subtasks;
@@ -15,7 +15,7 @@ export interface SubtaskSlice {
 type SubTaskSliceCreator = KanbanSliceCreator<SubtaskSlice>;
 
 export const createSubtaskSlice: SubTaskSliceCreator = (set, get) => ({
-  subtasks: {},
+  subtasks: sampleSubtasks,
 
   addSubtask: (subtask) => {
     set((state) => {

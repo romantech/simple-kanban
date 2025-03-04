@@ -26,8 +26,9 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
     set((state) => {
       state.boards[board.id] = board;
       state.currentBoardId = board.id;
-      if (preset) state.addPreset(board.id);
     });
+    // 상태 업데이트 완료 후 실행
+    if (preset) get().addPreset(board.id);
   },
   deleteBoard: (boardId) => {
     set((state) => {
