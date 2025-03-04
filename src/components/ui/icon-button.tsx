@@ -1,6 +1,9 @@
+'use client';
+
 import { cn } from '@/lib';
 import type { ComponentProps, ElementType, FunctionComponent, SVGProps } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useMediaQuery } from 'usehooks-ts';
 
 type IconButtonProps<T extends ElementType> = {
   Icon: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -20,6 +23,7 @@ const IconButton = <T extends ElementType = 'button'>({
   ...props
 }: IconButtonProps<T>) => {
   const PolymorphicComp = as ?? 'button';
+  const isLargeScreen = useMediaQuery('(min-width: 40rem)');
 
   const Element = (
     <PolymorphicComp
@@ -34,7 +38,7 @@ const IconButton = <T extends ElementType = 'button'>({
     </PolymorphicComp>
   );
 
-  if (!tooltipContent) return Element;
+  if (!tooltipContent || !isLargeScreen) return Element;
 
   return (
     <TooltipProvider>
