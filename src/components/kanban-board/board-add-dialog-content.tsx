@@ -27,28 +27,32 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { addBoardSchema, type AddBoardSchema } from '@/schema';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { type UseDisclosure } from '@/hooks';
 
 const [titleField, presetField] = addBoardSchema.keyof().options;
+const resolver = zodResolver(addBoardSchema);
+const defaultValues = { title: '', preset: true };
 
-interface BoardAddDialogContentProps {
+interface BoardAddDialogContentProps extends UseDisclosure {
   className?: string;
 }
 
-const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
+const BoardAddDialogContent = ({ className, open }: BoardAddDialogContentProps) => {
   const router = useRouter();
-
   const addBoard = useKanbanStore.use.addBoard();
-  const form = useForm<AddBoardSchema>({
-    resolver: zodResolver(addBoardSchema),
-    defaultValues: { title: '', preset: true },
-  });
+
+  const form = useForm<AddBoardSchema>({ resolver, defaultValues });
 
   const onSubmit: SubmitHandler<AddBoardSchema> = ({ title, preset }) => {
     const newBoard = generateBoard(title);
     addBoard(newBoard, preset);
-    form.reset();
-    router.push(`${newBoard.id}?title=${newBoard.title}`);
+    router.push(`/${newBoard.id}?title=${newBoard.title}`);
   };
+
+  useEffect(() => {
+    if (!open) form.reset();
+  }, [form, open]);
 
   return (
     <DialogContent className={cn('sm:max-w-[425px]', className)}>

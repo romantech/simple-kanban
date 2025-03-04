@@ -18,10 +18,12 @@ import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { addBoardSchema, type BoardDef } from '@/schema';
 import { BoardConfig, cn } from '@/lib';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { type UseDisclosure } from '@/hooks';
 
-interface BoardEditDialogProps {
+interface BoardEditDialogProps extends UseDisclosure {
   board: BoardDef;
-  onEdit?: (title: string) => void;
   className?: string;
 }
 
@@ -30,7 +32,14 @@ type EditBoardSchema = z.infer<typeof editBoardSchema>;
 
 const [titleField] = editBoardSchema.keyof().options;
 
-export const BoardEditDialogContent = ({ board, className, onEdit }: BoardEditDialogProps) => {
+export const BoardEditDialogContent = ({
+  board,
+  className,
+  onOpenChange,
+  open,
+}: BoardEditDialogProps) => {
+  const router = useRouter();
+
   const { register, handleSubmit, reset, formState } = useForm<EditBoardSchema>({
     resolver: zodResolver(editBoardSchema),
     values: { title: board.title },
@@ -40,15 +49,17 @@ export const BoardEditDialogContent = ({ board, className, onEdit }: BoardEditDi
 
   const onSubmit: SubmitHandler<EditBoardSchema> = ({ title }) => {
     editBoard(board.id, title);
-    onEdit?.(title);
+    onOpenChange(false);
+    // 수정한 타이틀이 페이지 제목에 반영되도록 router.replace -> generateMetadata 함수로 title 전달
+    router.replace(`/${board.id}?title=${title}`);
   };
 
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
+
   return (
-    <DialogContent
-      className={cn('sm:max-w-[425px]', className)}
-      onEscapeKeyDown={() => reset()}
-      onPointerDownOutside={() => reset()}
-    >
+    <DialogContent className={cn('sm:max-w-[425px]', className)}>
       <DialogHeader>
         <DialogTitle className="capitalize">보드 수정</DialogTitle>
         <DialogDescription></DialogDescription>
@@ -70,9 +81,7 @@ export const BoardEditDialogContent = ({ board, className, onEdit }: BoardEditDi
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" onClick={() => reset()}>
-              취소
-            </Button>
+            <Button variant="outline">취소</Button>
           </DialogClose>
           <Button type="submit">수정</Button>
         </DialogFooter>

@@ -16,11 +16,10 @@ import { Dialog, DialogTrigger } from '../ui/dialog';
 import { BoardEditDialogContent } from '@/components';
 import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
-import { type BoardId } from '@/schema';
-import { useState } from 'react';
+import { useDisclosure } from '@/hooks';
 
 const HeaderDropdown = () => {
-  const [open, setOpen] = useState(false);
+  const dialog = useDisclosure();
   const router = useRouter();
 
   const currentBoardId = useKanbanStore.use.currentBoardId();
@@ -30,22 +29,13 @@ const HeaderDropdown = () => {
   const disableDelete = Object.keys(boards).length <= 1;
   const deleteBoard = useKanbanStore.use.deleteBoard();
 
-  const updateUrl = (boardId: BoardId, title: string) => {
-    router.replace(`${boardId}?title=${title}`);
-  };
-
   const onBoardDelete = () => {
     const { id: toBoardId, title: toBoardTitle } = deleteBoard(currentBoardId);
-    updateUrl(toBoardId, toBoardTitle);
-  };
-
-  const onBoardEdit = (title: string) => {
-    setOpen(false);
-    updateUrl(board.id, title);
+    router.replace(`/${toBoardId}?title=${toBoardTitle}`);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog {...dialog}>
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
@@ -64,7 +54,7 @@ const HeaderDropdown = () => {
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-        <BoardEditDialogContent board={board} onEdit={onBoardEdit} />
+        <BoardEditDialogContent {...dialog} board={board} />
         <AlertDialogBaseContent
           title="보드를 삭제할까요?"
           description="보드에 있는 모든 컬럼과 작업도 함께 삭제돼요."
