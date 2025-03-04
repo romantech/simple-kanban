@@ -19,26 +19,30 @@ import { ErrorMessage } from '@hookform/error-message';
 import { type PropsWithChildren, useState } from 'react';
 import { ColumnConfig, generateColumn } from '@/lib';
 import { Label } from '@/components/ui/label';
-import { addColumnSchema, type AddColumnSchema, type BoardId } from '@/schema';
+import { addColumnSchema, type AddColumnSchema } from '@/schema';
 
 const [titleField] = addColumnSchema.keyof().options;
+const resolver = zodResolver(addColumnSchema);
 
-const ColumnAddDialog = ({ children, boardId }: PropsWithChildren<{ boardId: BoardId }>) => {
-  const [isOpen, setIsOpen] = useState(false);
+const ColumnAddDialog = ({ children }: PropsWithChildren) => {
+  const [open, setOpen] = useState(false);
+  const { register, handleSubmit, reset, formState } = useForm<AddColumnSchema>({ resolver });
 
   const addColumn = useKanbanStore.use.addColumn();
-  const { register, handleSubmit, reset, formState } = useForm<AddColumnSchema>({
-    resolver: zodResolver(addColumnSchema),
-  });
+  const boardId = useKanbanStore.use.currentBoardId();
+
+  const onOpenChangeWithReset = (open: boolean) => {
+    reset();
+    setOpen(open);
+  };
 
   const onSubmit: SubmitHandler<AddColumnSchema> = ({ title }) => {
     addColumn(generateColumn(boardId, title));
-    reset();
-    setIsOpen(false);
+    onOpenChangeWithReset(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={open} onOpenChange={onOpenChangeWithReset}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>

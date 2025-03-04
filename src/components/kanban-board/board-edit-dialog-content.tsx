@@ -17,37 +17,30 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { addBoardSchema, type BoardDef } from '@/schema';
-import { useRouter } from 'next/navigation';
 import { BoardConfig, cn } from '@/lib';
 
 interface BoardEditDialogProps {
   board: BoardDef;
+  onEdit?: (title: string) => void;
   className?: string;
 }
 
 const editBoardSchema = addBoardSchema.omit({ preset: true });
 type EditBoardSchema = z.infer<typeof editBoardSchema>;
+
 const [titleField] = editBoardSchema.keyof().options;
 
-export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProps) => {
-  const router = useRouter();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<EditBoardSchema>({
+export const BoardEditDialogContent = ({ board, className, onEdit }: BoardEditDialogProps) => {
+  const { register, handleSubmit, reset, formState } = useForm<EditBoardSchema>({
     resolver: zodResolver(editBoardSchema),
-    defaultValues: { title: board.title },
+    values: { title: board.title },
   });
 
   const editBoard = useKanbanStore.use.editBoard();
 
   const onSubmit: SubmitHandler<EditBoardSchema> = ({ title }) => {
     editBoard(board.id, title);
-    // 수정한 타이틀이 페이지 제목에 반영되도록 router.replace -> generateMetadata 함수로 title 전달
-    router.replace(`/${board.id}?title=${title}`);
+    onEdit?.(title);
   };
 
   return (
@@ -70,7 +63,7 @@ export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProp
             minLength={BoardConfig.title.min}
           />
           <ErrorMessage
-            errors={errors}
+            errors={formState.errors}
             name={titleField}
             render={({ message }) => <p className="text-sm text-baltic-400">{message}</p>}
           />
@@ -81,9 +74,7 @@ export const BoardEditDialogContent = ({ board, className }: BoardEditDialogProp
               취소
             </Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button type="submit">수정</Button>
-          </DialogClose>
+          <Button type="submit">수정</Button>
         </DialogFooter>
       </form>
     </DialogContent>
