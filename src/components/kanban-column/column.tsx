@@ -35,7 +35,7 @@ const Column = ({ columnId, className }: ColumnProps) => {
           <TaskAddDialog columnId={columnId}>
             <button className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-md border border-baltic-900 p-2 text-xs font-semibold capitalize text-baltic-200 shadow-md transition-all hover:bg-charade-950 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:scale-95">
               <CirclePlus height={14} />
-              add task
+              작업 추가
             </button>
           </TaskAddDialog>
           <ul className="scroll-custom flex flex-1 flex-col gap-4 overflow-y-auto">

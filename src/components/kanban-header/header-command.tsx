@@ -70,7 +70,7 @@ const HeaderCommand = () => {
               </CommandGroup>
             </CommandList>
             <DialogTrigger asChild>
-              <Button className="m-2 font-bold capitalize lg:hidden">add board</Button>
+              <Button className="m-2 font-bold capitalize lg:hidden">보드 추가</Button>
             </DialogTrigger>
           </Command>
         </PopoverContent>
