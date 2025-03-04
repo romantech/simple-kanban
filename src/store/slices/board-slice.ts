@@ -1,5 +1,5 @@
 import { type Boards, type Void } from '@/types';
-import { generatePresetColumns, getISODate, sampleBoardId, sampleBoards } from '@/lib';
+import { getISODate, sampleBoardId, sampleBoards } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
 import { type BoardDef, type BoardId, type ColumnDef, type TitleDef } from '@/schema';
 
@@ -26,12 +26,7 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
     set((state) => {
       state.boards[board.id] = board;
       state.currentBoardId = board.id;
-      if (!preset) return;
-
-      generatePresetColumns(board.id).forEach((column) => {
-        state.columns[column.id] = column;
-        board.columnIds.push(column.id);
-      });
+      if (preset) state.addPreset(board.id);
     });
   },
   deleteBoard: (boardId) => {

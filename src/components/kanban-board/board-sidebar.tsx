@@ -2,7 +2,7 @@
 
 import { useKanbanStore } from '@/store';
 import { cn } from '@/lib';
-import { ChevronsLeft, SquareKanban } from 'lucide-react';
+import { ChevronsLeft, SquareKanban, SquarePlus } from 'lucide-react';
 import { BoardAddDialogContent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
@@ -47,7 +47,10 @@ const BoardSidebar = () => {
         <div className="sticky bottom-0">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="w-full font-bold capitalize">add board</Button>
+              <Button className="w-full font-bold capitalize">
+                <SquarePlus />
+                보드 추가
+              </Button>
             </DialogTrigger>
             <BoardAddDialogContent />
           </Dialog>
@@ -58,7 +61,7 @@ const BoardSidebar = () => {
         onClick={toggleSidebar}
         Icon={ChevronsLeft}
         className={cn(
-          'hidden h-[36px] px-2 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-[22px] absolute bottom-6 hover:bg-baltic-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+          'hidden h-[36px] px-2 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-[22px] absolute bottom-6 hover:bg-baltic-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-none shadow-md',
           { 'translate-x-[288px] rounded-r-xl': openPanel, 'rotate-180 rounded-l-xl': !openPanel },
         )}
       />

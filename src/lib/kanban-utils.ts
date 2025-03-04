@@ -72,7 +72,7 @@ export const generateColumn = (boardId: BoardId, title: TitleDef): ColumnDef => 
   };
 };
 
-export const generatePresetColumns = (boardId: BoardId) => {
+export const generateColumnPreset = (boardId: BoardId) => {
   const defaultTitles = ['진행 전', '진행 중', '완료'];
   return defaultTitles.map((title) => generateColumn(boardId, title));
 };
