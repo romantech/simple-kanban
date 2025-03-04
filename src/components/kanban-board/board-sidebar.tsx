@@ -2,7 +2,7 @@
 
 import { useKanbanStore } from '@/store';
 import { cn } from '@/lib';
-import { ChevronsLeft, SquareKanban } from 'lucide-react';
+import { ChevronsLeft, SquareKanban, SquarePlus } from 'lucide-react';
 import { BoardAddDialogContent } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
@@ -47,7 +47,10 @@ const BoardSidebar = () => {
         <div className="sticky bottom-0">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="w-full font-bold capitalize">보드 추가</Button>
+              <Button className="w-full font-bold capitalize">
+                <SquarePlus />
+                보드 추가
+              </Button>
             </DialogTrigger>
             <BoardAddDialogContent />
           </Dialog>

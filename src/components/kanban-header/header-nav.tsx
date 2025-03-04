@@ -1,7 +1,7 @@
 'use client';
 
 import { useKanbanStore } from '@/store';
-import { SquarePlus } from 'lucide-react';
+import { Grid2x2Plus } from 'lucide-react';
 import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
 import { Header } from '@/components/ui/header';
 import { IconButton } from '@/components/ui/icon-button';
@@ -17,7 +17,7 @@ const HeaderNav = () => {
         <div className="flex gap-4">
           <ColumnAddDialog boardId={board.id}>
             <IconButton
-              Icon={SquarePlus}
+              Icon={Grid2x2Plus}
               iconSize={24}
               className="p-1 lg:hidden"
               tooltipContent="컬럼 추가"

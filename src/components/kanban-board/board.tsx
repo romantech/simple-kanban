@@ -10,6 +10,7 @@ import { toColumnId, toTaskId } from '@/types';
 import { useKanbanDnd } from '@/hooks';
 import { AnimatePresence } from 'motion/react';
 import { Empty } from '@/components/ui/empty';
+import { Grid2x2Plus, LayoutPanelTop } from 'lucide-react';
 
 const Board = () => {
   const board = useKanbanStore(({ boards, currentBoardId }) => boards[currentBoardId]);
@@ -29,7 +30,8 @@ const Board = () => {
               onClick={() => addPreset(board.id)}
               className="font-bold text-baltic-400 hover:text-charade-300"
             >
-              기본 컬럼 추가
+              <LayoutPanelTop />
+              프리셋 추가
             </Button>
           </Empty>
         ) : (
@@ -54,7 +56,8 @@ const Board = () => {
 
       <div className="ml-auto mt-11 flex">
         <ColumnAddDialog boardId={board.id}>
-          <Button className="hidden h-full w-[210px] items-center justify-center gap-1 rounded-md bg-baltic-900/30 text-xl font-bold capitalize text-baltic-400 shadow-md transition-all hover:bg-baltic-900/50 active:scale-95 lg:flex">
+          <Button className="hidden h-full w-[210px] items-center justify-center gap-2 rounded-md bg-gradient-to-b  from-baltic-900/40 to-baltic-950 to-100% text-xl font-bold capitalize text-baltic-400 shadow-none transition-all hover:bg-baltic-900/40 active:scale-95 lg:flex [&_svg]:size-5">
+            <Grid2x2Plus />
             컬럼 추가
           </Button>
         </ColumnAddDialog>

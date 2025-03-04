@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, SquarePlus } from 'lucide-react';
 import {
   Command,
   CommandEmpty,
@@ -70,7 +70,10 @@ const HeaderCommand = () => {
               </CommandGroup>
             </CommandList>
             <DialogTrigger asChild>
-              <Button className="m-2 font-bold capitalize lg:hidden">보드 추가</Button>
+              <Button className="m-2 font-bold capitalize lg:hidden">
+                <SquarePlus />
+                보드 추가
+              </Button>
             </DialogTrigger>
           </Command>
         </PopoverContent>
