@@ -1,6 +1,5 @@
 import type { SubtaskId } from '@/schema';
 import { useKanbanStore } from '@/store';
-import { useDebouncedCallback } from 'use-debounce';
 import type { ChangeEvent } from 'react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,6 +9,7 @@ import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { IconButton } from '@/components/ui/icon-button';
 import { X } from 'lucide-react';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
+import { useDebounceCallback } from 'usehooks-ts';
 
 interface SubtaskProps {
   subtaskId: SubtaskId;
@@ -22,7 +22,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
   const editSubtaskStatus = useKanbanStore.use.editSubtaskStatus();
   const deleteSubtask = useKanbanStore.use.deleteSubtask();
 
-  const debouncedEditSubtaskTitle = useDebouncedCallback(editSubtaskTitle, 300);
+  const debouncedEditSubtaskTitle = useDebounceCallback(editSubtaskTitle, 300);
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     debouncedEditSubtaskTitle(subtaskId, e.target.value);
