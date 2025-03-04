@@ -24,7 +24,11 @@ const Board = () => {
       <AnimatePresence mode="wait">
         {isEmpty ? (
           <Empty key={board.id}>
-            <Button onClick={() => addPreset(board.id)} className="font-bold">
+            <Button
+              variant="outline"
+              onClick={() => addPreset(board.id)}
+              className="font-bold text-baltic-400 hover:text-charade-300"
+            >
               기본 컬럼 추가
             </Button>
           </Empty>
