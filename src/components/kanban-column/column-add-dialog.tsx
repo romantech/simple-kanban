@@ -16,24 +16,25 @@ import { Button } from '@/components/ui/button';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ErrorMessage } from '@hookform/error-message';
-import { type PropsWithChildren, useState } from 'react';
+import { type PropsWithChildren } from 'react';
 import { ColumnConfig, generateColumn } from '@/lib';
 import { Label } from '@/components/ui/label';
 import { addColumnSchema, type AddColumnSchema } from '@/schema';
+import { useDisclosure } from '@/hooks';
 
 const [titleField] = addColumnSchema.keyof().options;
 const resolver = zodResolver(addColumnSchema);
 
 const ColumnAddDialog = ({ children }: PropsWithChildren) => {
-  const [open, setOpen] = useState(false);
+  const dialog = useDisclosure();
   const { register, handleSubmit, reset, formState } = useForm<AddColumnSchema>({ resolver });
 
   const addColumn = useKanbanStore.use.addColumn();
   const boardId = useKanbanStore.use.currentBoardId();
 
   const onOpenChangeWithReset = (open: boolean) => {
-    reset();
-    setOpen(open);
+    if (open) reset();
+    dialog.onOpenChange(open);
   };
 
   const onSubmit: SubmitHandler<AddColumnSchema> = ({ title }) => {
@@ -42,7 +43,7 @@ const ColumnAddDialog = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChangeWithReset}>
+    <Dialog open={dialog.open} onOpenChange={onOpenChangeWithReset}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>

@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
-import { getISODate } from '@/lib/utils';
+import { arrayMove, getISODate } from '@/lib/utils';
 import type { Active, Over } from '@dnd-kit/core';
-import type { TaskSortable } from '@/types';
+import type { Sortable, TaskSortable, Void } from '@/types';
 import {
   type BoardDef,
   type BoardId,
@@ -15,6 +15,7 @@ import {
   type TaskId,
   type TitleDef,
 } from '@/schema';
+import { type DragType } from '@/hooks';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];
@@ -89,22 +90,41 @@ export const generateBoard = (title: TitleDef): BoardDef => {
   };
 };
 
-export const getDragTypes = (active: Active, over?: Over | null) => {
+export const resolveDragTypes = (active: Active, over?: Over | null) => {
   const activeData = active.data.current;
   const overData = over?.data.current;
 
   if (!activeData) throw new Error('Drag data is missing for active or over element');
 
   return {
+    /** 드래그한 요소가 Subtask 일 때 */
+    isActiveSubtask: activeData.type === 'subtask',
+    /** 드래그할 위치가 Subtask 일 때 */
+    isOverSubtask: overData?.type === 'subtask',
+
     /** 드래그한 요소가 Task 카드일 때   */
     isActiveTask: activeData.type === 'task',
     /** 드래그할 위치가 Task 카드일 때  */
     isOverTask: overData?.type === 'task',
+
     /** 드래그한 요소가 컬럼일 때 */
     isActiveColumn: activeData.type === 'column',
     /** 드래그할 위치가 컬럼일 때 */
     isOverColumn: overData?.type === 'column',
   };
+};
+
+export const getActiveDragType = (type: Partial<ReturnType<typeof resolveDragTypes>>): DragType => {
+  switch (true) {
+    case type.isActiveSubtask:
+      return 'subtask';
+    case type.isActiveTask:
+      return 'task';
+    case type.isActiveColumn:
+      return 'column';
+    default:
+      throw new Error('Unknown drag type');
+  }
 };
 
 interface ComputeTargetTaskIdxParams {
@@ -139,4 +159,20 @@ export const computeTargetTaskIdx = ({
 
   // 대상 컬럼의 첫번째 카드 위치보다 위로 드래그 했을 땐 첫번째로, 그 외엔 마지막 인덱스로 설정
   return currentY < topThreshold ? 0 : targetColumn.taskIds.length;
+};
+
+interface MoveSortableItems<TContainer, TItem> {
+  activeSort: Sortable<TContainer, TItem>;
+  overSort: Sortable<TContainer, TItem>;
+  updater: Void<[TContainer, TItem[]]>;
+}
+
+/** Sortable 아이템 이동을 처리하는 공통 함수 */
+export const moveSortableItems = <TContainer, TItem>({
+  activeSort,
+  overSort,
+  updater,
+}: MoveSortableItems<TContainer, TItem>) => {
+  const newItems = arrayMove(activeSort.items, activeSort.index, overSort.index);
+  updater(activeSort.containerId, newItems);
 };

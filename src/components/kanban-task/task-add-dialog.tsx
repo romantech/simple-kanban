@@ -30,18 +30,18 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
 
   const methods = useForm<AddTaskSchema>({ resolver: zodResolver(addTaskSchema) });
 
-  const onOpenChange = (open: boolean) => {
-    if (!open) methods.reset();
+  const onOpenChangeWithReset = (open: boolean) => {
+    if (open) methods.reset();
     dialog.onOpenChange(open);
   };
 
   const onSubmit: SubmitHandler<AddTaskSchema> = ({ title, description }) => {
     addTask(generateTask(columnId, title, description));
-    onOpenChange(false);
+    onOpenChangeWithReset(false);
   };
 
   return (
-    <Dialog open={dialog.open} onOpenChange={onOpenChange}>
+    <Dialog open={dialog.open} onOpenChange={onOpenChangeWithReset}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <FormProvider {...methods}>

@@ -4,12 +4,10 @@ import { type DraggableAttributes, type UseDraggableArguments } from '@dnd-kit/c
 import { type CSSProperties, type ElementType, type ReactNode } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-import {
-  type DndPlaceholderVariantType,
-  DropPlaceholder,
-} from '@/components/drag-and-drop/drop-placeholder';
+import { DropPlaceholder } from '@/components/drag-and-drop/drop-placeholder';
 import { type SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import { cn } from '@/lib';
+import { type DragType } from '@/hooks';
 
 interface ChildrenProps {
   listeners?: SyntheticListenerMap;
@@ -20,8 +18,8 @@ interface DraggableProps extends UseDraggableArguments {
   children: ({ listeners, attributes }: ChildrenProps) => ReactNode;
   rootDndConfig?: Record<keyof ChildrenProps, boolean>;
   className?: string;
-  type: DndPlaceholderVariantType;
-  element?: ElementType;
+  type: DragType;
+  as?: ElementType;
 }
 
 /**
@@ -30,13 +28,13 @@ interface DraggableProps extends UseDraggableArguments {
  * */
 const Draggable = ({
   children,
-  element,
+  as,
   type,
   className,
   rootDndConfig = { attributes: true, listeners: true },
   ...dragProps
 }: DraggableProps) => {
-  const Element = element ?? 'div';
+  const Element = as ?? 'div';
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     ...dragProps,
@@ -48,8 +46,8 @@ const Draggable = ({
   if (isDragging) return <DropPlaceholder variant={type} style={style} ref={setNodeRef} />;
 
   const configProps = {
-    ...(rootDndConfig?.attributes && attributes),
-    ...(rootDndConfig?.listeners && listeners),
+    ...(rootDndConfig.attributes && attributes),
+    ...(rootDndConfig.listeners && listeners),
   };
 
   return (

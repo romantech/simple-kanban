@@ -1,12 +1,12 @@
 'use client';
 
-import { Column, ColumnAddDialog, Task } from '@/components';
+import { Column, ColumnAddDialog, Subtask, Task } from '@/components';
 import { useKanbanStore } from '@/store';
 import { Button } from '@/components/ui/button';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
-import { toColumnId, toTaskId } from '@/types';
+import { toColumnId, toSubtaskId, toTaskId } from '@/types';
 import { useKanbanDnd } from '@/hooks';
 import { AnimatePresence } from 'motion/react';
 import { Empty } from '@/components/ui/empty';
@@ -16,7 +16,7 @@ const Board = () => {
   const board = useKanbanStore(({ boards, currentBoardId }) => boards[currentBoardId]);
   const addPreset = useKanbanStore.use.addPreset();
 
-  const { handlers, dndContextId, dragColumnId, dragTaskId, sensors } = useKanbanDnd();
+  const { handlers, dndContextId, dragIds, sensors } = useKanbanDnd();
 
   const isEmpty = board.columnIds.length === 0;
 
@@ -47,8 +47,9 @@ const Board = () => {
               ))}
             </SortableContext>
             <DragOverlay>
-              {dragColumnId && <Column columnId={toColumnId(dragColumnId)} />}
-              {dragTaskId && <Task taskId={toTaskId(dragTaskId)} />}
+              {dragIds.column && <Column columnId={toColumnId(dragIds.column)} />}
+              {dragIds.task && <Task taskId={toTaskId(dragIds.task)} />}
+              {dragIds.subtask && <Subtask subtaskId={toSubtaskId(dragIds.subtask)} />}
             </DragOverlay>
           </DndContext>
         )}

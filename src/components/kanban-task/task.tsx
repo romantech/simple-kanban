@@ -26,7 +26,7 @@ const Task = ({ taskId, className }: TaskProps) => {
       id={task.id}
       data={task}
       type="task"
-      element="li"
+      as="li"
       rootDndConfig={{ listeners: false, attributes: false }}
       className={cn(
         'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md transition-colors flex flex-col gap-1 hover:bg-charade-900/70 p-0.5',
