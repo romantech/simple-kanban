@@ -1,6 +1,6 @@
 import type { SubtaskId } from '@/schema';
 import { useKanbanStore } from '@/store';
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent, Fragment } from 'react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { cn } from '@/lib';
 import { useDebounceCallback } from 'usehooks-ts';
@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { IconButton } from '@/components/ui/icon-button';
-import { X } from 'lucide-react';
+import { GripVertical, X } from 'lucide-react';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 
 interface SubtaskProps {
@@ -40,14 +40,15 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
       id={subtask.id}
       data={subtask}
       type="subtask"
+      rootDndConfig={{ listeners: false, attributes: false }}
       as="li"
       className={cn(
-        'flex items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600',
+        'flex gap-1.5 items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600',
         className,
       )}
     >
-      {() => (
-        <>
+      {({ listeners, attributes }) => (
+        <Fragment>
           <Checkbox
             className="data-[state=checked]:border-charade-500 data-[state=checked]:bg-charade-500 data-[state=checked]:text-baltic-950"
             id={subtask.id}
@@ -62,6 +63,12 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
             defaultValue={subtask.title}
             onChange={onInputChange}
           />
+          <IconButton
+            Icon={GripVertical}
+            className="text-charade-500"
+            {...listeners}
+            {...attributes}
+          />
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <IconButton
@@ -72,7 +79,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
             </AlertDialogTrigger>
             <AlertDialogBaseContent title="하위 작업을 삭제할까요?" onConfirm={onConfirmDelete} />
           </AlertDialog>
-        </>
+        </Fragment>
       )}
     </Draggable>
   );

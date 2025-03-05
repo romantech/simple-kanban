@@ -46,8 +46,8 @@ const Draggable = ({
   if (isDragging) return <DropPlaceholder variant={type} style={style} ref={setNodeRef} />;
 
   const configProps = {
-    ...(rootDndConfig?.attributes && attributes),
-    ...(rootDndConfig?.listeners && listeners),
+    ...(rootDndConfig.attributes && attributes),
+    ...(rootDndConfig.listeners && listeners),
   };
 
   return (

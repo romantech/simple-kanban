@@ -4,15 +4,19 @@ import { type UniqueIdentifier } from '@dnd-kit/core';
 export type DragType = 'task' | 'subtask' | 'column';
 type DragId = UniqueIdentifier | null;
 type DragIds = Record<DragType, DragId>;
+enum DragActionType {
+  Set,
+  Reset,
+}
 
 interface SetDragAction {
-  type: 'SET';
+  type: DragActionType.Set;
   dragType: DragType;
   value: DragId;
 }
 
 interface ResetDragAction {
-  type: 'RESET';
+  type: DragActionType.Reset;
 }
 
 type DragAction = SetDragAction | ResetDragAction;
@@ -20,9 +24,9 @@ const INITIAL_DRAG_IDS: DragIds = { column: null, task: null, subtask: null };
 
 const dragIdsReducer = (state: DragIds, action: DragAction): DragIds => {
   switch (action.type) {
-    case 'SET':
+    case DragActionType.Set:
       return { ...state, [action.dragType]: action.value };
-    case 'RESET':
+    case DragActionType.Reset:
       return INITIAL_DRAG_IDS;
     default:
       return state;
@@ -32,11 +36,11 @@ export const useDragIds = () => {
   const [dragIds, dispatch] = useReducer(dragIdsReducer, INITIAL_DRAG_IDS);
 
   const resetDragIds = useCallback(() => {
-    dispatch({ type: 'RESET' });
+    dispatch({ type: DragActionType.Reset });
   }, []);
 
   const setDragIds = useCallback((dragType: DragType, value: DragId) => {
-    dispatch({ type: 'SET', dragType, value });
+    dispatch({ type: DragActionType.Set, dragType, value });
   }, []);
 
   return { dragIds, setDragIds, resetDragIds };
