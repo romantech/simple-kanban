@@ -31,17 +31,17 @@ const BoardSidebar = () => {
             <li
               key={id}
               className={cn(
-                'font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 truncate py-2 px-px',
+                'font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 py-2 px-px',
                 { 'text-charade-100 font-bold': id === currentBoardId },
               )}
             >
               <Link
                 href={{ pathname: id, query: { title } }}
-                className="block rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex items-center gap-2 rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 prefetch
               >
-                <SquareKanban className="inline size-[26px] pr-2" />
-                {title}
+                <SquareKanban className="size-[18px] shrink-0" />
+                <span className="truncate">{title}</span>
               </Link>
             </li>
           ))}
