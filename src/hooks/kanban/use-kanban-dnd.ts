@@ -38,7 +38,7 @@ const useKanbanDnd = () => {
    * dnd-kit Sortable 사용 시 발생할 수 있는 Maximum update depth exceeded 이슈 해결
    * @see https://github.com/clauderic/dnd-kit/issues/900
    * */
-  const debouncedMoveTask = useDebounceCallback(moveTask, 100);
+  const debouncedMoveTask = useDebounceCallback(moveTask, 0);
 
   const { setDragIds, dragIds, resetDragIds } = useDragIds();
 

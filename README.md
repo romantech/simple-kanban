@@ -1,6 +1,6 @@
 # Simple Kanban
 
-![desktop-demo](./public/screenshot/demo.gif)
+![desktop-demo](./public/screenshot/demo-v2.gif)
 
 > 데모 사이트: https://kanban.romantech.net
 
@@ -467,5 +467,5 @@ const onDragOver = ({ active, over, delta, activatorEvent }: DragOverEvent) => {
 
 ## 스크린샷
 
-![desktop-screenshot](./public/screenshot/desktop.png)
-![mobile-screenshot](./public/screenshot/mobile.png)
+![desktop-screenshot](./public/screenshot/desktop-mockup-v2.png)
+![mobile-screenshot](./public/screenshot/mobile-mockup-v2.png)
