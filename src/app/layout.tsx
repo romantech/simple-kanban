@@ -22,7 +22,8 @@ export const metadata: Metadata = {
   applicationName: 'Simple Kanban',
   icons: { icon: '/images/favicon.png' },
   creator: 'Romantech',
-  metadataBase: new URL('https://simple-kanban-iota.vercel.app'),
+  metadataBase: new URL('https://kanban.romantech.net'),
+  alternates: { canonical: '/' },
   keywords: ['Kanban', 'Task Management', 'dnd-kit', 'Drag and Drop', 'Next.js'],
   openGraph: {
     ...sharedMetadata,
