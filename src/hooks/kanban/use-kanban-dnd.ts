@@ -9,7 +9,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { useDragIds } from '@/hooks/use-drag-ids';
+import { useDragIds } from '@/hooks/kanban/use-drag-ids';
 import { useId } from 'react';
 import {
   computeTargetTaskIdx,

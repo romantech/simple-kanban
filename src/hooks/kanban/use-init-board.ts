@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useKanbanStore } from '@/store';
-import { useHydration } from '@/hooks/use-hydration';
+import { useHydration } from '@/hooks/kanban/use-hydration';
 import { useRouter } from 'next/navigation';
 import { type BoardId } from '@/schema';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useReducer } from 'react';
 import { type UniqueIdentifier } from '@dnd-kit/core';
 
