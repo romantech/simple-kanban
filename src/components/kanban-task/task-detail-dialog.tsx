@@ -23,6 +23,7 @@ import { IconButton } from '@/components/ui/icon-button';
 import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
 import { formatKoDate } from '@/lib';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { useDisclosure } from '@/hooks';
 
 interface SharedTaskProps {
   task: TaskDef;
@@ -43,7 +44,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
   const editTask = useKanbanStore.use.editTask();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dialog = useDisclosure();
 
   const methods = useForm<AddTaskSchema>({
     resolver: zodResolver(addTaskSchema),
@@ -62,20 +63,20 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
 
   const onDeleteTask = () => {
     deleteTask(task);
-    setIsModalOpen(false);
+    dialog.onOpenChange(false);
   };
 
   useEffect(() => {
     // 모달이 닫힐 때 편집 모드 변경
-    if (!isModalOpen) setIsEditing(false);
+    if (!dialog.open) setIsEditing(false);
     // 편집 모드로 변경될 때 폼 초기화
     else if (isEditing) methods.reset();
-  }, [isModalOpen, isEditing, methods]);
+  }, [dialog.open, isEditing, methods]);
 
   const dialogTitle = isEditing ? '작업 수정' : task.title;
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+    <Dialog {...dialog}>
       <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
       <DialogContent className="min-h-80 outline-none">
