@@ -7,6 +7,7 @@ const dropPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
     variant: {
       column: 'min-w-72',
       task: 'min-h-[90px]',
+      subtask: 'min-h-[46px]',
     },
   },
   defaultVariants: {
@@ -15,13 +16,10 @@ const dropPlaceholderVariants = cva('rounded border-2 border-baltic-900', {
 });
 
 type DndPlaceholderVariants = VariantProps<typeof dropPlaceholderVariants>;
-type DndPlaceholderVariantType = DndPlaceholderVariants['variant'];
 
 type DivProps = HTMLAttributes<HTMLDivElement> & { ref: Ref<HTMLDivElement>; style: CSSProperties };
 type DndPlaceholderProps = DivProps & DndPlaceholderVariants;
 
-const DropPlaceholder = ({ className, variant, ...divProps }: DndPlaceholderProps) => {
+export const DropPlaceholder = ({ className, variant, ...divProps }: DndPlaceholderProps) => {
   return <div className={cn(dropPlaceholderVariants({ variant }), className)} {...divProps} />;
 };
-
-export { DropPlaceholder, type DndPlaceholderVariantType };

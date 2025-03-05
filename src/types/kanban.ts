@@ -6,6 +6,7 @@ import {
   columnId,
   type ColumnId,
   type SubtaskDef,
+  subtaskId,
   type SubtaskId,
   type TaskDef,
   taskId,
@@ -19,6 +20,7 @@ export type Boards = Record<BoardId, BoardDef>;
 
 export const toTaskId = createBrandedParser(taskId);
 export const toColumnId = createBrandedParser(columnId);
+export const toSubtaskId = createBrandedParser(subtaskId);
 
 export interface Sortable<TContainer, TItem> {
   index: number;

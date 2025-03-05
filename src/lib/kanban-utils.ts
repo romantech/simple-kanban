@@ -15,6 +15,7 @@ import {
   type TaskId,
   type TitleDef,
 } from '@/schema';
+import { type DragType } from '@/hooks';
 
 export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
   const brand = KanbanBrandType[entity];
@@ -89,13 +90,15 @@ export const generateBoard = (title: TitleDef): BoardDef => {
   };
 };
 
-export const getDragTypes = (active: Active, over?: Over | null) => {
+export const resolveDragTypes = (active: Active, over?: Over | null) => {
   const activeData = active.data.current;
   const overData = over?.data.current;
 
   if (!activeData) throw new Error('Drag data is missing for active or over element');
 
   return {
+    /** 드래그한 요소가 Subtask 일 때 */
+    isActiveSubtask: activeData.type === 'subtask',
     /** 드래그한 요소가 Task 카드일 때   */
     isActiveTask: activeData.type === 'task',
     /** 드래그할 위치가 Task 카드일 때  */
@@ -105,6 +108,19 @@ export const getDragTypes = (active: Active, over?: Over | null) => {
     /** 드래그할 위치가 컬럼일 때 */
     isOverColumn: overData?.type === 'column',
   };
+};
+
+export const getDragType = (type: Partial<ReturnType<typeof resolveDragTypes>>): DragType => {
+  switch (true) {
+    case type.isActiveSubtask:
+      return 'subtask';
+    case type.isActiveTask:
+      return 'task';
+    case type.isActiveColumn:
+      return 'column';
+    default:
+      throw new Error('Unknown drag type');
+  }
 };
 
 interface ComputeTargetTaskIdxParams {

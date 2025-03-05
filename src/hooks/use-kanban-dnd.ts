@@ -9,9 +9,9 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { useDragState } from '@/hooks/use-drag-state';
+import { useDragIds } from '@/hooks/use-drag-ids';
 import { useId } from 'react';
-import { computeTargetTaskIdx, getDragTypes } from '@/lib';
+import { computeTargetTaskIdx, getDragType, resolveDragTypes } from '@/lib';
 import { type ColumnSortable, type TaskSortable, toColumnId, toTaskId } from '@/types';
 import { arraySwap } from '@dnd-kit/sortable';
 import { useKanbanStore } from '@/store';
@@ -28,7 +28,7 @@ const useKanbanDnd = () => {
    * */
   const debouncedMoveTask = useDebounceCallback(moveTask, 100);
 
-  const { dragColumnId, setDragState, dragTaskId, resetDragState } = useDragState();
+  const { setDragIds, dragIds, resetDragIds } = useDragIds();
 
   /**
    * 하이드레이션 에러 해결
@@ -37,19 +37,20 @@ const useKanbanDnd = () => {
   const dndContextId = useId();
 
   const onDragStart = ({ active }: DragStartEvent) => {
-    const dragType = getDragTypes(active).isActiveTask ? 'task' : 'column';
-    setDragState(dragType, active.id);
+    const { isActiveSubtask, isActiveColumn, isActiveTask } = resolveDragTypes(active);
+    const dragType = getDragType({ isActiveSubtask, isActiveTask, isActiveColumn });
+    setDragIds(dragType, active.id);
   };
 
   /** 컬럼 이동 */
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     // 드래그 중인 아이템이 DragOverlay에서 렌더링 되지 않도록 dragColumnId, dragTaskId 초기화
     // 하단에 early return 있으므로 최상단에서 초기화
-    resetDragState();
+    resetDragIds();
 
     if (!over) return; // 드롭 영역 벗어났을 때
     if (active.id === over?.id) return; // 같은 위치는 스킵
-    if (!getDragTypes(active).isActiveColumn) return; // Column 드래그가 아니면 스킵
+    if (!resolveDragTypes(active).isActiveColumn) return; // Column 드래그가 아니면 스킵
 
     const activeSort = active.data.current?.sortable as ColumnSortable;
     const overSort = over?.data.current?.sortable as ColumnSortable;
@@ -63,7 +64,7 @@ const useKanbanDnd = () => {
     if (!over) return; // 드롭 영역 벗어났을 때
     if (active.id === over.id) return; // 같은 위치는 스킵
 
-    const { isActiveTask, isOverTask, isOverColumn } = getDragTypes(active, over);
+    const { isActiveTask, isOverTask, isOverColumn } = resolveDragTypes(active, over);
 
     if (!isActiveTask) return; // Task 드래그가 아니면 스킵
 
@@ -122,8 +123,7 @@ const useKanbanDnd = () => {
 
   return {
     dndContextId,
-    dragColumnId,
-    dragTaskId,
+    dragIds,
     sensors,
     handlers: { onDragStart, onDragEnd, onDragOver },
   };
