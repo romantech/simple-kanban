@@ -2,7 +2,7 @@
 
 ![desktop-demo](./public/screenshot/demo.gif)
 
-> 데모 사이트: https://simple-kanban-iota.vercel.app
+> 데모 사이트: https://kanban.romantech.net
 
 ## 기술 스택
 

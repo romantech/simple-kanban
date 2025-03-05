@@ -15,9 +15,10 @@ import { generateTask } from '@/lib';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { type PropsWithChildren, useState } from 'react';
+import { type PropsWithChildren } from 'react';
 import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId } from '@/schema';
+import { useDisclosure } from '@/hooks';
 
 interface AddTaskProps {
   columnId: ColumnId;
@@ -25,20 +26,22 @@ interface AddTaskProps {
 
 const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) => {
   const addTask = useKanbanStore.use.addTask();
-  const [isOpen, setIsOpen] = useState(false);
+  const dialog = useDisclosure();
 
-  const methods = useForm<AddTaskSchema>({
-    resolver: zodResolver(addTaskSchema),
-  });
+  const methods = useForm<AddTaskSchema>({ resolver: zodResolver(addTaskSchema) });
+
+  const onOpenChange = (open: boolean) => {
+    if (!open) methods.reset();
+    dialog.onOpenChange(open);
+  };
 
   const onSubmit: SubmitHandler<AddTaskSchema> = ({ title, description }) => {
     addTask(generateTask(columnId, title, description));
-    methods.reset();
-    setIsOpen(false);
+    onOpenChange(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={dialog.open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <FormProvider {...methods}>
