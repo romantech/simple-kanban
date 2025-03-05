@@ -11,16 +11,28 @@ import {
 } from '@dnd-kit/core';
 import { useDragIds } from '@/hooks/use-drag-ids';
 import { useId } from 'react';
-import { computeTargetTaskIdx, getDragType, resolveDragTypes } from '@/lib';
-import { type ColumnSortable, type TaskSortable, toColumnId, toTaskId } from '@/types';
-import { arraySwap } from '@dnd-kit/sortable';
+import {
+  computeTargetTaskIdx,
+  getActiveDragType,
+  moveSortableItems,
+  resolveDragTypes,
+} from '@/lib';
+import {
+  type ColumnSortable,
+  type SubtaskSortable,
+  type TaskSortable,
+  toColumnId,
+  toTaskId,
+} from '@/types';
 import { useKanbanStore } from '@/store';
 import { useDebounceCallback } from 'usehooks-ts';
+import { type BoardId, type ColumnId, type SubtaskId, type TaskId } from '@/schema';
 
 const useKanbanDnd = () => {
   const columns = useKanbanStore((state) => state.columns);
   const moveColumn = useKanbanStore.use.moveColumn();
   const moveTask = useKanbanStore.use.moveTask();
+  const moveSubtask = useKanbanStore.use.moveSubtask();
 
   /**
    * dnd-kit Sortable 사용 시 발생할 수 있는 Maximum update depth exceeded 이슈 해결
@@ -38,7 +50,8 @@ const useKanbanDnd = () => {
 
   const onDragStart = ({ active }: DragStartEvent) => {
     const { isActiveSubtask, isActiveColumn, isActiveTask } = resolveDragTypes(active);
-    const dragType = getDragType({ isActiveSubtask, isActiveTask, isActiveColumn });
+    const dragType = getActiveDragType({ isActiveSubtask, isActiveTask, isActiveColumn });
+
     setDragIds(dragType, active.id);
   };
 
@@ -49,14 +62,26 @@ const useKanbanDnd = () => {
     resetDragIds();
 
     if (!over) return; // 드롭 영역 벗어났을 때
-    if (active.id === over?.id) return; // 같은 위치는 스킵
-    if (!resolveDragTypes(active).isActiveColumn) return; // Column 드래그가 아니면 스킵
+    if (active.id === over.id) return; // 같은 위치는 스킵
 
-    const activeSort = active.data.current?.sortable as ColumnSortable;
-    const overSort = over?.data.current?.sortable as ColumnSortable;
+    const { isActiveColumn, isActiveSubtask, isOverColumn, isOverSubtask } = resolveDragTypes(
+      active,
+      over,
+    );
 
-    const newColumnIds = arraySwap(activeSort.items, activeSort.index, overSort.index);
-    moveColumn(activeSort.containerId, newColumnIds);
+    if (isActiveSubtask && isOverSubtask) {
+      moveSortableItems<TaskId, SubtaskId>({
+        activeSort: active.data.current?.sortable as SubtaskSortable,
+        overSort: over.data.current?.sortable as SubtaskSortable,
+        updater: moveSubtask,
+      });
+    } else if (isActiveColumn && isOverColumn) {
+      moveSortableItems<BoardId, ColumnId>({
+        activeSort: active.data.current?.sortable as ColumnSortable,
+        overSort: over.data.current?.sortable as ColumnSortable,
+        updater: moveColumn,
+      });
+    }
   };
 
   /** Task 카드 이동 */

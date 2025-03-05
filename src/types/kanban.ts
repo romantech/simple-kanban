@@ -30,6 +30,7 @@ export interface Sortable<TContainer, TItem> {
 
 export type ColumnSortable = Sortable<BoardId, ColumnId>;
 export type TaskSortable = Sortable<ColumnId, TaskId>;
+export type SubtaskSortable = Sortable<TaskId, SubtaskId>;
 
 export interface MoveTaskPayload {
   sourceColumnId: ColumnId;

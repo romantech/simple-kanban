@@ -1,5 +1,5 @@
 import type { Subtasks, Void } from '@/types';
-import type { SubtaskDef, SubtaskId, TitleDef } from '@/schema';
+import type { SubtaskDef, SubtaskId, TaskId, TitleDef } from '@/schema';
 import type { KanbanSliceCreator } from '@/store';
 import { getISODate, sampleSubtasks } from '@/lib';
 
@@ -10,6 +10,8 @@ export interface SubtaskSlice {
   editSubtaskTitle: Void<[SubtaskId, TitleDef]>;
   editSubtaskStatus: Void<[SubtaskId, boolean]>;
   deleteSubtask: Void<[SubtaskId]>;
+
+  moveSubtask: Void<[TaskId, SubtaskId[]]>;
 }
 
 type SubTaskSliceCreator = KanbanSliceCreator<SubtaskSlice>;
@@ -44,6 +46,13 @@ export const createSubtaskSlice: SubTaskSliceCreator = (set, get) => ({
       const task = state.tasks[subtask.taskId];
       task.subtaskIds.splice(task.subtaskIds.indexOf(subtaskId), 1);
       delete state.subtasks[subtaskId];
+    });
+  },
+
+  moveSubtask: (taskId, subtaskIds) => {
+    set((state) => {
+      const task = state.tasks[taskId];
+      task.subtaskIds = subtaskIds;
     });
   },
 });
