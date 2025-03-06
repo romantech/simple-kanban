@@ -9,7 +9,7 @@ import { IconButton } from '@/components/ui/icon-button';
 import { AnimatePresence, motion, type MotionProps } from 'motion/react';
 import { type ColumnDef, columnSchema } from '@/schema';
 import { useKanbanStore } from '@/store';
-import { useIsMediumScreen, useShakeAnimation } from '@/hooks';
+import { useShakeAnimation } from '@/hooks';
 import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
 
 interface ColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -24,8 +24,6 @@ const fadeScaleAnimation: MotionProps = {
 };
 
 const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => {
-  const isMediumScreen = useIsMediumScreen();
-
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { triggerShake, isShaking } = useShakeAnimation();
@@ -101,7 +99,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         ) : (
           <motion.h3
             key="title"
-            className="line-clamp-1 grow origin-left text-[15px] font-bold"
+            className="line-clamp-1 grow origin-left font-bold"
             aria-live="polite"
             id={`column-title-${column.id}`}
             {...fadeScaleAnimation}
@@ -119,7 +117,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
                 aria-label="컬럼 삭제"
                 Icon={Trash2}
                 tooltipContent="컬럼 삭제"
-                iconSize={isMediumScreen ? 18 : 20}
+                iconSize={19}
                 className="p-1.5"
               />
             )}
@@ -136,7 +134,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
           tooltipContent={tooltipContent}
           aria-label={tooltipContent}
           aria-pressed={isEditMode}
-          iconSize={isMediumScreen ? 18 : 20}
+          iconSize={19}
           className="p-1.5"
         />
       </div>
