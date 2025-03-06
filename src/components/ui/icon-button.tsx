@@ -3,7 +3,7 @@
 import { cn } from '@/lib';
 import type { ComponentProps, ElementType, FunctionComponent, SVGProps } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useMediaQuery } from 'usehooks-ts';
+import { useIsMediumScreen } from '@/hooks';
 
 type IconButtonProps<T extends ElementType> = {
   Icon: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -23,7 +23,7 @@ const IconButton = <T extends ElementType = 'button'>({
   ...props
 }: IconButtonProps<T>) => {
   const PolymorphicComp = as ?? 'button';
-  const isLargeScreen = useMediaQuery('(min-width: 40rem)');
+  const isMediumScreen = useIsMediumScreen();
 
   const Element = (
     <PolymorphicComp
@@ -33,12 +33,12 @@ const IconButton = <T extends ElementType = 'button'>({
       )}
       {...props}
     >
-      <Icon height={iconSize} width={iconSize} />
+      <Icon aria-hidden="true" height={iconSize} width={iconSize} />
       {label && <span className="text-sm">{label}</span>}
     </PolymorphicComp>
   );
 
-  if (!tooltipContent || !isLargeScreen) return Element;
+  if (!tooltipContent || !isMediumScreen) return Element;
 
   return (
     <TooltipProvider>

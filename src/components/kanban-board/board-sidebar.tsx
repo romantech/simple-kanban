@@ -59,6 +59,7 @@ const BoardSidebar = () => {
         </div>
       </Sidebar>
       <IconButton
+        aria-label="사이드바 토글"
         tooltipContent="사이드바 토글"
         onClick={panel.toggle}
         Icon={ChevronsLeft}

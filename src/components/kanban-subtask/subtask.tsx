@@ -54,6 +54,8 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
             id={subtask.id}
             checked={subtask.completed}
             onCheckedChange={onCheckboxChange}
+            aria-checked={subtask.completed}
+            aria-label={`${subtask.title} 완료 여부`}
           />
           <Input
             placeholder="제목 없음"
@@ -66,6 +68,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
           <IconButton
             Icon={GripVertical}
             className="text-charade-500"
+            aria-label="하위 작업 순서 변경"
             {...listeners}
             {...attributes}
           />
@@ -74,6 +77,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
               <IconButton
                 Icon={X}
                 iconSize={16}
+                aria-label="하위 작업 삭제"
                 className="size-4 stroke-current px-1 py-2.5 text-charade-500"
               />
             </AlertDialogTrigger>
