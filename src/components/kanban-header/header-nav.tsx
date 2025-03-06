@@ -16,6 +16,7 @@ const HeaderNav = () => {
               iconSize={24}
               className="p-1 lg:hidden"
               tooltipContent="컬럼 추가"
+              aria-label="컬럼 추가"
             />
           </ColumnAddDialog>
           <IconButton
@@ -26,7 +27,8 @@ const HeaderNav = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="hidden p-1 focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring lg:block"
-            tooltipContent="레포지토리"
+            tooltipContent="GitHub 레포지토리"
+            aria-label="GitHub 레포지토리 방문"
           />
           <HeaderDropdown />
         </div>
