@@ -59,7 +59,7 @@ export const TaskColumnSelector = ({ task, className }: TaskColumnSelectorProps)
           };
         }}
       >
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="w-full" aria-label="컬럼 선택">
           <SelectValue placeholder="컬럼을 선택하세요" />
         </SelectTrigger>
         <SelectContent>
