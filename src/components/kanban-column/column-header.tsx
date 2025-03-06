@@ -64,8 +64,6 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:rounded',
         className,
       )}
-      role="region"
-      aria-labelledby={`column-title-${column.id}`}
       {...divProps}
     >
       <GripVertical className="size-5 flex-none" aria-hidden="true" />
@@ -101,7 +99,6 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
             key="title"
             className="line-clamp-1 grow origin-left font-bold"
             aria-live="polite"
-            id={`column-title-${column.id}`}
             {...fadeScaleAnimation}
           >
             {`${column.title} (${column.taskIds.length})`}
