@@ -9,7 +9,7 @@ import { IconButton } from '@/components/ui/icon-button';
 import { AnimatePresence, motion, type MotionProps } from 'motion/react';
 import { type ColumnDef, columnSchema } from '@/schema';
 import { useKanbanStore } from '@/store';
-import { useShakeAnimation } from '@/hooks';
+import { useIsMediumScreen, useShakeAnimation } from '@/hooks';
 import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
 
 interface ColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -24,6 +24,8 @@ const fadeScaleAnimation: MotionProps = {
 };
 
 const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => {
+  const isMediumScreen = useIsMediumScreen();
+
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { triggerShake, isShaking } = useShakeAnimation();
@@ -109,11 +111,17 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         )}
       </AnimatePresence>
 
-      <div className="flex gap-3" role="group" aria-label="컬럼 작업">
+      <div className="flex gap-1" role="group" aria-label="컬럼 작업">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             {!isEditMode && (
-              <IconButton aria-label="컬럼 삭제" Icon={Trash2} tooltipContent="컬럼 삭제" />
+              <IconButton
+                aria-label="컬럼 삭제"
+                Icon={Trash2}
+                tooltipContent="컬럼 삭제"
+                iconSize={isMediumScreen ? 18 : 20}
+                className="p-1.5"
+              />
             )}
           </AlertDialogTrigger>
           <AlertDialogBaseContent
@@ -128,6 +136,8 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
           tooltipContent={tooltipContent}
           aria-label={tooltipContent}
           aria-pressed={isEditMode}
+          iconSize={isMediumScreen ? 18 : 20}
+          className="p-1.5"
         />
       </div>
     </div>
