@@ -38,10 +38,13 @@ const HeaderDropdown = () => {
     <Dialog {...dialog}>
       <AlertDialog>
         <DropdownMenu>
-          <DropdownMenuTrigger className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-            <EllipsisVertical />
+          <DropdownMenuTrigger
+            className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            aria-label="보드 관리 메뉴"
+          >
+            <EllipsisVertical aria-hidden="true" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="p-2">
+          <DropdownMenuContent className="p-2" aria-label="보드 관리 옵션">
             <DropdownMenuLabel>보드 관리</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
@@ -49,7 +52,12 @@ const HeaderDropdown = () => {
                 <DropdownMenuItem>보드 수정</DropdownMenuItem>
               </DialogTrigger>
               <AlertDialogTrigger asChild>
-                <DropdownMenuItem disabled={disableDelete}>보드 삭제</DropdownMenuItem>
+                <DropdownMenuItem aria-disabled={disableDelete} disabled={disableDelete}>
+                  보드 삭제
+                  {disableDelete && (
+                    <span className="sr-only">(최소 하나의 보드는 유지해야 합니다)</span>
+                  )}
+                </DropdownMenuItem>
               </AlertDialogTrigger>
             </DropdownMenuGroup>
           </DropdownMenuContent>

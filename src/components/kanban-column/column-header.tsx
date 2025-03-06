@@ -56,7 +56,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
   const onConfirmDelete = () => deleteColumn(column);
 
   const EditOrSaveIcon = isEditMode ? Save : EditIcon;
-  const tooltipContent = isEditMode ? '저장' : '컬럼 제목 수정';
+  const tooltipContent = isEditMode ? '컬럼 제목 저장' : '컬럼 제목 수정';
 
   return (
     <div
@@ -64,9 +64,11 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:rounded',
         className,
       )}
+      role="region"
+      aria-labelledby={`column-title-${column.id}`}
       {...divProps}
     >
-      <GripVertical className="size-5 flex-none" />
+      <GripVertical className="size-5 flex-none" aria-hidden="true" />
       <AnimatePresence mode="wait">
         {isEditMode ? (
           <motion.div
@@ -84,12 +86,22 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
               minLength={ColumnConfig.title.min}
               placeholder={`${ColumnConfig.title.min} ~ ${ColumnConfig.title.max} 글자`}
               autoFocus
+              aria-label="컬럼 제목 편집"
+              aria-invalid={isShaking ? 'true' : 'false'}
+              aria-errormessage={isShaking ? 'titleError' : undefined}
             />
+            {isShaking && (
+              <div id="titleError" className="sr-only" role="alert">
+                제목은 {ColumnConfig.title.min}자에서 {ColumnConfig.title.max}자 사이여야 합니다.
+              </div>
+            )}
           </motion.div>
         ) : (
           <motion.h3
             key="title"
             className="line-clamp-1 grow origin-left text-[15px] font-bold"
+            aria-live="polite"
+            id={`column-title-${column.id}`}
             {...fadeScaleAnimation}
           >
             {`${column.title} (${column.taskIds.length})`}
@@ -97,10 +109,12 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
         )}
       </AnimatePresence>
 
-      <div className="flex gap-3">
+      <div className="flex gap-3" role="group" aria-label="컬럼 작업">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            {!isEditMode && <IconButton Icon={Trash2} tooltipContent="컬럼 삭제" />}
+            {!isEditMode && (
+              <IconButton aria-label="컬럼 삭제" Icon={Trash2} tooltipContent="컬럼 삭제" />
+            )}
           </AlertDialogTrigger>
           <AlertDialogBaseContent
             title="컬럼을 삭제할까요?"
@@ -112,6 +126,8 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
           onClick={handleEditOrSave}
           Icon={EditOrSaveIcon}
           tooltipContent={tooltipContent}
+          aria-label={tooltipContent}
+          aria-pressed={isEditMode}
         />
       </div>
     </div>

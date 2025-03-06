@@ -48,35 +48,56 @@ const HeaderCommand = () => {
           <Button
             variant="outline"
             role="combobox"
-            className="w-full max-w-44 justify-between gap-x-0 sm:max-w-60"
+            aria-label={`현재 보드: ${board.title}. 클릭하여 보드 선택`}
             aria-expanded={command.open}
+            aria-controls="board-selector"
+            className="w-full max-w-44 justify-between gap-x-0 sm:max-w-60"
           >
             <span className="truncate">{board.title}</span>
-            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" aria-hidden="true" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="min-w-full max-w-44 p-0 sm:max-w-60">
+        <PopoverContent
+          className="min-w-full max-w-44 p-0 sm:max-w-60"
+          id="board-selector"
+          role="dialog"
+          aria-label="보드 선택 메뉴"
+        >
           <Command filter={onSearch}>
-            <CommandInput placeholder="보드 이름을 입력하세요" className="h-9" />
+            <CommandInput
+              placeholder="보드 이름을 입력하세요"
+              className="h-9"
+              aria-label="보드 검색"
+            />
             <CommandList>
-              <CommandEmpty>입력한 보드가 없어요</CommandEmpty>
-              <CommandGroup className="p-2">
-                {boardList.map(({ id, title }) => (
-                  <CommandItem
-                    key={id}
-                    value={id}
-                    className="flex h-9 gap-2"
-                    onSelect={(boardId) => onSelect(boardId, title)}
-                  >
-                    <Check className={cn('size-4', { 'opacity-0': id !== currentBoardId })} />
-                    <span className="truncate">{title}</span>
-                  </CommandItem>
-                ))}
+              <CommandEmpty>
+                <span role="status">입력한 보드가 없어요</span>
+              </CommandEmpty>
+              <CommandGroup className="p-2" aria-label="사용 가능한 보드 목록">
+                {boardList.map(({ id, title }) => {
+                  const isSelected = id === currentBoardId;
+                  return (
+                    <CommandItem
+                      key={id}
+                      value={id}
+                      className="flex h-9 gap-2"
+                      onSelect={(boardId) => onSelect(boardId, title)}
+                      aria-selected={isSelected}
+                      aria-label={`${title}${isSelected ? ' (현재 선택됨)' : ''}`}
+                    >
+                      <Check
+                        className={cn('size-4', { 'opacity-0': id !== currentBoardId })}
+                        aria-hidden="true"
+                      />
+                      <span className="truncate">{title}</span>
+                    </CommandItem>
+                  );
+                })}
               </CommandGroup>
             </CommandList>
             <DialogTrigger asChild>
-              <Button className="m-2 font-bold capitalize lg:hidden">
-                <SquarePlus />
+              <Button className="m-2 font-bold capitalize lg:hidden" aria-label="새로운 보드 추가">
+                <SquarePlus aria-hidden="true" />
                 보드 추가
               </Button>
             </DialogTrigger>
