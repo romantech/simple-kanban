@@ -14,7 +14,7 @@ const Sidebar = ({ children, title = 'all boards', className, ...divProps }: Sid
       )}
       {...divProps}
     >
-      <h3 className="text-sm font-bold uppercase text-baltic-400">{title}</h3>
+      <h2 className="text-sm font-bold uppercase text-baltic-400">{title}</h2>
       {children}
     </div>
   );
