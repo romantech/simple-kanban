@@ -7,6 +7,8 @@ import { useShakeAnimation } from '@/hooks';
 import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRequest } from 'ahooks';
+import { generateSubtasks } from '@/services/subtask';
 
 interface SubtaskInputProps {
   task: TaskDef;
@@ -16,6 +18,16 @@ interface SubtaskInputProps {
 export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { loading, run } = useRequest(generateSubtasks, {
+    manual: true,
+    onSuccess: (subtasks) => {
+      subtasks.forEach((title) => {
+        const subtask = generateSubtask(task.id, title);
+        addSubtask(subtask);
+      });
+    },
+  });
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
@@ -36,15 +48,7 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
     inputRef.current.value = '';
   };
 
-  const generateSubtasks = async () => {
-    const res = await fetch('/api/subtask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
-    });
-    const data: unknown = await res.json();
-    console.log(data);
-  };
+  const onGenerateSubtasks = () => run({ title: task.title, description: task.description });
 
   return (
     <div className={cn('flex gap-2 pb-1.5', className)}>
@@ -54,11 +58,12 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
         onKeyDown={onKeyDown}
         className={cn({ 'animate-shake': isShaking })}
       />
-      <Button type="button" onClick={() => void generateSubtasks()}>
-        자동 생성
-      </Button>
+
       <Button type="button" onClick={onAddSubtask}>
         추가
+      </Button>
+      <Button disabled={loading} type="button" onClick={onGenerateSubtasks}>
+        {loading ? '생성중...' : '자동 생성'}
       </Button>
     </div>
   );

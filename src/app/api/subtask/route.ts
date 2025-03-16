@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   try {
     const { title, description } = parsedBody.data;
 
-    const model = new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0.1 });
+    const model = new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0.6 });
     const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
     const structuredLlm = model.withStructuredOutput(generateSubtaskScheme, {
       name: 'output_formatter',
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     const { subtasks } = await chain.invoke({ title, description });
 
-    return NextResponse.json({ success: true, data: subtasks }, { status: 200 });
+    return NextResponse.json({ success: true, data: subtasks });
   } catch (error) {
     console.error(error);
     return handleError(error);
