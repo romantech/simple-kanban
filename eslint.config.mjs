@@ -36,7 +36,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'warn',
       // 타입 import 할 때 인라인으로 type 키워드 추가 e.g., import { type Circle } from '...'
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
-      '@typescript-eslint/no-unsafe-call': ['error', { allow: ['useDebounceFn'] }],
     },
   },
 );

@@ -118,7 +118,7 @@ const useKanbanDnd = () => {
       currentY,
     });
 
-    debouncedMoveTask.run({
+    (debouncedMoveTask.run as typeof moveTask)({
       sourceTaskId,
       sourceColumnId,
       targetColumnId,

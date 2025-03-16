@@ -16,7 +16,7 @@ export interface SubtaskSlice {
 
 type SubTaskSliceCreator = KanbanSliceCreator<SubtaskSlice>;
 
-export const createSubtaskSlice: SubTaskSliceCreator = (set, get) => ({
+export const createSubtaskSlice: SubTaskSliceCreator = (set) => ({
   subtasks: sampleSubtasks,
 
   addSubtask: (subtask) => {

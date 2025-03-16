@@ -26,7 +26,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
   const debouncedEditSubtaskTitle = useDebounceFn(editSubtaskTitle, { wait: 300 });
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    debouncedEditSubtaskTitle.run(subtaskId, e.target.value);
+    (debouncedEditSubtaskTitle.run as typeof editSubtaskTitle)(subtaskId, e.target.value);
   };
 
   const onCheckboxChange = (checked: CheckedState) => {
