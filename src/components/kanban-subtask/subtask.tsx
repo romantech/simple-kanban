@@ -3,7 +3,6 @@ import { useKanbanStore } from '@/store';
 import { type ChangeEvent, Fragment } from 'react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { cn } from '@/lib';
-import { useDebounceCallback } from 'usehooks-ts';
 import { Draggable } from '@/components';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -11,6 +10,7 @@ import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { IconButton } from '@/components/ui/icon-button';
 import { GripVertical, X } from 'lucide-react';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
+import { useDebounceFn } from 'ahooks';
 
 interface SubtaskProps {
   subtaskId: SubtaskId;
@@ -23,10 +23,10 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
   const editSubtaskStatus = useKanbanStore.use.editSubtaskStatus();
   const deleteSubtask = useKanbanStore.use.deleteSubtask();
 
-  const debouncedEditSubtaskTitle = useDebounceCallback(editSubtaskTitle, 300);
+  const debouncedEditSubtaskTitle = useDebounceFn(editSubtaskTitle, { wait: 300 });
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    debouncedEditSubtaskTitle(subtaskId, e.target.value);
+    debouncedEditSubtaskTitle.run(subtaskId, e.target.value);
   };
 
   const onCheckboxChange = (checked: CheckedState) => {
