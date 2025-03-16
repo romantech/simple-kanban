@@ -1,6 +1,6 @@
 'use client';
 
-import { subtaskSchema, type TaskId } from '@/schema';
+import { subtaskSchema, TaskDef } from '@/schema';
 import { useKanbanStore } from '@/store';
 import { type KeyboardEvent, useRef } from 'react';
 import { useShakeAnimation } from '@/hooks';
@@ -9,11 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 interface SubtaskInputProps {
-  taskId: TaskId;
+  task: TaskDef;
   className?: string;
 }
 
-export const SubtaskInput = ({ taskId, className }: SubtaskInputProps) => {
+export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,9 +31,18 @@ export const SubtaskInput = ({ taskId, className }: SubtaskInputProps) => {
     const result = subtaskSchema.shape.title.safeParse(inputRef.current.value);
     if (!result.success) return triggerShake();
 
-    const subtask = generateSubtask(taskId, result.data);
+    const subtask = generateSubtask(task.id, result.data);
     addSubtask(subtask);
     inputRef.current.value = '';
+  };
+
+  const generateSubtasks = async () => {
+    const res = await fetch('/api/subtask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: task.title, description: task.description }),
+    });
+    const data = await res.json();
   };
 
   return (
@@ -44,6 +53,9 @@ export const SubtaskInput = ({ taskId, className }: SubtaskInputProps) => {
         onKeyDown={onKeyDown}
         className={cn({ 'animate-shake': isShaking })}
       />
+      <Button type="button" onClick={generateSubtasks}>
+        자동 생성
+      </Button>
       <Button type="button" onClick={onAddSubtask}>
         추가
       </Button>

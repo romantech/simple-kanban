@@ -20,7 +20,7 @@ const TaskDetails = ({ task }: { task: TaskDef }) => {
       </div>
       <div className="space-y-2">
         <TaskDetailsLabel>{`하위 작업 (${label})`}</TaskDetailsLabel>
-        <SubtaskInput taskId={task.id} />
+        <SubtaskInput task={task} />
         <SubtaskList task={task} />
       </div>
     </div>
