@@ -1,0 +1,1 @@
+export const generateSubtaskTemplate = `Generate up to 10 subtasks for {title}, placing higher-priority tasks toward the beginning of the array. Refer to {description} for task details. Write in Korean.`;

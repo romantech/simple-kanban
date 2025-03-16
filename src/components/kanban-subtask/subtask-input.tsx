@@ -1,21 +1,33 @@
 'use client';
 
-import { subtaskSchema, type TaskId } from '@/schema';
+import { subtaskSchema, type TaskDef } from '@/schema';
 import { useKanbanStore } from '@/store';
 import { type KeyboardEvent, useRef } from 'react';
 import { useShakeAnimation } from '@/hooks';
 import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRequest } from 'ahooks';
+import { generateSubtasks } from '@/services/subtask';
 
 interface SubtaskInputProps {
-  taskId: TaskId;
+  task: TaskDef;
   className?: string;
 }
 
-export const SubtaskInput = ({ taskId, className }: SubtaskInputProps) => {
+export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { loading, run } = useRequest(generateSubtasks, {
+    manual: true,
+    onSuccess: (subtasks) => {
+      subtasks.forEach((title) => {
+        const subtask = generateSubtask(task.id, title);
+        addSubtask(subtask);
+      });
+    },
+  });
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
@@ -31,10 +43,12 @@ export const SubtaskInput = ({ taskId, className }: SubtaskInputProps) => {
     const result = subtaskSchema.shape.title.safeParse(inputRef.current.value);
     if (!result.success) return triggerShake();
 
-    const subtask = generateSubtask(taskId, result.data);
+    const subtask = generateSubtask(task.id, result.data);
     addSubtask(subtask);
     inputRef.current.value = '';
   };
+
+  const onGenerateSubtasks = () => run({ title: task.title, description: task.description });
 
   return (
     <div className={cn('flex gap-2 pb-1.5', className)}>
@@ -44,8 +58,12 @@ export const SubtaskInput = ({ taskId, className }: SubtaskInputProps) => {
         onKeyDown={onKeyDown}
         className={cn({ 'animate-shake': isShaking })}
       />
+
       <Button type="button" onClick={onAddSubtask}>
         추가
+      </Button>
+      <Button disabled={loading} type="button" onClick={onGenerateSubtasks}>
+        {loading ? '생성중...' : '자동 생성'}
       </Button>
     </div>
   );
