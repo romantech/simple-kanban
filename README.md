@@ -12,7 +12,7 @@
 - **스타일링:** Tailwind CSS
 - **린팅:** ESLint, Prettier
 - **폼 관리:** React Hook Form, Zod
-- **기타:** DnD Kit, Motion
+- **기타:** DnD Kit, Motion, LangChain
 
 ## 주요 기능
 
