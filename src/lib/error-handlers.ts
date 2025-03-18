@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { type ZodError } from 'zod';
 
-const createErrorResponse = (message: string, status: number, issues?: Record<string, unknown>) => {
+export const createErrorResponse = (
+  message: string,
+  status: number,
+  issues?: Record<string, unknown>,
+) => {
   return NextResponse.json(
     {
       success: false,
