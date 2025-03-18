@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
 import { type ReactNode } from 'react';
+import { Toaster } from '@/components/ui/sonner';
 
 const pretendard = localFont({
   src: '../../public/fonts/pretendard-variable.woff2',
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           {children}
           <Analytics />
         </main>
+        <Toaster />
       </body>
     </html>
   );

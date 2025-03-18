@@ -15,7 +15,7 @@ export const generateSubtasks = async (params: GenerateSubtasksParams) => {
     body: JSON.stringify(params),
   });
 
-  if (!res.ok) throw new Error('Failed to generate subtasks');
+  if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
 
   const { data } = (await res.json()) as ResponseData;
   return data;

@@ -29,7 +29,13 @@ export const generateKanbanIds = <T extends KanbanEntity>(type: T, count: number
   return Array.from({ length: count }, () => generateKanbanId(type));
 };
 
-export const generateSubtask = (taskId: TaskId, title: TitleDef = ''): SubtaskDef => {
+interface GenerateSubtask {
+  taskId: TaskId;
+  title: TitleDef;
+  generatedByAI: boolean;
+}
+
+export const generateSubtask = ({ taskId, title, generatedByAI }: GenerateSubtask): SubtaskDef => {
   const now = getISODate();
 
   return {
@@ -39,6 +45,7 @@ export const generateSubtask = (taskId: TaskId, title: TitleDef = ''): SubtaskDe
     createdAt: now,
     updatedAt: now,
     completed: false,
+    generatedByAI,
   };
 };
 

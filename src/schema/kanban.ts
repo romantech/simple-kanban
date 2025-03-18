@@ -24,6 +24,7 @@ export const subtaskSchema = timestampsSchema.extend({
     min: TaskConfig.subtask.title.min,
   }),
   completed: z.boolean().default(false),
+  generatedByAI: z.boolean().default(false),
 });
 
 export const taskSchema = timestampsSchema.extend({
