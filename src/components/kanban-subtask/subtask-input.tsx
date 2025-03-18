@@ -7,6 +7,7 @@ import { useGenerateSubtasks, useShakeAnimation } from '@/hooks';
 import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { BadgeAI } from '@/components/ui/badge-ai';
 
 interface SubtaskInputProps {
   task: TaskDef;
@@ -54,6 +55,7 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
         onClick={generateSubtasks}
       >
         {generatingSubtasks ? '생성중...' : '자동 생성'}
+        <BadgeAI />
       </Button>
     </div>
   );
