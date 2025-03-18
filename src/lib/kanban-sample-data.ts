@@ -10,6 +10,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:44:19.284Z',
     updatedAt: '2025-03-04T03:46:32.172Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-es69Eu9f': {
     id: 'Subtask-es69Eu9f',
@@ -18,6 +19,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:45:48.197Z',
     updatedAt: '2025-03-04T03:45:48.197Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-TRAKo6io': {
     id: 'Subtask-TRAKo6io',
@@ -26,6 +28,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:46:00.385Z',
     updatedAt: '2025-03-04T03:46:00.385Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-46qHQKSx': {
     id: 'Subtask-46qHQKSx',
@@ -34,6 +37,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:49:47.580Z',
     updatedAt: '2025-03-04T03:49:47.580Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-U51h8KzW': {
     id: 'Subtask-U51h8KzW',
@@ -42,6 +46,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:49:57.140Z',
     updatedAt: '2025-03-04T03:49:58.849Z',
     completed: true,
+    generatedByAI: false,
   },
   'Subtask-1ZPNwxFf': {
     id: 'Subtask-1ZPNwxFf',
@@ -50,6 +55,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:53:23.971Z',
     updatedAt: '2025-03-04T03:53:34.102Z',
     completed: true,
+    generatedByAI: false,
   },
   'Subtask-R_dETRBA': {
     id: 'Subtask-R_dETRBA',
@@ -58,6 +64,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:53:27.541Z',
     updatedAt: '2025-03-04T03:53:27.541Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-QuV5J16X': {
     id: 'Subtask-QuV5J16X',
@@ -66,6 +73,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:53:29.779Z',
     updatedAt: '2025-03-04T03:53:29.779Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-waVAzKHB': {
     id: 'Subtask-waVAzKHB',
@@ -74,6 +82,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:53:46.658Z',
     updatedAt: '2025-03-04T03:53:46.658Z',
     completed: false,
+    generatedByAI: false,
   },
   'Subtask-tZOv1U7n': {
     id: 'Subtask-tZOv1U7n',
@@ -82,6 +91,7 @@ export const sampleSubtasks = {
     createdAt: '2025-03-04T03:53:48.861Z',
     updatedAt: '2025-03-04T03:53:48.861Z',
     completed: false,
+    generatedByAI: false,
   },
 } as Subtasks;
 

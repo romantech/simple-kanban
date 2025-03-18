@@ -17,13 +17,16 @@ interface SubtaskInputProps {
 
 export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
+  const clearAIGeneratedSubtasks = useKanbanStore.use.clearAIGeneratedSubtasks();
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { loading, run } = useRequest(generateSubtasks, {
     manual: true,
     onSuccess: (subtasks) => {
+      clearAIGeneratedSubtasks(task.id);
       subtasks.forEach((title) => {
-        const subtask = generateSubtask(task.id, title);
+        const subtask = generateSubtask({ taskId: task.id, title, generatedByAI: true });
         addSubtask(subtask);
       });
     },
@@ -43,7 +46,7 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
     const result = subtaskSchema.shape.title.safeParse(inputRef.current.value);
     if (!result.success) return triggerShake();
 
-    const subtask = generateSubtask(task.id, result.data);
+    const subtask = generateSubtask({ taskId: task.id, title: result.data, generatedByAI: false });
     addSubtask(subtask);
     inputRef.current.value = '';
   };
