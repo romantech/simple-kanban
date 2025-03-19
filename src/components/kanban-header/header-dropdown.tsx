@@ -17,6 +17,7 @@ import { BoardEditDialogContent } from '@/components';
 import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { useDisclosure } from '@/hooks';
+import { toast } from 'sonner';
 
 const HeaderDropdown = () => {
   const dialog = useDisclosure();
@@ -32,6 +33,7 @@ const HeaderDropdown = () => {
   const onBoardDelete = () => {
     const { id: nextBoardId, title: nextBoardTitle } = deleteBoard(currentBoardId);
     router.replace(`/${nextBoardId}?title=${nextBoardTitle}`);
+    toast.success('보드가 삭제되었습니다.');
   };
 
   return (

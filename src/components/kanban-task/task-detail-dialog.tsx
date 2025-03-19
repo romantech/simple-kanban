@@ -24,6 +24,7 @@ import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
 import { formatKoDate } from '@/lib';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useDisclosure } from '@/hooks';
+import { toast } from 'sonner';
 
 interface SharedTaskProps {
   task: TaskDef;
@@ -64,6 +65,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
   const onDeleteTask = () => {
     deleteTask(task);
     dialog.onOpenChange(false);
+    toast.success('작업이 삭제되었습니다.');
   };
 
   useEffect(() => {
