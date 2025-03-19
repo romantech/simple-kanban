@@ -20,10 +20,11 @@ import { TaskDetails } from '@/components/kanban-task/task-details';
 import { useKanbanStore } from '@/store';
 import { AnimatePresence, type AnimationProps, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
-import { addTaskSchema, type AddTaskSchema, type TaskDef } from '@/schema';
+import { type EditTaskSchema, editTaskSchema, type TaskDef } from '@/schema';
 import { formatKoDate } from '@/lib';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useDisclosure } from '@/hooks';
+import { toast } from 'sonner';
 
 interface SharedTaskProps {
   task: TaskDef;
@@ -46,8 +47,8 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
   const [isEditing, setIsEditing] = useState(false);
   const dialog = useDisclosure();
 
-  const methods = useForm<AddTaskSchema>({
-    resolver: zodResolver(addTaskSchema),
+  const methods = useForm<EditTaskSchema>({
+    resolver: zodResolver(editTaskSchema),
     // 변경 > 저장 > 편집 모드로 다시 진입하면 처음 defaultValues로 전달했던 (변경 전)task 값이 그대로 표시됨
     // defaultValues는 언마운트되지 않는 이상 캐시한 값을 그대로 사용하기 때문(캐시 값 변경하려면 reset 사용).
     // 반면, values는 외부에서 전달한 데이터가 변경될 때마다 폼 값을 업데이트함.
@@ -56,7 +57,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
 
   const toggleEditMode = () => setIsEditing((prev) => !prev);
 
-  const onSubmit: SubmitHandler<AddTaskSchema> = ({ title, description }) => {
+  const onSubmit: SubmitHandler<EditTaskSchema> = ({ title, description }) => {
     editTask(task.id, title, description);
     toggleEditMode();
   };
@@ -64,6 +65,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
   const onDeleteTask = () => {
     deleteTask(task);
     dialog.onOpenChange(false);
+    toast.success('작업이 삭제되었습니다.');
   };
 
   useEffect(() => {

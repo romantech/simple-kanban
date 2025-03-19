@@ -11,6 +11,7 @@ import { type ColumnDef, columnSchema } from '@/schema';
 import { useKanbanStore } from '@/store';
 import { useShakeAnimation } from '@/hooks';
 import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
+import { toast } from 'sonner';
 
 interface ColumnHeaderProps extends HTMLAttributes<HTMLDivElement> {
   column: ColumnDef;
@@ -53,7 +54,10 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
 
   const onBlur = () => setIsEditMode(false);
 
-  const onConfirmDelete = () => deleteColumn(column);
+  const onConfirmDelete = () => {
+    deleteColumn(column);
+    toast.success('컬럼이 삭제되었습니다.');
+  };
 
   const EditOrSaveIcon = isEditMode ? Save : EditIcon;
   const tooltipContent = isEditMode ? '컬럼 제목 저장' : '컬럼 제목 수정';

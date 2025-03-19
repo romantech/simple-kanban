@@ -1,23 +1,23 @@
 'use client';
 
 import { useRequest } from 'ahooks';
-import { generateSubtasks } from '@/services/subtask';
+import { generateAISubtasks, type GenerateAISubtasks } from '@/services/subtask';
 import { generateSubtask } from '@/lib';
 import { toast } from 'sonner';
-import { type TaskDef } from '@/schema';
 import { useKanbanStore } from '@/store';
+import { type TaskId } from '@/schema';
 
-export const useGenerateSubtasks = ({ id, title, description }: TaskDef) => {
+export const useGenerateSubtasks = (taskId: TaskId) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const clearAIGeneratedSubtasks = useKanbanStore.use.clearAIGeneratedSubtasks();
 
-  return useRequest(() => generateSubtasks({ title, description }), {
+  return useRequest((params: GenerateAISubtasks) => generateAISubtasks(params), {
     manual: true,
     onSuccess: (subtasks) => {
-      clearAIGeneratedSubtasks(id);
-      subtasks.forEach((subtaskTitle) => {
-        const subtask = generateSubtask({ taskId: id, title: subtaskTitle, generatedByAI: true });
-        addSubtask(subtask);
+      clearAIGeneratedSubtasks(taskId);
+      subtasks.forEach((title) => {
+        const subtask = generateSubtask({ taskId, title, generatedByAI: true });
+        addSubtask(subtask, false);
       });
       toast.success(`하위 작업 ${subtasks.length}개가 생성되었습니다.`);
     },

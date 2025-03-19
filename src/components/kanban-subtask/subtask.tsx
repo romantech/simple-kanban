@@ -11,6 +11,7 @@ import { IconButton } from '@/components/ui/icon-button';
 import { GripVertical, X } from 'lucide-react';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { useDebounceFn } from 'ahooks';
+import { toast } from 'sonner';
 
 interface SubtaskProps {
   subtaskId: SubtaskId;
@@ -33,7 +34,10 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
     editSubtaskStatus(subtaskId, Boolean(checked));
   };
 
-  const onConfirmDelete = () => deleteSubtask(subtaskId);
+  const onConfirmDelete = () => {
+    deleteSubtask(subtaskId);
+    toast.success('하위 작업이 삭제되었습니다.');
+  };
 
   return (
     <Draggable

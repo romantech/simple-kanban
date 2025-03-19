@@ -1,4 +1,4 @@
-interface GenerateSubtasksParams {
+export interface GenerateAISubtasks {
   title: string;
   description?: string;
 }
@@ -8,7 +8,7 @@ interface ResponseData {
   data: string[];
 }
 
-export const generateSubtasks = async (params: GenerateSubtasksParams) => {
+export const generateAISubtasks = async (params: GenerateAISubtasks) => {
   const res = await fetch('/api/subtask', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
