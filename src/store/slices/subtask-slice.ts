@@ -6,7 +6,7 @@ import { getISODate, sampleSubtasks } from '@/lib';
 export interface SubtaskSlice {
   subtasks: Subtasks;
 
-  addSubtask: Void<[SubtaskDef]>;
+  addSubtask: Void<[SubtaskDef, boolean?]>;
   editSubtaskTitle: Void<[SubtaskId, TitleDef]>;
   editSubtaskStatus: Void<[SubtaskId, boolean]>;
   deleteSubtask: Void<[SubtaskId]>;
@@ -19,10 +19,11 @@ type SubTaskSliceCreator = KanbanSliceCreator<SubtaskSlice>;
 export const createSubtaskSlice: SubTaskSliceCreator = (set) => ({
   subtasks: sampleSubtasks,
 
-  addSubtask: (subtask) => {
+  addSubtask: (subtask, prepend = true) => {
     set((state) => {
       const task = state.tasks[subtask.taskId];
-      task.subtaskIds.unshift(subtask.id);
+      const insertionAction = prepend ? 'unshift' : 'push';
+      task.subtaskIds[insertionAction](subtask.id);
       state.subtasks[subtask.id] = subtask;
     });
   },

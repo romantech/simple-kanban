@@ -17,7 +17,7 @@ export const useGenerateSubtasks = ({ id, title, description }: TaskDef) => {
       clearAIGeneratedSubtasks(id);
       subtasks.forEach((subtaskTitle) => {
         const subtask = generateSubtask({ taskId: id, title: subtaskTitle, generatedByAI: true });
-        addSubtask(subtask);
+        addSubtask(subtask, false);
       });
       toast.success(`하위 작업 ${subtasks.length}개가 생성되었습니다.`);
     },
