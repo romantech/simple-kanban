@@ -21,6 +21,7 @@ import { addTaskSchema, type AddTaskSchema, type ColumnId } from '@/schema';
 import { useDisclosure, useGenerateSubtasks } from '@/hooks';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
+import { BadgeAI } from '../ui/badge-ai';
 
 interface AddTaskProps {
   columnId: ColumnId;
@@ -63,12 +64,14 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
                 control={form.control}
                 name="autoSubtasks"
                 render={({ field }) => (
-                  <FormItem className="flex items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                  <FormItem className="relative flex items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <div className="space-y-2 leading-none">
-                      <FormLabel>하위 작업 자동 생성</FormLabel>
+                      <FormLabel>
+                        하위 작업 자동 생성 <BadgeAI />
+                      </FormLabel>
                       <FormDescription>
                         작업 이름과 설명을 기반으로 하위 작업을 자동 생성합니다. (최대 10개)
                       </FormDescription>
