@@ -63,9 +63,11 @@ export type ColumnDef = z.infer<typeof columnSchema>;
 export type BoardDef = z.infer<typeof boardSchema>;
 export type TitleDef = z.infer<ReturnType<typeof createTitleSchema>>;
 
-export const addTaskSchema = taskSchema.pick({ title: true, description: true }).extend({
+export const editTaskSchema = taskSchema.pick({ title: true, description: true });
+export const addTaskSchema = editTaskSchema.extend({
   autoSubtasks: z.boolean().default(false),
 });
+export type EditTaskSchema = z.infer<typeof editTaskSchema>;
 export type AddTaskSchema = z.infer<typeof addTaskSchema>;
 
 export const addColumnSchema = columnSchema.pick({ title: true });
