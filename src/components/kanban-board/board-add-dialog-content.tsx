@@ -88,9 +88,7 @@ const BoardAddDialogContent = ({ className, open }: BoardAddDialogContentProps) 
                   </FormControl>
                   <div className="space-y-2 leading-none">
                     <FormLabel>기본 컬럼 자동 추가</FormLabel>
-                    <FormDescription>
-                      체크하면 진행 전, 진행 중, 완료 컬럼이 자동 추가됩니다.
-                    </FormDescription>
+                    <FormDescription>진행 전, 진행 중, 완료 컬럼을 추가합니다.</FormDescription>
                   </div>
                 </FormItem>
               )}

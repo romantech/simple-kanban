@@ -11,7 +11,6 @@ import {
   KanbanBrandType,
   type KanbanEntity,
   type SubtaskDef,
-  type TaskDef,
   type TaskId,
   type TitleDef,
 } from '@/schema';
@@ -49,15 +48,23 @@ export const generateSubtask = ({ taskId, title, generatedByAI }: GenerateSubtas
   };
 };
 
-export const generateTask = (
-  columnId: ColumnId,
-  title: TitleDef,
-  description?: string,
-): TaskDef => {
+interface GenerateTask {
+  columnId: ColumnId;
+  title: TitleDef;
+  description?: string;
+  id?: TaskId;
+}
+
+export const generateTask = ({
+  id = generateKanbanId('Task'),
+  columnId,
+  title,
+  description,
+}: GenerateTask) => {
   const now = getISODate();
 
   return {
-    id: generateKanbanId('Task'),
+    id,
     columnId,
     title,
     description,

@@ -18,7 +18,7 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { run: generateSubtasks, loading: generatingSubtasks } = useGenerateSubtasks(task);
+  const { run: generateAISubtasks, loading } = useGenerateSubtasks(task.id);
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
@@ -39,6 +39,10 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
     inputRef.current.value = '';
   };
 
+  const onGenerate = () => {
+    generateAISubtasks({ title: task.title, description: task.description });
+  };
+
   return (
     <div className={cn('flex gap-2 pb-1.5', className)}>
       <Input
@@ -49,12 +53,8 @@ export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
       />
 
       <Button onClick={onAddSubtask}>추가</Button>
-      <Button
-        className="relative min-w-[83px]"
-        disabled={generatingSubtasks}
-        onClick={generateSubtasks}
-      >
-        {generatingSubtasks ? '생성중...' : '자동 생성'}
+      <Button className="relative min-w-[83px]" disabled={loading} onClick={onGenerate}>
+        {loading ? '생성중...' : '자동 생성'}
         <BadgeAI />
       </Button>
     </div>
