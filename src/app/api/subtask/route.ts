@@ -14,6 +14,7 @@ import { generateSubtaskScheme, subtaskRequestBodySchema } from '@/schema/kanban
  * @see https://vercel.com/docs/pricing/edge-functions#managing-functions-invocations
  * */
 export const runtime = 'edge';
+const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
 
 export async function POST(req: Request) {
   const body: unknown = await req.json();
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
   try {
     const { title, description } = parsedBody.data;
 
-    const model = new ChatOpenAI({ model: 'gpt-4o-mini', temperature: 0.6 });
+    const model = new ChatOpenAI({ model: subtaskModel, temperature: 0.6 });
     const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
     const structuredLlm = model.withStructuredOutput(generateSubtaskScheme, {
       name: 'output_formatter',
