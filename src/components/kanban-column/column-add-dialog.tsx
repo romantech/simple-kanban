@@ -41,7 +41,7 @@ const ColumnAddDialog = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <Dialog open={dialog.open} onOpenChange={dialog.onOpenChange}>
+    <Dialog {...dialog}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>

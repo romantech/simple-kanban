@@ -63,7 +63,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
 
   return (
     <Fragment>
-      <Dialog open={dialog.open} onOpenChange={dialog.onOpenChange}>
+      <Dialog {...dialog}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <FormProvider {...form}>

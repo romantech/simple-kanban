@@ -104,7 +104,7 @@ const HeaderCommand = () => {
           </Command>
         </PopoverContent>
       </Popover>
-      <BoardAddDialogContent {...dialog} />
+      <BoardAddDialogContent />
     </Dialog>
   );
 };
