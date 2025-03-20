@@ -23,7 +23,7 @@ const subtaskListSchema = z.array(z.object({ title: z.string(), checked: z.boole
 const subtaskPickerSchema = z.object({ subtasks: subtaskListSchema });
 
 type SubtaskPickerSchema = z.infer<typeof subtaskPickerSchema>;
-const subtaskPickerFormName = 'subtask-picker-form';
+const SUBTASK_PICKER_FORM_ID = 'subtask-picker-form';
 
 const filterActiveSubtasks = (subtasks: z.infer<typeof subtaskListSchema>) => {
   return subtasks.filter((subtask) => {
@@ -64,7 +64,7 @@ export const SubtaskPicker = ({ open, onOpenChange, subtaskTitles, task }: Subta
           <SheetTitle>하위 작업 선택</SheetTitle>
           <SheetDescription>{`"${task.title}"에 대해 자동 생성된 하위 작업 목록입니다. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
         </SheetHeader>
-        <form id={subtaskPickerFormName} onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
+        <form id={SUBTASK_PICKER_FORM_ID} onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           {subtaskTitles.map((_, i) => (
             <div className="flex items-center" key={i}>
               <Controller
@@ -82,7 +82,7 @@ export const SubtaskPicker = ({ open, onOpenChange, subtaskTitles, task }: Subta
           ))}
         </form>
         <SheetFooter>
-          <Button type="submit" form={subtaskPickerFormName}>
+          <Button type="submit" form={SUBTASK_PICKER_FORM_ID}>
             선택한 작업 추가
           </Button>
         </SheetFooter>

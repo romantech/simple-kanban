@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button';
 import { useKanbanStore } from '@/store';
 import { addBoardSchema, type BoardDef } from '@/schema';
 import { BoardConfig, cn } from '@/lib';
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { type UseDisclosure } from '@/hooks';
 
@@ -36,13 +35,13 @@ export const BoardEditDialogContent = ({
   board,
   className,
   onOpenChange,
-  open,
 }: BoardEditDialogProps) => {
   const router = useRouter();
 
-  const { register, handleSubmit, reset, formState } = useForm<EditBoardSchema>({
+  const { register, handleSubmit, formState } = useForm<EditBoardSchema>({
     resolver: zodResolver(editBoardSchema),
     values: { title: board.title },
+    shouldUnregister: true,
   });
 
   const editBoard = useKanbanStore.use.editBoard();
@@ -53,10 +52,6 @@ export const BoardEditDialogContent = ({
     // 수정한 타이틀이 페이지 제목에 반영되도록 router.replace -> generateMetadata 함수로 title 전달
     router.replace(`/${board.id}?title=${title}`);
   };
-
-  useEffect(() => {
-    if (!open) reset();
-  }, [open, reset]);
 
   return (
     <DialogContent className={cn('sm:max-w-[425px]', className)}>
