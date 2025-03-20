@@ -27,32 +27,26 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { addBoardSchema, type AddBoardSchema } from '@/schema';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { type UseDisclosure } from '@/hooks';
 
 const [titleField, presetField] = addBoardSchema.keyof().options;
 const resolver = zodResolver(addBoardSchema);
 const defaultValues = { title: '', preset: true };
 
-interface BoardAddDialogContentProps extends UseDisclosure {
+interface BoardAddDialogContentProps {
   className?: string;
 }
 
-const BoardAddDialogContent = ({ className, open }: BoardAddDialogContentProps) => {
+const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
   const router = useRouter();
   const addBoard = useKanbanStore.use.addBoard();
 
-  const form = useForm<AddBoardSchema>({ resolver, defaultValues });
+  const form = useForm<AddBoardSchema>({ resolver, defaultValues, shouldUnregister: true });
 
   const onSubmit: SubmitHandler<AddBoardSchema> = ({ title, preset }) => {
     const newBoard = generateBoard(title);
     addBoard(newBoard, preset);
     router.push(`/${newBoard.id}?title=${newBoard.title}`);
   };
-
-  useEffect(() => {
-    if (!open) form.reset();
-  }, [form, open]);
 
   return (
     <DialogContent className={cn('sm:max-w-[425px]', className)}>

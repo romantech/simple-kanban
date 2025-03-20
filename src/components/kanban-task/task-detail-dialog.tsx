@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { type PropsWithChildren, useEffect, useState } from 'react';
+import { type PropsWithChildren, useState } from 'react';
 import { EditIcon, Save, Trash2 } from 'lucide-react';
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form';
 import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
@@ -38,7 +38,7 @@ const animationVariants: AnimationProps = {
   transition: { duration: 0.08 },
 };
 
-const FORM_ID = 'task-edit-form';
+const TASK_EDIT_FORM_ID = 'task-edit-form';
 
 const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedTaskProps>) => {
   const deleteTask = useKanbanStore.use.deleteTask();
@@ -53,6 +53,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
     // defaultValues는 언마운트되지 않는 이상 캐시한 값을 그대로 사용하기 때문(캐시 값 변경하려면 reset 사용).
     // 반면, values는 외부에서 전달한 데이터가 변경될 때마다 폼 값을 업데이트함.
     values: task,
+    shouldUnregister: true,
   });
 
   const toggleEditMode = () => setIsEditing((prev) => !prev);
@@ -68,17 +69,15 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
     toast.success('작업이 삭제되었습니다.');
   };
 
-  useEffect(() => {
-    // 모달이 닫힐 때 편집 모드 변경
-    if (!dialog.open) setIsEditing(false);
-    // 편집 모드로 변경될 때 폼 초기화
-    else if (isEditing) methods.reset();
-  }, [dialog.open, isEditing, methods]);
+  const handleDialogOpenChange = (open: boolean) => {
+    dialog.onOpenChange(open);
+    if (!open) setIsEditing(false);
+  };
 
   const dialogTitle = isEditing ? '작업 수정' : task.title;
 
   return (
-    <Dialog {...dialog}>
+    <Dialog open={dialog.open} onOpenChange={handleDialogOpenChange}>
       <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
       <DialogContent className="min-h-80 outline-none">
@@ -90,7 +89,9 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
             <div className="flex justify-between text-baltic-300">
               <div className="flex gap-4">
                 {!isEditing && <IconButton onClick={toggleEditMode} Icon={EditIcon} label="수정" />}
-                {isEditing && <IconButton Icon={Save} label="저장" type="submit" form={FORM_ID} />}
+                {isEditing && (
+                  <IconButton Icon={Save} label="저장" type="submit" form={TASK_EDIT_FORM_ID} />
+                )}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <IconButton Icon={Trash2} label="삭제" />
@@ -112,7 +113,10 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
           >
             {isEditing ? (
               <FormProvider {...methods}>
-                <form id={FORM_ID} onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}>
+                <form
+                  id={TASK_EDIT_FORM_ID}
+                  onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}
+                >
                   <TaskEditForm className="pb-7 pt-3" />
                   <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>

@@ -14,7 +14,7 @@ interface SubtaskInputProps {
   className?: string;
 }
 
-export const SubtaskInput = ({ task, className }: SubtaskInputProps) => {
+export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
 

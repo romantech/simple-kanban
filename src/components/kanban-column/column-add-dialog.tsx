@@ -23,27 +23,25 @@ import { addColumnSchema, type AddColumnSchema } from '@/schema';
 import { useDisclosure } from '@/hooks';
 
 const [titleField] = addColumnSchema.keyof().options;
-const resolver = zodResolver(addColumnSchema);
 
 const ColumnAddDialog = ({ children }: PropsWithChildren) => {
   const dialog = useDisclosure();
-  const { register, handleSubmit, reset, formState } = useForm<AddColumnSchema>({ resolver });
+
+  const { register, handleSubmit, formState } = useForm<AddColumnSchema>({
+    resolver: zodResolver(addColumnSchema),
+    shouldUnregister: true,
+  });
 
   const addColumn = useKanbanStore.use.addColumn();
   const boardId = useKanbanStore.use.currentBoardId();
 
-  const onOpenChangeWithReset = (open: boolean) => {
-    if (open) reset();
-    dialog.onOpenChange(open);
-  };
-
   const onSubmit: SubmitHandler<AddColumnSchema> = ({ title }) => {
     addColumn(generateColumn(boardId, title));
-    onOpenChangeWithReset(false);
+    dialog.onOpenChange(false);
   };
 
   return (
-    <Dialog open={dialog.open} onOpenChange={onOpenChangeWithReset}>
+    <Dialog {...dialog}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}>

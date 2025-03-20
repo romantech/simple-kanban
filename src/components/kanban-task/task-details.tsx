@@ -1,7 +1,7 @@
 'use client';
 
 import { type TaskDef } from '@/schema';
-import { SubtaskInput, SubtaskList, TaskColumnSelector } from '@/components';
+import { SubtaskAddInput, SubtaskList, TaskColumnSelector } from '@/components';
 import { useSubtaskCount } from '@/hooks';
 import { cn } from '@/lib';
 
@@ -20,7 +20,7 @@ const TaskDetails = ({ task }: { task: TaskDef }) => {
       </div>
       <div className="space-y-2">
         <TaskDetailsLabel>{`하위 작업 (${label})`}</TaskDetailsLabel>
-        <SubtaskInput task={task} />
+        <SubtaskAddInput task={task} />
         <SubtaskList task={task} />
       </div>
     </div>
