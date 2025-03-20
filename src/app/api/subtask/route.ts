@@ -2,7 +2,8 @@ import { ChatOpenAI } from '@langchain/openai';
 import { NextResponse } from 'next/server';
 import { PromptTemplate } from '@langchain/core/prompts';
 import { generateSubtaskTemplate, handleError, handleZodError } from '@/lib';
-import { generateSubtaskScheme, subtaskRequestBodySchema } from '@/schema/kanban';
+import { taskSchema } from '@/schema/kanban';
+import { z } from 'zod';
 
 /**
  * Edge 함수를 호출할 때마다 Invocations, Edge Request, Execution Units 항목 소비
@@ -15,6 +16,9 @@ import { generateSubtaskScheme, subtaskRequestBodySchema } from '@/schema/kanban
  * */
 export const runtime = 'edge';
 const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
+
+const subtaskRequestBodySchema = taskSchema.pick({ title: true, description: true });
+const generateSubtaskScheme = z.object({ subtasks: z.array(z.string().describe('Subtask title')) });
 
 export async function POST(req: Request) {
   const body: unknown = await req.json();

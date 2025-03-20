@@ -19,10 +19,7 @@ import { Fragment, type PropsWithChildren, useRef } from 'react';
 import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId, type TaskDef } from '@/schema';
 import { useDisclosure } from '@/hooks';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Checkbox } from '@/components/ui/checkbox';
-import { BadgeAI } from '@/components/ui/badge-ai';
-import { SubtaskSelectSheet } from '@/components';
+import { SubtaskPicker } from '@/components';
 import { useRequest } from 'ahooks';
 import { type GenerateAISubtasks, generateAISubtasks } from '@/services/subtask';
 import { toast } from 'sonner';
@@ -33,6 +30,7 @@ interface AddTaskProps {
 
 const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) => {
   const addTask = useKanbanStore.use.addTask();
+
   const dialog = useDisclosure();
   const sheet = useDisclosure();
   const tempTask = useRef<TaskDef>(null);
@@ -46,12 +44,11 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
       onError: () => toast.error('하위 작업 생성에 실패했습니다.'),
     },
   );
-  const form = useForm<AddTaskSchema>({ resolver: zodResolver(addTaskSchema) });
 
-  const onOpenChangeWithReset = (open: boolean) => {
-    if (open) form.reset();
-    dialog.onOpenChange(open);
-  };
+  const form = useForm<AddTaskSchema>({
+    resolver: zodResolver(addTaskSchema),
+    shouldUnregister: true, // 언마운트 시 필드 값 초기화 (자식 컴포넌트에서도 적용됨)
+  });
 
   const onSubmit: SubmitHandler<AddTaskSchema> = async ({ title, description, autoSubtasks }) => {
     if (autoSubtasks) {
@@ -61,12 +58,12 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
 
     tempTask.current = generateTask({ title, description, columnId });
     addTask(tempTask.current);
-    onOpenChangeWithReset(false);
+    dialog.onOpenChange(false);
   };
 
   return (
     <Fragment>
-      <Dialog open={dialog.open} onOpenChange={onOpenChangeWithReset}>
+      <Dialog open={dialog.open} onOpenChange={dialog.onOpenChange}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <FormProvider {...form}>
@@ -75,28 +72,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
                 <DialogTitle>새로운 작업 추가</DialogTitle>
                 <DialogDescription></DialogDescription>
               </DialogHeader>
-              <div className="flex flex-col gap-5 py-7">
-                <TaskEditForm />
-                <FormField
-                  control={form.control}
-                  name="autoSubtasks"
-                  render={({ field }) => (
-                    <FormItem className="relative flex items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-                      <FormControl>
-                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                      <div className="space-y-2 leading-none">
-                        <FormLabel>
-                          하위 작업 자동 생성 <BadgeAI />
-                        </FormLabel>
-                        <FormDescription>
-                          작업 이름과 설명을 기반으로 하위 작업을 자동 생성합니다. (최대 10개)
-                        </FormDescription>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <TaskEditForm className="py-7" autoSubtasks />
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="outline">
@@ -112,7 +88,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
         </DialogContent>
       </Dialog>
       {tempTask.current && data && (
-        <SubtaskSelectSheet task={tempTask.current} subtaskTitles={data} {...sheet} />
+        <SubtaskPicker task={tempTask.current} subtaskTitles={data} {...sheet} />
       )}
     </Fragment>
   );

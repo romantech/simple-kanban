@@ -19,41 +19,33 @@ import { Input } from '@/components/ui/input';
 import { type TaskDef } from '@/schema';
 import { useKanbanStore } from '@/store';
 
-interface SubtaskSelectSheetProps extends UseDisclosure {
+const subtaskListSchema = z.array(z.object({ title: z.string(), checked: z.boolean() }));
+const subtaskPickerSchema = z.object({ subtasks: subtaskListSchema });
+
+type SubtaskPickerSchema = z.infer<typeof subtaskPickerSchema>;
+const subtaskPickerFormName = 'subtask-picker-form';
+
+const filterActiveSubtasks = (subtasks: z.infer<typeof subtaskListSchema>) => {
+  return subtasks.filter((subtask) => {
+    return subtask.checked && subtask.title.trim().length > 0;
+  });
+};
+
+interface SubtaskPickerProps extends UseDisclosure {
   subtaskTitles: string[];
   task: TaskDef;
 }
 
-const subtaskSelectFormSchema = z.object({
-  subtasks: z.array(z.object({ title: z.string(), checked: z.boolean() })),
-});
-type SubtaskSelectForm = z.infer<typeof subtaskSelectFormSchema>;
-const formName = 'subtask-select-form';
-
-export const SubtaskSelectSheet = ({
-  open,
-  onOpenChange,
-  subtaskTitles,
-  task,
-}: SubtaskSelectSheetProps) => {
+export const SubtaskPicker = ({ open, onOpenChange, subtaskTitles, task }: SubtaskPickerProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
 
-  const { register, control, handleSubmit, reset } = useForm<SubtaskSelectForm>({
-    values: {
-      subtasks: subtaskTitles.map((title) => ({ title, checked: true })),
-    },
-    resolver: zodResolver(subtaskSelectFormSchema),
+  const { register, control, handleSubmit } = useForm<SubtaskPickerSchema>({
+    values: { subtasks: subtaskTitles.map((title) => ({ title, checked: true })) },
+    resolver: zodResolver(subtaskPickerSchema),
   });
 
-  const onOpenChangeWithReset = (open: boolean) => {
-    if (!open) reset();
-    onOpenChange(open);
-  };
-
-  const onSubmit = ({ subtasks }: SubtaskSelectForm) => {
-    const filteredSubtasks = subtasks.filter((subtask) => {
-      return subtask.checked && Boolean(subtask.title.trim());
-    });
+  const onSubmit = ({ subtasks }: SubtaskPickerSchema) => {
+    const filteredSubtasks = filterActiveSubtasks(subtasks);
 
     if (filteredSubtasks.length > 0) {
       filteredSubtasks.forEach(({ title }) => {
@@ -62,17 +54,17 @@ export const SubtaskSelectSheet = ({
       });
     }
 
-    onOpenChangeWithReset(false);
+    onOpenChange(false);
   };
 
   return (
-    <Sheet onOpenChange={onOpenChangeWithReset} open={open}>
+    <Sheet onOpenChange={onOpenChange} open={open}>
       <SheetContent className="space-y-6" onInteractOutside={(e) => e.preventDefault()}>
         <SheetHeader>
           <SheetTitle>하위 작업 선택</SheetTitle>
-          <SheetDescription>{`"${task.title}" 작업에 대한 하위 작업을 추가하세요. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
+          <SheetDescription>{`"${task.title}"에 대해 자동 생성된 하위 작업 목록입니다. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
         </SheetHeader>
-        <form id={formName} onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
+        <form id={subtaskPickerFormName} onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           {subtaskTitles.map((_, i) => (
             <div className="flex items-center" key={i}>
               <Controller
@@ -90,7 +82,7 @@ export const SubtaskSelectSheet = ({
           ))}
         </form>
         <SheetFooter>
-          <Button type="submit" form={formName}>
+          <Button type="submit" form={subtaskPickerFormName}>
             선택한 작업 추가
           </Button>
         </SheetFooter>
