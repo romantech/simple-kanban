@@ -54,7 +54,7 @@ const BoardSidebar = () => {
                 보드 추가
               </Button>
             </DialogTrigger>
-            <BoardAddDialogContent {...dialog} />
+            <BoardAddDialogContent />
           </Dialog>
         </div>
       </Sidebar>
