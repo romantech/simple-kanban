@@ -18,11 +18,8 @@ import { Button } from '@/components/ui/button';
 import { Fragment, type PropsWithChildren, useRef } from 'react';
 import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId, type TaskDef } from '@/schema';
-import { useDisclosure } from '@/hooks';
+import { useDisclosure, useSuggestSubtasks } from '@/hooks';
 import { SubtaskPicker } from '@/components';
-import { useRequest } from 'ahooks';
-import { type GenerateAISubtasks, generateAISubtasks } from '@/services/subtask';
-import { toast } from 'sonner';
 
 interface AddTaskProps {
   columnId: ColumnId;
@@ -35,15 +32,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
   const sheet = useDisclosure();
   const tempTask = useRef<TaskDef>(null);
 
-  const { runAsync, loading, data } = useRequest(
-    (params: GenerateAISubtasks) => generateAISubtasks(params),
-    {
-      manual: true,
-      onSuccess: (data) =>
-        toast.success(`하위 작업 ${data.length}개가 생성되었습니다.`, { position: 'bottom-left' }),
-      onError: () => toast.error('하위 작업 생성에 실패했습니다.'),
-    },
-  );
+  const { runAsync: generatedSubtasks, loading, data: subtaskList } = useSuggestSubtasks();
 
   const form = useForm<AddTaskSchema>({
     resolver: zodResolver(addTaskSchema),
@@ -52,7 +41,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
 
   const onSubmit: SubmitHandler<AddTaskSchema> = async ({ title, description, autoSubtasks }) => {
     if (autoSubtasks) {
-      await runAsync({ title, description });
+      await generatedSubtasks({ title, description });
       sheet.onOpenChange(true);
     }
 
@@ -87,8 +76,8 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
           </FormProvider>
         </DialogContent>
       </Dialog>
-      {tempTask.current && data && (
-        <SubtaskPicker task={tempTask.current} subtaskTitles={data} {...sheet} />
+      {tempTask.current && subtaskList && (
+        <SubtaskPicker parentTask={tempTask.current} subtaskList={subtaskList} {...sheet} />
       )}
     </Fragment>
   );

@@ -5,10 +5,10 @@ import { configResponsive, useResponsive } from 'ahooks';
 /** bootstrap config + ms */
 const config = {
   xs: 0,
-  sm: 576,
+  sm: 576, // mobile
   ms: 640, // custom
-  md: 768,
-  lg: 992,
+  md: 768, // tablet
+  lg: 992, // desktop
   xl: 1200,
 };
 
