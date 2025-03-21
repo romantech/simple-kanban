@@ -34,6 +34,7 @@ const filterActiveSubtasks = (subtasks: z.infer<typeof subtaskListSchema>) => {
 interface SubtaskPickerProps extends UseDisclosure {
   subtaskList: string[];
   parentTask: TaskDef;
+  showOverwriteButton?: boolean;
 }
 
 export const SubtaskPicker = ({
@@ -41,6 +42,7 @@ export const SubtaskPicker = ({
   open,
   onOpenChange,
   subtaskList,
+  showOverwriteButton = false,
 }: SubtaskPickerProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const clearAIGeneratedSubtasks = useKanbanStore.use.clearAIGeneratedSubtasks();
@@ -101,9 +103,11 @@ export const SubtaskPicker = ({
           ))}
         </form>
         <SheetFooter>
-          <Button type="button" variant="outline" onClick={onOverwrite}>
-            기존 AI 하위 작업 덮어쓰기
-          </Button>
+          {showOverwriteButton && (
+            <Button type="button" variant="outline" onClick={onOverwrite}>
+              기존 AI 하위 작업 덮어쓰기
+            </Button>
+          )}
           <Button type="submit" form={SUBTASK_PICKER_FORM_ID}>
             선택 항목 추가
           </Button>

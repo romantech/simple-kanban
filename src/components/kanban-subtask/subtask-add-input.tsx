@@ -65,7 +65,9 @@ export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
         {loading ? '생성중...' : '자동 생성'}
         <BadgeAI />
       </Button>
-      {subtaskList && <SubtaskPicker parentTask={task} subtaskList={subtaskList} {...sheet} />}
+      {subtaskList && (
+        <SubtaskPicker showOverwriteButton parentTask={task} subtaskList={subtaskList} {...sheet} />
+      )}
     </div>
   );
 };
