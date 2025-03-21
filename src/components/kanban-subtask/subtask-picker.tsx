@@ -34,7 +34,6 @@ const filterActiveSubtasks = (subtasks: z.infer<typeof subtaskListSchema>) => {
 interface SubtaskPickerProps extends UseDisclosure {
   subtaskList: string[];
   parentTask: TaskDef;
-  defaultChecked?: boolean;
 }
 
 export const SubtaskPicker = ({
@@ -42,17 +41,20 @@ export const SubtaskPicker = ({
   open,
   onOpenChange,
   subtaskList,
-  defaultChecked = true,
 }: SubtaskPickerProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
+  const clearAIGeneratedSubtasks = useKanbanStore.use.clearAIGeneratedSubtasks();
+
   const isTabletScreen = useMediaQuery('md');
 
-  const { register, control, handleSubmit } = useForm<SubtaskPickerSchema>({
-    values: { subtasks: subtaskList.map((title) => ({ title, checked: defaultChecked })) },
+  const { register, control, handleSubmit, getValues } = useForm<SubtaskPickerSchema>({
+    values: { subtasks: subtaskList.map((title) => ({ title, checked: true })) },
     resolver: zodResolver(subtaskPickerSchema),
   });
 
-  const onSubmit = ({ subtasks }: SubtaskPickerSchema) => {
+  const processSubtasks = ({ subtasks }: SubtaskPickerSchema, overwrite = false) => {
+    if (overwrite) clearAIGeneratedSubtasks(parentTask.id);
+
     const filteredSubtasks = filterActiveSubtasks(subtasks);
 
     if (filteredSubtasks.length > 0) {
@@ -65,6 +67,9 @@ export const SubtaskPicker = ({
     onOpenChange(false);
   };
 
+  const onSubmit = (data: SubtaskPickerSchema) => processSubtasks(data, false);
+  const onOverwrite = () => processSubtasks(getValues(), true);
+
   const sheetPosition = isTabletScreen ? 'right' : 'bottom';
 
   return (
@@ -76,7 +81,7 @@ export const SubtaskPicker = ({
       >
         <SheetHeader>
           <SheetTitle>하위 작업 선택</SheetTitle>
-          <SheetDescription>{`"${parentTask.title}"에 대해 자동 생성된 하위 작업 목록입니다. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
+          <SheetDescription className="whitespace-pre-line">{`"${parentTask.title}"에 대해 자동 생성된 하위 작업 목록입니다.\n하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
         </SheetHeader>
         <form id={SUBTASK_PICKER_FORM_ID} onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
           {subtaskList.map((_, i) => (
@@ -96,8 +101,11 @@ export const SubtaskPicker = ({
           ))}
         </form>
         <SheetFooter>
+          <Button type="button" variant="outline" onClick={onOverwrite}>
+            기존 AI 하위 작업 덮어쓰기
+          </Button>
           <Button type="submit" form={SUBTASK_PICKER_FORM_ID}>
-            선택한 작업 추가
+            선택 항목 추가
           </Button>
         </SheetFooter>
       </SheetContent>
