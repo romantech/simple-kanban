@@ -51,7 +51,7 @@ export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
     <div className={cn('flex gap-2 pb-1.5', className)}>
       <Input
         ref={inputRef}
-        placeholder={`하위 작업 추가 (${TaskConfig.subtask.title.min} ~ ${TaskConfig.subtask.title.max}자)`}
+        placeholder={`최대 ${TaskConfig.subtask.title.max}자`}
         onKeyDown={onKeyDown}
         className={cn({ 'animate-shake': isShaking })}
       />

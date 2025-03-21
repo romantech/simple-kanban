@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { type UseDisclosure } from '@/hooks';
+import { type UseDisclosure, useMediaQuery } from '@/hooks';
 import { Controller, useForm } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
@@ -45,6 +45,7 @@ export const SubtaskPicker = ({
   defaultChecked = true,
 }: SubtaskPickerProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
+  const isTabletScreen = useMediaQuery('md');
 
   const { register, control, handleSubmit } = useForm<SubtaskPickerSchema>({
     values: { subtasks: subtaskList.map((title) => ({ title, checked: defaultChecked })) },
@@ -64,9 +65,15 @@ export const SubtaskPicker = ({
     onOpenChange(false);
   };
 
+  const sheetPosition = isTabletScreen ? 'right' : 'bottom';
+
   return (
     <Sheet onOpenChange={onOpenChange} open={open}>
-      <SheetContent className="space-y-6" onInteractOutside={(e) => e.preventDefault()}>
+      <SheetContent
+        side={sheetPosition}
+        className="space-y-6"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <SheetHeader>
           <SheetTitle>하위 작업 선택</SheetTitle>
           <SheetDescription>{`"${parentTask.title}"에 대해 자동 생성된 하위 작업 목록입니다. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
