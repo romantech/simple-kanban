@@ -10,8 +10,11 @@ export const useSuggestSubtasks = () => {
     onSuccess: (data) => {
       toast.success(`하위 작업 ${data.length}개가 생성되었습니다.`, { position: 'top-center' });
     },
-    onError: () => {
-      toast.error('하위 작업 생성에 실패했습니다.');
+    onError: (e) => {
+      toast.error('하위 작업 생성에 실패했습니다.', {
+        position: 'top-center',
+        description: e.message,
+      });
     },
   });
 };
