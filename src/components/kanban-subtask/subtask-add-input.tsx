@@ -3,11 +3,12 @@
 import { subtaskSchema, type TaskDef } from '@/schema';
 import { useKanbanStore } from '@/store';
 import { type KeyboardEvent, useRef } from 'react';
-import { useGenerateSubtasks, useShakeAnimation } from '@/hooks';
+import { useDisclosure, useShakeAnimation, useSuggestSubtasks } from '@/hooks';
 import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { BadgeAI } from '@/components/ui/badge-ai';
+import { SubtaskPicker } from '@/components';
 
 interface SubtaskInputProps {
   task: TaskDef;
@@ -15,10 +16,12 @@ interface SubtaskInputProps {
 }
 
 export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
+  const sheet = useDisclosure();
+
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { run: generateAISubtasks, loading } = useGenerateSubtasks(task.id);
+  const { runAsync: generatedSubtasks, loading, data: subtaskList } = useSuggestSubtasks();
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
@@ -39,8 +42,9 @@ export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
     inputRef.current.value = '';
   };
 
-  const onGenerate = () => {
-    generateAISubtasks({ title: task.title, description: task.description });
+  const onSuggestSubtasks = async () => {
+    await generatedSubtasks({ title: task.title, description: task.description });
+    sheet.onOpenChange(true);
   };
 
   return (
@@ -53,10 +57,15 @@ export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
       />
 
       <Button onClick={onAddSubtask}>추가</Button>
-      <Button className="relative min-w-[83px]" disabled={loading} onClick={onGenerate}>
+      <Button
+        className="relative min-w-[83px]"
+        disabled={loading}
+        onClick={() => void onSuggestSubtasks()}
+      >
         {loading ? '생성중...' : '자동 생성'}
         <BadgeAI />
       </Button>
+      {subtaskList && <SubtaskPicker parentTask={task} subtaskList={subtaskList} {...sheet} />}
     </div>
   );
 };

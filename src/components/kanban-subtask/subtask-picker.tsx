@@ -32,15 +32,22 @@ const filterActiveSubtasks = (subtasks: z.infer<typeof subtaskListSchema>) => {
 };
 
 interface SubtaskPickerProps extends UseDisclosure {
-  subtaskTitles: string[];
-  task: TaskDef;
+  subtaskList: string[];
+  parentTask: TaskDef;
+  defaultChecked?: boolean;
 }
 
-export const SubtaskPicker = ({ open, onOpenChange, subtaskTitles, task }: SubtaskPickerProps) => {
+export const SubtaskPicker = ({
+  parentTask,
+  open,
+  onOpenChange,
+  subtaskList,
+  defaultChecked = true,
+}: SubtaskPickerProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
 
   const { register, control, handleSubmit } = useForm<SubtaskPickerSchema>({
-    values: { subtasks: subtaskTitles.map((title) => ({ title, checked: true })) },
+    values: { subtasks: subtaskList.map((title) => ({ title, checked: defaultChecked })) },
     resolver: zodResolver(subtaskPickerSchema),
   });
 
@@ -49,7 +56,7 @@ export const SubtaskPicker = ({ open, onOpenChange, subtaskTitles, task }: Subta
 
     if (filteredSubtasks.length > 0) {
       filteredSubtasks.forEach(({ title }) => {
-        const subtask = generateSubtask({ taskId: task.id, title, generatedByAI: true });
+        const subtask = generateSubtask({ taskId: parentTask.id, title, generatedByAI: true });
         addSubtask(subtask, false);
       });
     }
@@ -62,10 +69,10 @@ export const SubtaskPicker = ({ open, onOpenChange, subtaskTitles, task }: Subta
       <SheetContent className="space-y-6" onInteractOutside={(e) => e.preventDefault()}>
         <SheetHeader>
           <SheetTitle>하위 작업 선택</SheetTitle>
-          <SheetDescription>{`"${task.title}"에 대해 자동 생성된 하위 작업 목록입니다. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
+          <SheetDescription>{`"${parentTask.title}"에 대해 자동 생성된 하위 작업 목록입니다. 하위 작업 이름은 수정할 수 있습니다.`}</SheetDescription>
         </SheetHeader>
         <form id={SUBTASK_PICKER_FORM_ID} onSubmit={(e) => void handleSubmit(onSubmit)(e)}>
-          {subtaskTitles.map((_, i) => (
+          {subtaskList.map((_, i) => (
             <div className="flex items-center" key={i}>
               <Controller
                 control={control}
