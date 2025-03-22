@@ -3,6 +3,8 @@ import { twMerge } from 'tailwind-merge';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
+export const isDev = () => process.env.NODE_ENV === 'development';
+
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
