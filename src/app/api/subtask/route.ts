@@ -4,7 +4,6 @@ import {
   createSubtaskLimiter,
   errorResponse,
   generateSubtaskTemplate,
-  handleRateLimitError,
   successResponse,
 } from '@/lib';
 import { formatDistanceToNow } from 'date-fns';
@@ -29,7 +28,7 @@ export async function POST(req: NextRequest) {
   const rateLimit = await subtaskLimiter.limit(ip);
 
   const resetIn = formatDistanceToNow(rateLimit.reset);
-  if (!rateLimit.success) return handleRateLimitError('USAGE_EXCEEDED', resetIn);
+  if (!rateLimit.success) return errorResponse.rateLimit('USAGE_EXCEEDED', resetIn);
 
   const parsedBody = subtaskRequestSchema.safeParse(await req.json());
   if (!parsedBody.success) return errorResponse.zod(parsedBody.error);
