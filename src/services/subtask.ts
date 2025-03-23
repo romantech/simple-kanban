@@ -1,22 +1,26 @@
-export interface GenerateAISubtasks {
-  title: string;
-  description?: string;
-}
+import { type APIResponse } from '@/lib';
+import { type SubtaskOutput, subtaskOutputSchema, type SubtaskRequest } from '@/schema';
 
-interface ResponseData {
-  success: boolean;
-  data: string[];
-}
-
-export const generateAISubtasks = async (params: GenerateAISubtasks) => {
+export const generateAISubtasks = async (params: SubtaskRequest) => {
   const res = await fetch('/api/subtask', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify(params),
   });
 
-  if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
+  let json: APIResponse<SubtaskOutput>;
 
-  const { data } = (await res.json()) as ResponseData;
-  return data;
+  try {
+    json = (await res.json()) as APIResponse<SubtaskOutput>;
+  } catch (error) {
+    console.error(error);
+    throw new Error(`[${res.status}] ${res.statusText}`);
+  }
+
+  if (!res.ok) throw new Error(`[${res.status}] ${json.message}`);
+
+  const parsed = subtaskOutputSchema.safeParse(json?.data);
+  if (!parsed.success) throw new Error('Invalid subtask structure');
+
+  return parsed.data;
 };

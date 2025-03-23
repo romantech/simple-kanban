@@ -16,7 +16,7 @@ const allowedHeaders = [
   'Authorization', // 인증을 위한 자격 증명 포함
 ].join(',');
 
-const allowedMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'].join(',');
+const allowedMethods = ['GET', 'POST', 'OPTIONS'].join(',');
 
 export function middleware(req: NextRequest) {
   const origin = req.headers.get('origin');

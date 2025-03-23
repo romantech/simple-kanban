@@ -77,3 +77,11 @@ export const addBoardSchema = boardSchema
   .pick({ title: true })
   .extend({ preset: z.boolean().default(true) });
 export type AddBoardSchema = z.infer<typeof addBoardSchema>;
+
+export const subtaskRequestSchema = taskSchema.pick({ title: true, description: true });
+export type SubtaskRequest = z.infer<typeof subtaskRequestSchema>;
+
+export const subtaskOutputSchema = z.object({
+  subtasks: z.array(z.string().describe('Subtask title')),
+});
+export type SubtaskOutput = z.infer<typeof subtaskOutputSchema>;

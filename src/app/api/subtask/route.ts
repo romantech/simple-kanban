@@ -1,9 +1,14 @@
 import { ChatOpenAI } from '@langchain/openai';
-import { NextResponse } from 'next/server';
 import { PromptTemplate } from '@langchain/core/prompts';
-import { generateSubtaskTemplate, handleError, handleZodError } from '@/lib';
-import { taskSchema } from '@/schema/kanban';
-import { z } from 'zod';
+import {
+  createSubtaskLimiter,
+  errorResponse,
+  generateSubtaskTemplate,
+  successResponse,
+} from '@/lib';
+import { formatDistanceToNow } from 'date-fns';
+import { subtaskOutputSchema, subtaskRequestSchema } from '@/schema/kanban';
+import { type NextRequest } from 'next/server';
 
 /**
  * Edge 함수를 호출할 때마다 Invocations, Edge Request, Execution Units 항목 소비
@@ -16,31 +21,31 @@ import { z } from 'zod';
  * */
 export const runtime = 'edge';
 const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
+const subtaskLimiter = createSubtaskLimiter();
 
-const subtaskRequestBodySchema = taskSchema.pick({ title: true, description: true });
-const generateSubtaskScheme = z.object({ subtasks: z.array(z.string().describe('Subtask title')) });
+export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
+  const rateLimit = await subtaskLimiter.limit(ip);
 
-export async function POST(req: Request) {
-  const body: unknown = await req.json();
-  const parsedBody = subtaskRequestBodySchema.safeParse(body);
+  const resetIn = formatDistanceToNow(rateLimit.reset);
+  if (!rateLimit.success) return errorResponse.rateLimit('USAGE_EXCEEDED', resetIn);
 
-  if (!parsedBody.success) return handleZodError(parsedBody.error);
+  const parsedBody = subtaskRequestSchema.safeParse(await req.json());
+  if (!parsedBody.success) return errorResponse.zod(parsedBody.error);
 
   try {
     const { title, description } = parsedBody.data;
 
     const model = new ChatOpenAI({ model: subtaskModel, temperature: 0.6 });
     const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
-    const structuredLlm = model.withStructuredOutput(generateSubtaskScheme, {
+    const structuredLlm = model.withStructuredOutput(subtaskOutputSchema, {
       name: 'output_formatter',
     });
     const chain = prompt.pipe(structuredLlm);
 
-    const { subtasks } = await chain.invoke({ title, description });
-
-    return NextResponse.json({ success: true, data: subtasks });
+    const result = await chain.invoke({ title, description });
+    return successResponse(result);
   } catch (error) {
-    console.error(error);
-    return handleError(error);
+    return errorResponse.server(error);
   }
 }
