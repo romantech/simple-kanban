@@ -3,7 +3,7 @@
 import { subtaskSchema, type TaskDef } from '@/schema';
 import { useKanbanStore } from '@/store';
 import { type KeyboardEvent, useRef } from 'react';
-import { useDisclosure, useShakeAnimation, useSuggestSubtasks } from '@/hooks';
+import { useDisclosure, useGenerateSubtasks, useShakeAnimation } from '@/hooks';
 import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
   const addSubtask = useKanbanStore.use.addSubtask();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { runAsync: generatedSubtasks, loading, data: subtaskList } = useSuggestSubtasks();
+  const { generateSubtasksAsync, loading, subtaskList } = useGenerateSubtasks();
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
@@ -43,7 +43,7 @@ export const SubtaskAddInput = ({ task, className }: SubtaskInputProps) => {
   };
 
   const onSuggestSubtasks = async () => {
-    await generatedSubtasks({ title: task.title, description: task.description });
+    await generateSubtasksAsync({ title: task.title, description: task.description });
     sheet.onOpenChange(true);
   };
 

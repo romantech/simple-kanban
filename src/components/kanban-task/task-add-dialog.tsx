@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Fragment, type PropsWithChildren, useRef } from 'react';
 import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId, type TaskDef } from '@/schema';
-import { useDisclosure, useSuggestSubtasks } from '@/hooks';
+import { useDisclosure, useGenerateSubtasks } from '@/hooks';
 import { SubtaskPicker } from '@/components';
 
 interface AddTaskProps {
@@ -32,7 +32,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
   const sheet = useDisclosure();
   const tempTask = useRef<TaskDef>(null);
 
-  const { runAsync: generatedSubtasks, loading, data: subtaskList } = useSuggestSubtasks();
+  const { generateSubtasksAsync, loading, subtaskList } = useGenerateSubtasks();
 
   const form = useForm<AddTaskSchema>({
     resolver: zodResolver(addTaskSchema),
@@ -41,7 +41,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
 
   const onSubmit: SubmitHandler<AddTaskSchema> = async ({ title, description, autoSubtasks }) => {
     if (autoSubtasks) {
-      await generatedSubtasks({ title, description });
+      await generateSubtasksAsync({ title, description });
       sheet.onOpenChange(true);
     }
 
