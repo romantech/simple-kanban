@@ -1,26 +1,22 @@
-import { type APIResponse } from '@/lib';
 import { type SubtaskOutput, subtaskOutputSchema, type SubtaskRequest } from '@/schema';
+import { type APIResponse, isAPIResponse } from '@/types';
+import axios, { isAxiosError } from 'axios';
 
 export const generateAISubtasks = async (params: SubtaskRequest) => {
-  const res = await fetch('/api/subtask', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify(params),
-  });
-
-  let json: APIResponse<SubtaskOutput>;
-
   try {
-    json = (await res.json()) as APIResponse<SubtaskOutput>;
-  } catch (error) {
-    console.error(error);
-    throw new Error(`[${res.status}] ${res.statusText}`);
+    const { data } = await axios.post<APIResponse<SubtaskOutput>>('/api/subtask', params, {
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    });
+
+    const parsed = subtaskOutputSchema.safeParse(data.data);
+    if (!parsed.success) throw new Error(`Invalid subtask structure: ${parsed.error.message}`);
+
+    return parsed.data;
+  } catch (e) {
+    if (!isAxiosError(e)) throw e;
+
+    const { response, message } = e;
+    const errorMessage = `${message}. ${isAPIResponse(response?.data) ? response.data.message : ''}`;
+    throw new Error(errorMessage);
   }
-
-  if (!res.ok) throw new Error(`[${res.status}] ${json.message}`);
-
-  const parsed = subtaskOutputSchema.safeParse(json?.data);
-  if (!parsed.success) throw new Error('Invalid subtask structure');
-
-  return parsed.data;
 };

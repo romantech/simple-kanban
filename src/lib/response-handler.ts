@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
 import { type ZodError } from 'zod';
 import { type UnkeyErrorCode, unkeyErrorMap } from '@/lib/unkey';
-
-export interface APIResponse<T = unknown> {
-  success: boolean;
-  message: string;
-  data?: T;
-}
+import { type APIResponse } from '@/types';
 
 export const createResponse = <T>(
   response: APIResponse<T>,
