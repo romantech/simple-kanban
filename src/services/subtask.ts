@@ -9,7 +9,7 @@ export const generateAISubtasks = async (params: SubtaskRequest) => {
     });
 
     const parsed = subtaskOutputSchema.safeParse(data.data);
-    if (!parsed.success) throw new Error(`Invalid subtask structure: ${parsed.error.message}`);
+    if (!parsed.success) throw new Error('Invalid subtask structure');
 
     return parsed.data;
   } catch (e) {

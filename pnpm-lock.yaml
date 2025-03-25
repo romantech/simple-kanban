@@ -59,6 +59,12 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@unkey/api':
+        specifier: ^0.34.0
+        version: 0.34.0
+      '@unkey/nextjs':
+        specifier: ^0.18.8
+        version: 0.18.8
       '@unkey/ratelimit':
         specifier: ^0.5.5
         version: 0.5.5
@@ -1281,8 +1287,14 @@ packages:
   '@unkey/api@0.33.1':
     resolution: {integrity: sha512-HXFQOGjO3S0+N6GMBOz9lkn2Fp41rdgNrafBkjRg8IjOsNv6SNdWrXZSELONinZYycr7Wxc/t7Vhx7xUdb0cdA==}
 
+  '@unkey/api@0.34.0':
+    resolution: {integrity: sha512-gmKcLk7rEPp0gXiX4SWtf4qf79NynTIXBnS+yHgX6Ajhqe16ErMUFj3mxMRwO7+L0Awf9rQwm5Qh62zpM9AQXw==}
+
   '@unkey/error@0.2.0':
     resolution: {integrity: sha512-DFGb4A7SrusZPP0FYuRIF0CO+Gi4etLUAEJ6EKc+TKYmscL0nEJ2Pr38FyX9MvjI4Wx5l35Wc9KsBjMm9Ybh7w==}
+
+  '@unkey/nextjs@0.18.8':
+    resolution: {integrity: sha512-VJ9tR4yK+nR+woCfqNfH2UQ9xw1XqdaP5C035MQDUG7Fj329dcBx82Wl3UGVpXCq3wOSbdHpyTd5SSPtN13sRg==}
 
   '@unkey/ratelimit@0.5.5':
     resolution: {integrity: sha512-79Xv7lZFHqScGzBQpO3hh2SZBhujXDDkyH/izWzeXcJ5sFYO+PsC+VaAFagEinbHbrx116RkIRIqbDrfZfRpxA==}
@@ -4400,9 +4412,17 @@ snapshots:
     dependencies:
       '@unkey/rbac': 0.3.1
 
+  '@unkey/api@0.34.0':
+    dependencies:
+      '@unkey/rbac': 0.3.1
+
   '@unkey/error@0.2.0':
     dependencies:
       zod: 3.24.2
+
+  '@unkey/nextjs@0.18.8':
+    dependencies:
+      '@unkey/api': 0.33.1
 
   '@unkey/ratelimit@0.5.5':
     dependencies:

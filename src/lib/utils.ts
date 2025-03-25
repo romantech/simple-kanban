@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { type NextRequest } from 'next/server';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
@@ -24,4 +25,20 @@ export const arrayMove = <T>(array: T[], fromIndex: number, toIndex: number): T[
   newArray.splice(toIndex, 0, movedItem);
 
   return newArray;
+};
+
+export const getEnv = (key: string) => {
+  const value = process.env[key];
+  if (!value) throw new Error(`Environment variable ${key} is not defined`);
+  return value;
+};
+
+export type ClientInfo = ReturnType<typeof getClientInfo>;
+export const getClientInfo = (req: NextRequest) => {
+  const agent = req.headers.get('user-agent') ?? 'anonymous';
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'anonymous';
+  const referrer = req.headers.get('referer')?.replace(/https?:\/\/([^/]+).*/i, '$1') ?? 'direct';
+  const language = req.headers.get('accept-language')?.split(/[,;]/)[0] ?? 'unknown';
+
+  return { ip, agent, referrer, language };
 };
