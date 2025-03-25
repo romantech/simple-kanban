@@ -14,3 +14,14 @@ export const createBrandedParser =
  * @example Void<[string, number?]>
  * */
 export type Void<T extends unknown[] = []> = (...param: T) => void;
+
+export interface APIResponse<T = unknown> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+export const isAPIResponse = (responseData: unknown): responseData is APIResponse => {
+  if (!responseData || typeof responseData !== 'object') return false;
+  return 'success' in responseData && 'message' in responseData;
+};

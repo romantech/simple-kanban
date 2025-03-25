@@ -1,14 +1,8 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { PromptTemplate } from '@langchain/core/prompts';
-import {
-  createSubtaskLimiter,
-  errorResponse,
-  generateSubtaskTemplate,
-  successResponse,
-} from '@/lib';
-import { formatDistanceToNow } from 'date-fns';
+import { errorResponse, generateSubtaskTemplate, getEnv, successResponse } from '@/lib';
 import { subtaskOutputSchema, subtaskRequestSchema } from '@/schema/kanban';
-import { type NextRequest } from 'next/server';
+import { withUnkey } from '@unkey/nextjs';
 
 /**
  * Edge 함수를 호출할 때마다 Invocations, Edge Request, Execution Units 항목 소비
@@ -21,31 +15,33 @@ import { type NextRequest } from 'next/server';
  * */
 export const runtime = 'edge';
 const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
-const subtaskLimiter = createSubtaskLimiter();
 
-export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
-  const rateLimit = await subtaskLimiter.limit(ip);
+export const POST = withUnkey(
+  async (req) => {
+    const parsedBody = subtaskRequestSchema.safeParse(await req.json());
+    if (!parsedBody.success) return errorResponse.zod(parsedBody.error);
 
-  const resetIn = formatDistanceToNow(rateLimit.reset);
-  if (!rateLimit.success) return errorResponse.rateLimit('USAGE_EXCEEDED', resetIn);
+    try {
+      const { title, description } = parsedBody.data;
 
-  const parsedBody = subtaskRequestSchema.safeParse(await req.json());
-  if (!parsedBody.success) return errorResponse.zod(parsedBody.error);
+      const model = new ChatOpenAI({ model: subtaskModel, temperature: 0.6 });
+      const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
+      const structuredLlm = model.withStructuredOutput(subtaskOutputSchema, {
+        name: 'output_formatter',
+      });
+      const chain = prompt.pipe(structuredLlm);
 
-  try {
-    const { title, description } = parsedBody.data;
-
-    const model = new ChatOpenAI({ model: subtaskModel, temperature: 0.6 });
-    const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
-    const structuredLlm = model.withStructuredOutput(subtaskOutputSchema, {
-      name: 'output_formatter',
-    });
-    const chain = prompt.pipe(structuredLlm);
-
-    const result = await chain.invoke({ title, description });
-    return successResponse(result);
-  } catch (error) {
-    return errorResponse.server(error);
-  }
-}
+      const result = await chain.invoke({ title, description });
+      return successResponse(result);
+    } catch (error) {
+      return errorResponse.server(error);
+    }
+  },
+  {
+    disableTelemetry: true,
+    apiId: getEnv('UNKEY_API_ID'),
+    handleInvalidKey: (_req, res) => {
+      return errorResponse.rateLimit(res?.code);
+    },
+  },
+);

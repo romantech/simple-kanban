@@ -5,3 +5,4 @@ export * from './kanban-config';
 export * from './response-handler';
 export * from './prompts';
 export * from './unkey';
+export * from './cors';

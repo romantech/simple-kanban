@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
 import { type ZodError } from 'zod';
 import { type UnkeyErrorCode, unkeyErrorMap } from '@/lib/unkey';
-
-export interface APIResponse<T = unknown> {
-  success: boolean;
-  message: string;
-  data?: T;
-}
+import { type APIResponse } from '@/types';
 
 export const createResponse = <T>(
   response: APIResponse<T>,
@@ -30,7 +25,7 @@ export const handleZodError = (error: ZodError) => {
   return createResponse({ success: false, message }, 400);
 };
 
-export const handleRateLimitError = (code: UnkeyErrorCode, resetIn?: string) => {
+export const handleRateLimitError = (code: UnkeyErrorCode = 'RATE_LIMITED', resetIn?: string) => {
   const { status, message } = unkeyErrorMap[code];
   const detailedMessage = resetIn ? `${message}. Retry after ${resetIn}` : message;
 
