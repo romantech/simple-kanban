@@ -18,6 +18,7 @@ const allowedMethods = ['GET', 'POST', 'OPTIONS'].join(',');
 export const corsConfig = { allowedOrigins, allowedHeaders, allowedMethods } as const;
 
 export const setCorsHeaders = (response: NextResponse, origin: string) => {
+  // 캐시 시스템(브라우저, CDN, 프록시 서버 등)에게 Origin 헤더에 따라 응답이 달라질 수 있음을 알림
   response.headers.set('Vary', 'Origin');
 
   if (corsConfig.allowedOrigins.includes(origin)) {

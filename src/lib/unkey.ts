@@ -7,13 +7,13 @@ import { type ClientInfo, getEnv } from '@/lib/utils';
 
 export const UNKEY_COOKIE_NAME = 'unkey_session';
 export const UNKEY_EXPIRY_HOURS = 72;
-export const SUBTASK_RATE_LIMIT = 30;
+export const UNKEY_SUBTASK_LIMIT = 30;
 export const UNKEY_NAMESPACE = { SUBTASK: 'kanban.subtask' } as const;
 
 export const createSubtaskLimiter = (config?: Partial<RatelimitConfig>) => {
   return new Ratelimit({
     namespace: UNKEY_NAMESPACE.SUBTASK,
-    limit: SUBTASK_RATE_LIMIT,
+    limit: UNKEY_SUBTASK_LIMIT,
     duration: UNKEY_EXPIRY_HOURS * 60 * 60 * 1000,
     ...config,
     rootKey: getEnv('UNKEY_ROOT_KEY'),
@@ -35,8 +35,8 @@ export async function createSubtaskUnkey(response: NextResponse, meta: ClientInf
       meta: { createdAt: new Date().toISOString(), ...meta },
       expires: addHours(new Date(), UNKEY_EXPIRY_HOURS).getTime(),
       ratelimit: { duration: 1000, limit: 2 }, // 1초간 2번 요청 허용
-      remaining: SUBTASK_RATE_LIMIT,
-      refill: { interval: 'daily', amount: SUBTASK_RATE_LIMIT }, // 자정마다 amount 만큼 remaining 리셋
+      remaining: UNKEY_SUBTASK_LIMIT,
+      refill: { interval: 'daily', amount: UNKEY_SUBTASK_LIMIT }, // 자정마다 amount 만큼 remaining 리셋
       enabled: true,
     });
 
