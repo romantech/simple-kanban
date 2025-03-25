@@ -49,10 +49,10 @@ export async function createSubtaskUnkey(response: NextResponse, meta: ClientInf
     response.cookies.set({
       name: UNKEY_COOKIE_NAME,
       value: result.key,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true, // 자바스크립트로 쿠키 접근 제한(document.cookie)
+      secure: process.env.NODE_ENV === 'production', // https 일 때만 쿠키 전송
       maxAge: 60 * 60 * UNKEY_EXPIRY_HOURS,
-      sameSite: 'strict',
+      sameSite: 'strict', // 동일 사이트 요청에서만 쿠키 전송
       path: '/api',
     });
 
