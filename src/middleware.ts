@@ -28,6 +28,7 @@ export async function middleware(req: NextRequest) {
   // 미들웨어에서 헤더를 수정하면 현재 요청 생명주기 내에서 유효 (Next.js 라우트의 request 객체에서 확인 가능)
   // 미들웨어에서 쿠키를 수정하면 클라이언트에 set-Cookie 헤더로 전달되며, 다음 요청 생명주기부터 적용
   response.headers.set('Authorization', `Bearer ${unkeyKey}`);
+  response.headers.set('X-UNKEY-KEY', String(unkeyKey));
 
   // CORS 헤더 설정
   setCorsHeaders(response, origin);

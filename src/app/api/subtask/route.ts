@@ -40,6 +40,15 @@ export const POST = withUnkey(
   {
     disableTelemetry: true,
     apiId: getEnv('UNKEY_API_ID'),
+    getKey: (req) => {
+      const key = req.headers.get('X-UNKEY-KEY');
+      console.log('Authorization 헤더 값:', req.headers.get('Authorization'));
+      // 테스트용 헤더
+      console.log('X-UNKEY-KEY 헤더 값:', req.headers.get('X-UNKEY-KEY'));
+      if (!key) console.log('No key found');
+
+      return key;
+    },
     handleInvalidKey: (_req, res) => {
       return errorResponse.rateLimit(res?.code);
     },
