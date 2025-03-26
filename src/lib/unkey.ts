@@ -18,7 +18,7 @@ export const createSubtaskLimiter = (config?: Partial<RatelimitConfig>) => {
     ...config,
     rootKey: getEnv('UNKEY_ROOT_KEY'),
     // async: true -> 글로벌 엣지 노드에서 독립적으로 카운트하고 비동기적으로 글로벌 상태 동기화.
-    // 순간적으로 전체 제한을 초과할 수 있지만(정확도 97%) 속도 빠름(0ms 레이턴시 오버헤드). 일반적인 API는 async 권장
+    // 순간적으로 전체 제한을 초과할 수 있지만(정확도 98%) 속도 빠름(0ms 레이턴시 오버헤드). 일반적인 API는 async 권장
     // async: false -> 중앙 집중식 처리로 글로벌 카운터를 관리하기 때문에 레이턴시는 다소 증가하지만 엄격한 제한 적용
     async: true,
   });
