@@ -19,7 +19,10 @@ const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
 export const POST = withUnkey(
   async (req) => {
     const parsedBody = subtaskRequestSchema.safeParse(await req.json());
-    if (!parsedBody.success) return errorResponse.zod(parsedBody.error);
+    if (!parsedBody.success) {
+      console.error('Validation error:', parsedBody.error.errors);
+      return errorResponse.zod(parsedBody.error);
+    }
 
     try {
       const { title, description } = parsedBody.data;
@@ -34,6 +37,8 @@ export const POST = withUnkey(
       const result = await chain.invoke({ title, description });
       return successResponse(result);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Subtask generation failed:', errorMessage);
       return errorResponse.server(error);
     }
   },
@@ -41,6 +46,7 @@ export const POST = withUnkey(
     disableTelemetry: true,
     apiId: getEnv('UNKEY_API_ID'),
     handleInvalidKey: (_req, res) => {
+      console.error('API key validation failed:', res?.code);
       return errorResponse.rateLimit(res?.code);
     },
   },
