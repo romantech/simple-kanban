@@ -1,9 +1,9 @@
 import { Ratelimit, type RatelimitConfig } from '@unkey/ratelimit';
-import { type NextResponse } from 'next/server';
 import { Unkey } from '@unkey/api';
 import { nanoid } from 'nanoid';
 import { addHours } from 'date-fns';
-import { type ClientInfo, getEnv } from '@/lib/utils';
+import { type ClientInfo, getClientInfo, getEnv } from '@/lib/utils';
+import { type NextRequest, type NextResponse } from 'next/server';
 
 export const UNKEY_COOKIE_NAME = 'unkey_session';
 export const UNKEY_EXPIRY_HOURS = 72;
@@ -22,7 +22,7 @@ export const createSubtaskLimiter = (config?: Partial<RatelimitConfig>) => {
   });
 };
 
-export async function createSubtaskUnkey(response: NextResponse, meta: ClientInfo) {
+export async function createSubtaskUnkey(meta: ClientInfo) {
   const unkey = new Unkey({ rootKey: getEnv('UNKEY_ROOT_KEY'), disableTelemetry: true });
 
   try {
@@ -45,17 +45,6 @@ export async function createSubtaskUnkey(response: NextResponse, meta: ClientInf
       return null;
     }
 
-    // 쿠키에 새 키 설정
-    response.cookies.set({
-      name: UNKEY_COOKIE_NAME,
-      value: result.key,
-      httpOnly: true, // 자바스크립트로 쿠키 접근 제한(document.cookie)
-      secure: process.env.NODE_ENV === 'production', // https 일 때만 쿠키 전송
-      maxAge: 60 * 60 * UNKEY_EXPIRY_HOURS,
-      sameSite: 'strict', // 동일 사이트 요청에서만 쿠키 전송
-      path: '/api',
-    });
-
     console.log(`Created new Unkey key for user ${ownerId}`);
     return result.key;
   } catch (error) {
@@ -63,6 +52,30 @@ export async function createSubtaskUnkey(response: NextResponse, meta: ClientInf
     return null;
   }
 }
+
+export const retrieveSubtaskUnkey = async (req: NextRequest) => {
+  let isNewKey = false;
+  let unkeyValue = req.cookies.get(UNKEY_COOKIE_NAME)?.value ?? null;
+
+  if (!unkeyValue) {
+    isNewKey = true;
+    unkeyValue = await createSubtaskUnkey(getClientInfo(req));
+  }
+
+  return { unkeyValue, isNewKey };
+};
+
+export const setUnkeySessionCookie = (response: NextResponse, unkeyValue: string) => {
+  response.cookies.set({
+    name: UNKEY_COOKIE_NAME,
+    value: unkeyValue,
+    httpOnly: true, // 자바스크립트로 쿠키 접근 제한(document.cookie)
+    secure: process.env.NODE_ENV === 'production', // https 일 때만 쿠키 전송
+    maxAge: 60 * 60 * UNKEY_EXPIRY_HOURS,
+    sameSite: 'strict', // 동일 사이트 요청에서만 쿠키 전송
+    path: '/api',
+  });
+};
 
 export type UnkeyErrorCode = keyof typeof unkeyErrorMap;
 /**

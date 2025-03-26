@@ -46,6 +46,7 @@ export const handleCors = (isPreflight: boolean, origin: string) => {
   }
 
   if (!corsConfig.allowedOrigins.includes(origin)) {
+    console.error(`CORS policy violation: Blocked request from unauthorized origin: ${origin}`);
     return new NextResponse('Blocked by CORS policy', {
       status: 403,
       statusText: 'Origin not allowed',

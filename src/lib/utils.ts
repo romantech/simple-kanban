@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { type NextRequest } from 'next/server';
+import { type NextRequest, userAgent } from 'next/server';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
@@ -35,10 +35,15 @@ export const getEnv = (key: string) => {
 
 export type ClientInfo = ReturnType<typeof getClientInfo>;
 export const getClientInfo = (req: NextRequest) => {
-  const agent = req.headers.get('user-agent') ?? 'anonymous';
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'anonymous';
-  const referrer = req.headers.get('referer')?.replace(/https?:\/\/([^/]+).*/i, '$1') ?? 'direct';
-  const language = req.headers.get('accept-language')?.split(/[,;]/)[0] ?? 'unknown';
+  const { browser, os, device, isBot } = userAgent(req);
+  const agent = { browser, os, device, isBot };
+  const ip = req.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim() ?? 'anonymous';
+  const realIp = req.headers.get('x-real-ip') ?? 'unknown';
 
-  return { ip, agent, referrer, language };
+  const country = req.headers.get('x-vercel-ip-country') ?? 'unknown';
+  const city = req.headers.get('x-vercel-ip-city') ?? 'unknown';
+
+  const referrer = req.headers.get('referer')?.replace(/https?:\/\/([^/]+).*/i, '$1') ?? 'direct';
+
+  return { agent, ip, realIp, city, country, referrer };
 };
