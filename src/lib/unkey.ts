@@ -31,7 +31,7 @@ export async function createSubtaskUnkey(meta: ClientInfo) {
       apiId: getEnv('UNKEY_API_ID'),
       prefix: UNKEY_NAMESPACE.SUBTASK,
       ownerId: ownerId, // 클라이언트에서 유저 식별을 위한 ID
-      name: meta.ip,
+      name: meta.realIp,
       meta: { createdAt: new Date().toISOString(), ...meta },
       expires: addHours(new Date(), UNKEY_EXPIRY_HOURS).getTime(),
       ratelimit: { duration: 1000, limit: 2 }, // 1초간 2번 요청 허용
@@ -59,7 +59,8 @@ export const retrieveSubtaskUnkey = async (req: NextRequest) => {
 
   if (!unkeyValue) {
     isNewKey = true;
-    unkeyValue = await createSubtaskUnkey(getClientInfo(req));
+    const clientInfo = getClientInfo(req);
+    unkeyValue = await createSubtaskUnkey(clientInfo);
   }
 
   return { unkeyValue, isNewKey };
