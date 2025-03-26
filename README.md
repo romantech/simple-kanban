@@ -6,13 +6,12 @@
 
 ## 기술 스택
 
-- **코어:** Next.js, TypeScript
-- **상태 관리:** Zustand
-- **UI:** Shadcn
-- **스타일링:** Tailwind CSS
-- **린팅:** ESLint, Prettier
-- **폼 관리:** React Hook Form, Zod
-- **기타:** DnD Kit, Motion, LangChain
+- Core: Next.js 15, TypeScript
+- State Management: Zustand
+- UI Library: Shadcn/ui
+- Styling: Tailwind CSS
+- Form Handling: React Hook Form, Zod
+- Others: DnD Kit, Motion, LangChain, Unkey
 
 ## 주요 기능
 

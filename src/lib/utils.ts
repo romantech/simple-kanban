@@ -38,13 +38,13 @@ export const getClientInfo = (req: NextRequest) => {
   const { browser, os, device, isBot } = userAgent(req);
   const agent = { browser, os, device, isBot };
 
-  const ip = req.headers.get('x-vercel-forwarded-for') ?? 'unknown';
+  const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
   const realIp = req.headers.get('x-real-ip') ?? 'unknown';
 
   const country = req.headers.get('x-vercel-ip-country') ?? 'unknown';
-  const region = req.headers.get('x-vercel-ip-country-region') ?? 'unknown';
+  const city = req.headers.get('x-vercel-ip-city') ?? 'unknown';
 
   const referrer = req.headers.get('referer')?.replace(/https?:\/\/([^/]+).*/i, '$1') ?? 'direct';
 
-  return { agent, ip, realIp, country, region, referrer };
+  return { agent, ip, realIp, country, city, referrer };
 };
