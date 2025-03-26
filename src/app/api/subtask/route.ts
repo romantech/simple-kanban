@@ -43,9 +43,11 @@ export const POST = withUnkey(
     }
   },
   {
+    // 기본적으로 Authorization 헤더에서 토큰 조회. getKey 메서드에서 토큰 조회 로직 커스텀 가능
+    // getKey(req) { ... },
     disableTelemetry: true,
     apiId: getEnv('UNKEY_API_ID'),
-    handleInvalidKey: (_req, res) => {
+    handleInvalidKey(_req, res) {
       console.error('API key validation failed:', res?.code);
       return errorResponse.rateLimit(res?.code);
     },

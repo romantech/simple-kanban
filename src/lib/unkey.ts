@@ -17,8 +17,10 @@ export const createSubtaskLimiter = (config?: Partial<RatelimitConfig>) => {
     duration: UNKEY_EXPIRY_HOURS * 60 * 60 * 1000,
     ...config,
     rootKey: getEnv('UNKEY_ROOT_KEY'),
-    // Async mode is disabled for now - enable when needed for higher throughput
-    // async: true
+    // async: true -> 글로벌 엣지 노드에서 독립적으로 카운트하고 비동기적으로 글로벌 상태 동기화.
+    // 순간적으로 전체 제한을 초과할 수 있지만(정확도 98%) 속도 빠름(0ms 레이턴시 오버헤드). 일반적인 API는 async 권장
+    // async: false -> 중앙 집중식 처리로 글로벌 카운터를 관리하기 때문에 레이턴시는 다소 증가하지만 엄격한 제한 적용
+    async: true,
   });
 };
 
@@ -31,10 +33,10 @@ export async function createSubtaskUnkey(meta: ClientInfo) {
       apiId: getEnv('UNKEY_API_ID'),
       prefix: UNKEY_NAMESPACE.SUBTASK,
       ownerId: ownerId, // 클라이언트에서 유저 식별을 위한 ID
-      name: meta.ip,
+      name: meta.realIp,
       meta: { createdAt: new Date().toISOString(), ...meta },
       expires: addHours(new Date(), UNKEY_EXPIRY_HOURS).getTime(),
-      ratelimit: { duration: 1000, limit: 2 }, // 1초간 2번 요청 허용
+      ratelimit: { duration: 1000, limit: 2, async: true }, // 1초간 2번 요청 허용, edge rate limiting
       remaining: UNKEY_SUBTASK_LIMIT,
       refill: { interval: 'daily', amount: UNKEY_SUBTASK_LIMIT }, // 자정마다 amount 만큼 remaining 리셋
       enabled: true,
@@ -59,7 +61,8 @@ export const retrieveSubtaskUnkey = async (req: NextRequest) => {
 
   if (!unkeyValue) {
     isNewKey = true;
-    unkeyValue = await createSubtaskUnkey(getClientInfo(req));
+    const clientInfo = getClientInfo(req);
+    unkeyValue = await createSubtaskUnkey(clientInfo);
   }
 
   return { unkeyValue, isNewKey };
