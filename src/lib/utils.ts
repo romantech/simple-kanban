@@ -6,7 +6,7 @@ import { type NextRequest, userAgent } from 'next/server';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
-export const parseRequestJSON = async <T>(req: Request): Promise<T | null> => {
+export const parseRequestJSON = async <T = unknown>(req: Request): Promise<T | null> => {
   try {
     return (await req.json()) as T;
   } catch (error) {
@@ -15,13 +15,9 @@ export const parseRequestJSON = async <T>(req: Request): Promise<T | null> => {
   }
 };
 
-export const cn = (...inputs: ClassValue[]) => {
-  return twMerge(clsx(inputs));
-};
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-export const getISODate = () => {
-  return new Date().toISOString();
-};
+export const getCurrentISODate = () => new Date().toISOString();
 
 export const formatKoDate = (date: string | Date, includeTime?: boolean) => {
   const formatStr = includeTime ? 'yyyy-MM-dd(eee) HH:mm' : 'yyyy-MM-dd(eee)';

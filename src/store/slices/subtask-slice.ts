@@ -1,7 +1,7 @@
 import type { Subtasks, Void } from '@/types';
 import type { SubtaskDef, SubtaskId, TaskId, TitleDef } from '@/schema';
 import type { KanbanSliceCreator } from '@/store';
-import { getISODate, sampleSubtasks } from '@/lib';
+import { getCurrentISODate, sampleSubtasks } from '@/lib';
 
 export interface SubtaskSlice {
   subtasks: Subtasks;
@@ -31,14 +31,14 @@ export const createSubtaskSlice: SubTaskSliceCreator = (set) => ({
     set((state) => {
       const subtask = state.subtasks[subtaskId];
       subtask.title = title;
-      subtask.updatedAt = getISODate();
+      subtask.updatedAt = getCurrentISODate();
     });
   },
   editSubtaskStatus: (subtaskId, completed) => {
     set((state) => {
       const subtask = state.subtasks[subtaskId];
       subtask.completed = completed;
-      subtask.updatedAt = getISODate();
+      subtask.updatedAt = getCurrentISODate();
     });
   },
   deleteSubtask: (subtaskId) => {

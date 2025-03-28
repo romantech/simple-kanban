@@ -1,5 +1,5 @@
 import { type Boards, type Void } from '@/types';
-import { getISODate, sampleBoardId, sampleBoards } from '@/lib';
+import { getCurrentISODate, sampleBoardId, sampleBoards } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
 import { type BoardDef, type BoardId, type ColumnDef, type TitleDef } from '@/schema';
 
@@ -56,7 +56,7 @@ export const createBoardSlice: BoardSliceCreator = (set, get) => ({
     set((state) => {
       const board = state.boards[boardId];
       board.title = title;
-      board.updatedAt = getISODate();
+      board.updatedAt = getCurrentISODate();
     });
   },
   setCurrentBoard: (boardId) => {
