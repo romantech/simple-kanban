@@ -32,12 +32,12 @@ export async function createSubtaskUnkey(meta: ClientInfo) {
     const ownerId = nanoid(10);
     const { result, error } = await unkey.keys.create({
       apiId: getEnv('UNKEY_API_ID'),
-      prefix: UNKEY_NAMESPACE.SUBTASK,
-      ownerId: ownerId, // 클라이언트에서 유저 식별을 위한 ID
+      prefix: UNKEY_NAMESPACE.SUBTASK, // 키에 추가될 접두사
+      ownerId: ownerId, // 유저 식별을 위한 ID
       name: meta.realIp ?? meta.ip ?? 'unknown',
       meta: { createdAt: new Date().toISOString(), ...meta },
       expires: addHours(new Date(), UNKEY_EXPIRY_HOURS).getTime(),
-      ratelimit: { duration: 1000, limit: 2, async: true }, // 1초간 2번 요청 허용, edge rate limiting
+      ratelimit: { duration: 1000, limit: 2, async: true }, // 1초간 2번 요청 허용
       remaining: UNKEY_SUBTASK_LIMIT,
       refill: { interval: 'daily', amount: UNKEY_SUBTASK_LIMIT }, // 자정마다 amount 만큼 remaining 리셋
       enabled: true,
