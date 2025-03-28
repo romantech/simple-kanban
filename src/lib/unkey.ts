@@ -2,7 +2,7 @@ import { Ratelimit, type RatelimitConfig } from '@unkey/ratelimit';
 import { Unkey } from '@unkey/api';
 import { nanoid } from 'nanoid';
 import { addHours } from 'date-fns';
-import { type ClientInfo, getClientInfo, getEnv } from '@/lib/utils';
+import { type ClientInfo, getClientInfo, getEnv, isDev } from '@/lib/utils';
 import { type NextRequest, type NextResponse } from 'next/server';
 
 export const UNKEY_COOKIE_NAME = 'unkey_session';
@@ -74,10 +74,10 @@ export const setUnkeySessionCookie = (response: NextResponse, unkeyValue: string
     name: UNKEY_COOKIE_NAME,
     value: unkeyValue,
     httpOnly: true, // 자바스크립트로 쿠키 접근 제한(document.cookie)
-    secure: process.env.NODE_ENV === 'production', // https 일 때만 쿠키 전송
-    maxAge: 60 * 60 * UNKEY_EXPIRY_HOURS,
+    secure: !isDev(), // HTTPS 연결에서만 쿠키 전송
+    maxAge: 60 * 60 * UNKEY_EXPIRY_HOURS, // 쿠키 만료 시간 (초 단위)
     sameSite: 'strict', // 동일 사이트 요청에서만 쿠키 전송
-    path: '/api',
+    path: '/api', // /api 경로에서만 쿠키 전송
   });
 };
 
