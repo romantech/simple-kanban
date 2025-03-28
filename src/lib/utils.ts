@@ -6,6 +6,15 @@ import { type NextRequest, userAgent } from 'next/server';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
+export const parseRequestJSON = async <T>(req: Request): Promise<T | null> => {
+  try {
+    return (await req.json()) as T;
+  } catch (error) {
+    console.error('Failed to parse JSON:', error);
+    return null;
+  }
+};
+
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };

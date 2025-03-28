@@ -1,6 +1,12 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { PromptTemplate } from '@langchain/core/prompts';
-import { errorResponse, generateSubtaskTemplate, getEnv, successResponse } from '@/lib';
+import {
+  errorResponse,
+  generateSubtaskTemplate,
+  getEnv,
+  parseRequestJSON,
+  successResponse,
+} from '@/lib';
 import { subtaskOutputSchema, subtaskRequestSchema } from '@/schema/kanban';
 import { withUnkey } from '@unkey/nextjs';
 
@@ -18,7 +24,7 @@ const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
 
 export const POST = withUnkey(
   async (req) => {
-    const parsedBody = subtaskRequestSchema.safeParse(await req.json());
+    const parsedBody = subtaskRequestSchema.safeParse(await parseRequestJSON(req));
     if (!parsedBody.success) {
       console.error('Validation error:', parsedBody.error.errors);
       return errorResponse.zod(parsedBody.error);
@@ -49,7 +55,7 @@ export const POST = withUnkey(
     apiId: getEnv('UNKEY_API_ID'),
     handleInvalidKey(_req, res) {
       console.error('API key validation failed:', res?.code);
-      return errorResponse.rateLimit(res?.code);
+      return errorResponse.unkey(res?.code);
     },
   },
 );

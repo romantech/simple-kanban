@@ -25,7 +25,7 @@ export const handleZodError = (error: ZodError) => {
   return createResponse({ success: false, message }, 400);
 };
 
-export const handleRateLimitError = (code: UnkeyErrorCode = 'RATE_LIMITED', resetIn?: string) => {
+export const handleUnkeyError = (code: UnkeyErrorCode = 'RATE_LIMITED', resetIn?: string) => {
   const { status, message } = unkeyErrorMap[code];
   const detailedMessage = resetIn ? `${message}. Retry after ${resetIn}` : message;
 
@@ -39,5 +39,5 @@ export const successResponse = <T>(data: T, status = 200, message = 'Request suc
 export const errorResponse = {
   server: handleServerError,
   zod: handleZodError,
-  rateLimit: handleRateLimitError,
+  unkey: handleUnkeyError,
 };
