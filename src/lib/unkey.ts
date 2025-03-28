@@ -34,7 +34,7 @@ export async function createSubtaskUnkey(meta: ClientInfo) {
       apiId: getEnv('UNKEY_API_ID'),
       prefix: UNKEY_NAMESPACE.SUBTASK,
       ownerId: ownerId, // 클라이언트에서 유저 식별을 위한 ID
-      name: meta.realIp,
+      name: meta.realIp ?? meta.ip ?? 'unknown',
       meta: { createdAt: new Date().toISOString(), ...meta },
       expires: addHours(new Date(), UNKEY_EXPIRY_HOURS).getTime(),
       ratelimit: { duration: 1000, limit: 2, async: true }, // 1초간 2번 요청 허용, edge rate limiting
