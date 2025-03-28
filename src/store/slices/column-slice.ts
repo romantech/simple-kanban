@@ -1,5 +1,5 @@
 import type { Columns, Void } from '@/types';
-import { generateColumnPreset, getISODate, sampleColumns } from '@/lib';
+import { generateColumnPreset, getCurrentISODate, sampleColumns } from '@/lib';
 import { type KanbanSliceCreator } from '@/store';
 import { type BoardId, type ColumnDef, type ColumnId, type TitleDef } from '@/schema';
 
@@ -48,7 +48,7 @@ export const createColumnSlice: ColumnSliceCreator = (set) => ({
     set((state) => {
       const column = state.columns[columnId];
       column.title = title;
-      column.updatedAt = getISODate();
+      column.updatedAt = getCurrentISODate();
     });
   },
 

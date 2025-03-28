@@ -1,7 +1,7 @@
 import { type TaskDef, type TaskId, type TitleDef } from '@/schema';
 import { type MoveTaskPayload, type Tasks, type Void } from '@/types';
 import { type KanbanSliceCreator } from '@/store';
-import { arrayMove, getISODate, sampleTasks } from '@/lib';
+import { arrayMove, getCurrentISODate, sampleTasks } from '@/lib';
 
 export interface TaskSlice {
   tasks: Tasks;
@@ -40,7 +40,7 @@ export const createTaskSlice: TaskSliceCreator = (set) => ({
       const task = state.tasks[taskId];
       task.title = title;
       task.description = description;
-      task.updatedAt = getISODate();
+      task.updatedAt = getCurrentISODate();
     });
   },
   clearAIGeneratedSubtasks: (taskId) => {

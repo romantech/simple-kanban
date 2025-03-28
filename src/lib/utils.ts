@@ -6,13 +6,18 @@ import { type NextRequest, userAgent } from 'next/server';
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
-export const cn = (...inputs: ClassValue[]) => {
-  return twMerge(clsx(inputs));
+export const parseRequestJSON = async <T = unknown>(req: Request): Promise<T | null> => {
+  try {
+    return (await req.json()) as T;
+  } catch (error) {
+    console.error('Failed to parse JSON:', error);
+    return null;
+  }
 };
 
-export const getISODate = () => {
-  return new Date().toISOString();
-};
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+
+export const getCurrentISODate = () => new Date().toISOString();
 
 export const formatKoDate = (date: string | Date, includeTime?: boolean) => {
   const formatStr = includeTime ? 'yyyy-MM-dd(eee) HH:mm' : 'yyyy-MM-dd(eee)';
@@ -38,13 +43,13 @@ export const getClientInfo = (req: NextRequest) => {
   const { browser, os, device, isBot } = userAgent(req);
   const agent = { browser, os, device, isBot };
 
-  const ip = req.headers.get('x-vercel-forwarded-for') ?? 'unknown';
-  const realIp = req.headers.get('x-real-ip') ?? 'unknown';
+  const ip = req.headers.get('x-forwarded-for');
+  const realIp = req.headers.get('x-real-ip');
 
-  const country = req.headers.get('x-vercel-ip-country') ?? 'unknown';
-  const region = req.headers.get('x-vercel-ip-country-region') ?? 'unknown';
+  const country = req.headers.get('x-vercel-ip-country');
+  const city = req.headers.get('x-vercel-ip-city');
 
   const referrer = req.headers.get('referer')?.replace(/https?:\/\/([^/]+).*/i, '$1') ?? 'direct';
 
-  return { agent, ip, realIp, country, region, referrer };
+  return { agent, ip, realIp, country, city, referrer };
 };

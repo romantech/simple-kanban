@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
-import { arrayMove, getISODate } from '@/lib/utils';
+import { arrayMove, getCurrentISODate } from '@/lib/utils';
 import type { Active, Over } from '@dnd-kit/core';
 import type { Sortable, TaskSortable, Void } from '@/types';
 import {
@@ -35,7 +35,7 @@ interface GenerateSubtask {
 }
 
 export const generateSubtask = ({ taskId, title, generatedByAI }: GenerateSubtask): SubtaskDef => {
-  const now = getISODate();
+  const now = getCurrentISODate();
 
   return {
     id: generateKanbanId('Subtask'),
@@ -61,7 +61,7 @@ export const generateTask = ({
   title,
   description,
 }: GenerateTask) => {
-  const now = getISODate();
+  const now = getCurrentISODate();
 
   return {
     id,
@@ -75,7 +75,7 @@ export const generateTask = ({
 };
 
 export const generateColumn = (boardId: BoardId, title: TitleDef): ColumnDef => {
-  const now = getISODate();
+  const now = getCurrentISODate();
 
   return {
     id: generateKanbanId('Column'),
@@ -93,7 +93,7 @@ export const generateColumnPreset = (boardId: BoardId) => {
 };
 
 export const generateBoard = (title: TitleDef): BoardDef => {
-  const now = getISODate();
+  const now = getCurrentISODate();
 
   return {
     id: generateKanbanId('Board'),

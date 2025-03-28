@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
   const headers = new Headers(req.headers);
   headers.set('Authorization', `Bearer ${unkeyValue}`);
   // NextResponse.next() 함수는 현재 요청을 다음 처리 단계(후속 핸들러)로 전달함
-  const response = NextResponse.next({ request: { headers } });
+  const response = NextResponse.next({ request: { headers } }); // 복제한 헤더를 포함한 요청 객체 생성
   if (isNewKey && unkeyValue) setUnkeySessionCookie(response, unkeyValue);
 
   // ========= CORS 헤더 설정 =========
