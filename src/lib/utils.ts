@@ -44,8 +44,8 @@ export const getClientInfo = (req: NextRequest) => {
   const { browser, os, device, isBot } = userAgent(req);
   // 추출한 정보를 agent 객체에 저장
   const agent = { browser, os, device, isBot };
-  // 클라이언트의 원래 IP 주소와 요청이 거쳐온 프록시 서버들의 IP 주소를 추적하는 표준 헤더
-  const ip = req.headers.get('x-forwarded-for');
+  // 클라이언트의 원래 IP 주소와 요청이 거쳐온 프록시 서버들의 IP 주소를 추적하는 표준 헤더 (콤마로 구분)
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null;
   // 클라이언트의 실제 IP 주소
   const realIp = req.headers.get('x-real-ip');
   // 클라이언트의 국가 정보 예) KR
