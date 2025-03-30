@@ -40,15 +40,19 @@ export const getEnv = (key: string) => {
 
 export type ClientInfo = ReturnType<typeof getClientInfo>;
 export const getClientInfo = (req: NextRequest) => {
+  // Next.js에서 제공하는 userAgent 함수를 사용하여 OS, 기기 등 정보 추출
   const { browser, os, device, isBot } = userAgent(req);
+  // 추출한 정보를 agent 객체에 저장
   const agent = { browser, os, device, isBot };
-
-  const ip = req.headers.get('x-forwarded-for');
+  // 클라이언트의 원래 IP 주소와 요청이 거쳐온 프록시 서버들의 IP 주소를 추적하는 표준 헤더 (콤마로 구분)
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null;
+  // 클라이언트의 실제 IP 주소
   const realIp = req.headers.get('x-real-ip');
-
+  // 클라이언트의 국가 정보 예) KR
   const country = req.headers.get('x-vercel-ip-country');
+  // 클라이언트의 도시 정보 예) Seoul
   const city = req.headers.get('x-vercel-ip-city');
-
+  // 리퍼러 정보
   const referrer = req.headers.get('referer')?.replace(/https?:\/\/([^/]+).*/i, '$1') ?? 'direct';
 
   return { agent, ip, realIp, country, city, referrer };
