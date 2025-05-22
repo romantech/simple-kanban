@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="kr" className={pretendard.variable}>
+    <html lang="ko" className={pretendard.variable}>
       <body className="dark bg-baltic-950 text-charade-100 antialiased">
         <main className="h-dvh w-dvw">
           {children}
