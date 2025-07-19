@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { TaskDetails } from '@/components/kanban-task/task-details';
 import { useKanbanStore } from '@/store';
-import { AnimatePresence, type AnimationProps, motion } from 'motion/react';
+import { AnimatePresence, type HTMLMotionProps, motion } from 'motion/react';
 import { IconButton } from '@/components/ui/icon-button';
 import { type EditTaskSchema, editTaskSchema, type TaskDef } from '@/schema';
 import { formatKoDate } from '@/lib';
@@ -31,7 +31,7 @@ interface SharedTaskProps {
   asChild?: boolean;
 }
 
-const animationVariants: AnimationProps = {
+const animationVariants: HTMLMotionProps<'div'> = {
   initial: { opacity: 0, scale: 0.95 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.95 },
