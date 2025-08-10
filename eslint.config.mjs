@@ -17,8 +17,9 @@ export default tseslint.config(
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...tailwindPlugin.configs['flat/recommended'],
   eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
+  /** Config "typescript-eslint/base": Key "plugins": Cannot redefine plugin "@typescript-eslint". 오류 대응 */
+  // tseslint.configs.recommendedTypeChecked,
+  // tseslint.configs.stylisticTypeChecked,
   prettierPluginRecommended,
 
   {
@@ -38,5 +39,10 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
       'tailwindcss/no-custom-classname': ['warn', { whitelist: ['toaster'] }],
     },
+  },
+
+  {
+    files: ['**/*.js', '**/*.mjs'],
+    ...tseslint.configs.disableTypeChecked,
   },
 );
