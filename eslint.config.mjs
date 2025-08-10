@@ -14,7 +14,8 @@ const compat = new FlatCompat({
 });
 
 export default tseslint.config(
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  /** Config "typescript-eslint/base": Key "plugins": Cannot redefine plugin "@typescript-eslint". 오류 대응 */
+  ...compat.extends('next/core-web-vitals' /*'next/typescript'*/),
   ...tailwindPlugin.configs['flat/recommended'],
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
@@ -34,9 +35,15 @@ export default tseslint.config(
     rules: {
       'prettier/prettier': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
       // 타입 import 할 때 인라인으로 type 키워드 추가 e.g., import { type Circle } from '...'
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
       'tailwindcss/no-custom-classname': ['warn', { whitelist: ['toaster'] }],
     },
+  },
+
+  {
+    files: ['**/*.js', '**/*.mjs'],
+    extends: [tseslint.configs.disableTypeChecked],
   },
 );
