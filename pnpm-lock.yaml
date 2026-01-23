@@ -2499,8 +2499,8 @@ packages:
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -3629,7 +3629,7 @@ snapshots:
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react@19.1.1)
       '@types/lodash': 4.17.20
       little-state-machine: 4.8.1(react@19.1.1)
-      lodash: 4.17.21
+      lodash: 4.17.23
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       react-simple-animate: 3.5.3(react-dom@19.1.1(react@19.1.1))
@@ -4678,7 +4678,7 @@ snapshots:
       dayjs: 1.11.13
       intersection-observer: 0.12.2
       js-cookie: 3.0.5
-      lodash: 4.17.21
+      lodash: 4.17.23
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       react-fast-compare: 3.2.2
@@ -5792,7 +5792,7 @@ snapshots:
 
   lodash.merge@4.6.2: {}
 
-  lodash@4.17.21: {}
+  lodash@4.17.23: {}
 
   loose-envify@1.4.0:
     dependencies:
