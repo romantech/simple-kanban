@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@/lib';
-import { Draggable, TaskDetailDialog } from '@/components';
+import { Draggable } from '@/components/drag-and-drop';
+import { TaskDetailDialog } from '@/components/kanban-task';
 import { useKanbanStore } from '@/store';
 import { motion } from 'motion/react';
 import { type TaskId } from '@/schema';

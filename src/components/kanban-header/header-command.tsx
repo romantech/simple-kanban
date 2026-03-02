@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib';
 import { useKanbanStore } from '@/store';
-import { BoardAddDialogContent } from '@/components';
+import { BoardAddDialogContent } from '@/components/kanban-board';
 import { type BoardId } from '@/schema';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useDisclosure } from '@/hooks';

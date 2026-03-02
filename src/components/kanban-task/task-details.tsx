@@ -1,9 +1,11 @@
 'use client';
 
 import { type TaskDef } from '@/schema';
-import { SubtaskAddInput, SubtaskList, TaskColumnSelector } from '@/components';
 import { useSubtaskCount } from '@/hooks';
 import { cn } from '@/lib';
+import { SubtaskList } from '@/components/kanban-subtask/subtask-list';
+import { TaskColumnSelector } from '@/components/kanban-task/task-column-selector';
+import { SubtaskAddInput } from '@/components/kanban-subtask/subtask-add-input';
 
 const TaskDetails = ({ task }: { task: TaskDef }) => {
   const { label } = useSubtaskCount(task.id);

@@ -3,7 +3,7 @@ import { useKanbanStore } from '@/store';
 import { type ChangeEvent, Fragment } from 'react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { cn } from '@/lib';
-import { Draggable } from '@/components';
+import { Draggable } from '@/components/drag-and-drop';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog';

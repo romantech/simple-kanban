@@ -8,7 +8,7 @@ import { cn, generateSubtask, TaskConfig } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { BadgeAI } from '@/components/ui/badge-ai';
-import { SubtaskPicker } from '@/components';
+import { SubtaskPicker } from '@/components/kanban-subtask/subtask-picker';
 
 interface SubtaskInputProps {
   task: TaskDef;

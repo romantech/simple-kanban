@@ -19,7 +19,7 @@ import { Fragment, type PropsWithChildren, useRef } from 'react';
 import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId, type TaskDef } from '@/schema';
 import { useDisclosure, useGenerateSubtasks } from '@/hooks';
-import { SubtaskPicker } from '@/components';
+import { SubtaskPicker } from '@/components/kanban-subtask/subtask-picker';
 
 interface AddTaskProps {
   columnId: ColumnId;

@@ -1,6 +1,8 @@
 'use client';
 
-import { Column, ColumnAddDialog, Subtask, Task } from '@/components';
+import { Column, ColumnAddDialog } from '@/components/kanban-column';
+import { Subtask } from '@/components/kanban-subtask';
+import { Task } from '@/components/kanban-task';
 import { useKanbanStore } from '@/store';
 import { Button } from '@/components/ui/button';
 import { DndContext, DragOverlay } from '@dnd-kit/core';

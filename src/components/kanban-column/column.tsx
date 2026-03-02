@@ -1,6 +1,8 @@
 'use client';
 
-import { ColumnHeader, Draggable, Task, TaskAddDialog } from '@/components';
+import { ColumnHeader } from '@/components/kanban-column';
+import { Draggable } from '@/components/drag-and-drop';
+import { Task, TaskAddDialog } from '@/components/kanban-task';
 import { useKanbanStore } from '@/store';
 import { cn } from '@/lib';
 import { CirclePlus } from 'lucide-react';

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Kanban } from '@/components';
 import { type BoardId } from '@/schema';
 
@@ -6,7 +7,7 @@ interface Props {
   searchParams: Promise<{ title?: string }>;
 }
 
-export async function generateMetadata({ searchParams }: Props) {
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { title = 'Board' } = await searchParams;
 
   return { title };
