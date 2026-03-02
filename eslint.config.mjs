@@ -1,35 +1,38 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
 import prettierPluginRecommended from 'eslint-plugin-prettier/recommended';
 import tailwindPlugin from 'eslint-plugin-tailwindcss';
 import tseslint from 'typescript-eslint';
 import eslint from '@eslint/js';
+import { globalIgnores } from 'eslint/config';
+import nextPlugin from '@next/eslint-plugin-next';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
 export default tseslint.config(
-  /** Config "typescript-eslint/base": Key "plugins": Cannot redefine plugin "@typescript-eslint". 오류 대응 */
-  ...compat.extends('next/core-web-vitals' /*'next/typescript'*/),
+  globalIgnores(['.next/**', 'node_modules/**', 'dist/**', 'build/**']),
+
+  {
+    plugins: { '@next/next': nextPlugin },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+    },
+  },
+
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: { projectService: true, tsconfigRootDir: __dirname },
+    },
+  },
+
   ...tailwindPlugin.configs['flat/recommended'],
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   prettierPluginRecommended,
-
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: __dirname,
-      },
-    },
-  },
 
   {
     rules: {
@@ -43,7 +46,7 @@ export default tseslint.config(
   },
 
   {
-    files: ['**/*.js', '**/*.mjs'],
+    files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
     extends: [tseslint.configs.disableTypeChecked],
   },
 );

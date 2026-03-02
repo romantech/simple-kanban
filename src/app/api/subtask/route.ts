@@ -53,9 +53,9 @@ export const POST = withUnkey(
     // getKey(req) { ... },
     disableTelemetry: true,
     apiId: getEnv('UNKEY_API_ID'),
-    handleInvalidKey(_req, res) {
-      console.error('API key validation failed:', res?.code);
-      return errorResponse.unkey(res?.code);
+    handleInvalidKey(_req, result) {
+      console.error('API key validation failed:', result?.code);
+      return errorResponse.unkey(result?.code);
     },
   },
 );
