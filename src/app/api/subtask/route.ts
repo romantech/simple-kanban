@@ -1,16 +1,14 @@
-import { ChatOpenAI } from '@langchain/openai';
-import { PromptTemplate } from '@langchain/core/prompts';
 import {
+  createSubtaskChain,
   createSubtaskGlobalLimiter,
   errorResponse,
-  generateSubtaskTemplate,
   getEnv,
   isUnkeyStatusCode,
   parseRequestJSON,
   successResponse,
   type UnkeyStatusCode,
 } from '@/lib';
-import { subtaskOutputSchema, subtaskRequestSchema } from '@/schema/kanban';
+import { subtaskRequestSchema } from '@/schema/kanban';
 import { withUnkey } from '@unkey/nextjs';
 
 /**
@@ -24,6 +22,7 @@ import { withUnkey } from '@unkey/nextjs';
  * */
 export const runtime = 'edge';
 const subtaskGlobalLimiter = createSubtaskGlobalLimiter();
+const chain = createSubtaskChain();
 
 export const POST = withUnkey(
   async (req) => {
@@ -42,14 +41,6 @@ export const POST = withUnkey(
 
     try {
       const { title, description } = parsedBody.data;
-
-      const model = new ChatOpenAI({ model: getEnv('AI_MODEL_SUBTASK'), temperature: 1 });
-      const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
-      const structuredLlm = model.withStructuredOutput(subtaskOutputSchema, {
-        name: 'output_formatter',
-      });
-      const chain = prompt.pipe(structuredLlm);
-
       const result = await chain.invoke({ title, description });
       return successResponse(result);
     } catch (error) {
