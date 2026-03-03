@@ -3,7 +3,7 @@ import { handleCors, retrieveSubtaskUnkey, setCorsHeaders, setUnkeySessionCookie
 
 // 미들웨어 파일은 프로젝트에서 1개만 존재 할 수 있으며, 기본적으로 Edge 런타임에서 실행됨
 // Edge 런타임에선 요청마다 독립적인 실행 환경을 가짐(요청마다 별도 인스턴스)
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const origin = req.headers.get('origin') ?? '';
   const isPreflight = req.method === 'OPTIONS';
 

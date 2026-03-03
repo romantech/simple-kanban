@@ -13,7 +13,7 @@ import { EllipsisVertical } from 'lucide-react';
 import { useKanbanStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogTrigger } from '../ui/dialog';
-import { BoardEditDialogContent } from '@/components';
+import { BoardEditDialogContent } from '@/components/kanban-board';
 import { AlertDialog, AlertDialogTrigger } from '../ui/alert-dialog';
 import { AlertDialogBaseContent } from '@/components/ui/alert-dialog-base-content';
 import { useDisclosure } from '@/hooks';

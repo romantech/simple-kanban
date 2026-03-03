@@ -3,7 +3,7 @@
 import { useKanbanStore } from '@/store';
 import { cn } from '@/lib';
 import { ChevronsLeft, SquareKanban, SquarePlus } from 'lucide-react';
-import { BoardAddDialogContent } from '@/components';
+import { BoardAddDialogContent } from '@/components/kanban-board';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from '@/components/ui/sidebar';
 import Link from 'next/link';

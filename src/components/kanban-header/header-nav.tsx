@@ -1,8 +1,9 @@
 import { Grid2x2Plus } from 'lucide-react';
-import { ColumnAddDialog, HeaderCommand, HeaderDropdown } from '@/components';
+import { ColumnAddDialog } from '@/components/kanban-column';
 import { Header } from '@/components/ui/header';
 import { IconButton } from '@/components/ui/icon-button';
 import { Github } from '@/assets';
+import { HeaderCommand, HeaderDropdown } from '@/components/kanban-header';
 
 const HeaderNav = () => {
   return (
