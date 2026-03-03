@@ -3,9 +3,10 @@ import { PromptTemplate } from '@langchain/core/prompts';
 import {
   errorResponse,
   generateSubtaskTemplate,
-  getEnv,
+  isUnkeyStatusCode,
   parseRequestJSON,
   successResponse,
+  type UnkeyStatusCode,
 } from '@/lib';
 import { subtaskOutputSchema, subtaskRequestSchema } from '@/schema/kanban';
 import { withUnkey } from '@unkey/nextjs';
@@ -21,6 +22,9 @@ import { withUnkey } from '@unkey/nextjs';
  * */
 export const runtime = 'edge';
 const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
+
+const unkeyRootKey = process.env.UNKEY_ROOT_KEY;
+if (!unkeyRootKey) throw new Error('Missing env: UNKEY_ROOT_KEY');
 
 export const POST = withUnkey(
   async (req) => {
@@ -49,13 +53,15 @@ export const POST = withUnkey(
     }
   },
   {
+    rootKey: unkeyRootKey,
     // 기본적으로 Authorization 헤더에서 토큰 조회. getKey 메서드에서 토큰 조회 로직 커스텀 가능
     // getKey(req) { ... },
-    disableTelemetry: true,
-    apiId: getEnv('UNKEY_API_ID'),
     handleInvalidKey(_req, result) {
-      console.error('API key validation failed:', result?.code);
-      return errorResponse.unkey(result?.code);
+      const { code } = result.data;
+      console.error('API key validation failed:', code);
+
+      const safeCode: UnkeyStatusCode = isUnkeyStatusCode(code) ? code : 'FORBIDDEN';
+      return errorResponse.unkey(safeCode);
     },
   },
 );
