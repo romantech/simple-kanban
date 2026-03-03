@@ -1,8 +1,10 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { PromptTemplate } from '@langchain/core/prompts';
 import {
+  createSubtaskGlobalLimiter,
   errorResponse,
   generateSubtaskTemplate,
+  getEnv,
   isUnkeyStatusCode,
   parseRequestJSON,
   successResponse,
@@ -21,10 +23,7 @@ import { withUnkey } from '@unkey/nextjs';
  * @see https://vercel.com/docs/pricing/edge-functions#managing-functions-invocations
  * */
 export const runtime = 'edge';
-const subtaskModel = process.env.AI_MODEL_SUBTASK ?? 'gpt-4o-mini';
-
-const unkeyRootKey = process.env.UNKEY_ROOT_KEY;
-if (!unkeyRootKey) throw new Error('Missing env: UNKEY_ROOT_KEY');
+const subtaskGlobalLimiter = createSubtaskGlobalLimiter();
 
 export const POST = withUnkey(
   async (req) => {
@@ -34,10 +33,17 @@ export const POST = withUnkey(
       return errorResponse.zod(parsedBody.error);
     }
 
+    // API 전체(전역) 사용량 제한. identifier를 고정값으로 두면 모든 요청이 같은 버킷 공유
+    const globalLimit = await subtaskGlobalLimiter.limit('ALL');
+    if (!globalLimit.success) {
+      console.error('Global rate limit exceeded (subtask api)');
+      return errorResponse.unkey('RATE_LIMITED');
+    }
+
     try {
       const { title, description } = parsedBody.data;
 
-      const model = new ChatOpenAI({ model: subtaskModel, temperature: 0.6 });
+      const model = new ChatOpenAI({ model: getEnv('AI_MODEL_SUBTASK'), temperature: 1 });
       const prompt = PromptTemplate.fromTemplate(generateSubtaskTemplate);
       const structuredLlm = model.withStructuredOutput(subtaskOutputSchema, {
         name: 'output_formatter',
@@ -53,7 +59,7 @@ export const POST = withUnkey(
     }
   },
   {
-    rootKey: unkeyRootKey,
+    rootKey: getEnv('UNKEY_ROOT_KEY'),
     // 기본적으로 Authorization 헤더에서 토큰 조회. getKey 메서드에서 토큰 조회 로직 커스텀 가능
     // getKey(req) { ... },
     handleInvalidKey(_req, result) {
