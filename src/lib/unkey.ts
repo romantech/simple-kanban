@@ -63,6 +63,7 @@ export const retrieveSubtaskUnkey = async (req: NextRequest) => {
   const clientInfo = getClientInfo(req);
   const newKey = await createSubtaskUnkey(clientInfo);
 
+  if (!newKey) return { unkeyValue: null, isNewKey: false };
   return { unkeyValue: newKey, isNewKey: true };
 };
 
