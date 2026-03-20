@@ -6,7 +6,7 @@ import { subtaskOutputSchema } from '@/schema/kanban';
 export const createSubtaskChain = () => {
   const model = new ChatOpenAI({
     model: getEnv('AI_MODEL_SUBTASK'),
-    reasoning: { effort: 'minimal' },
+    reasoning: { effort: 'none' },
   });
 
   const prompt = ChatPromptTemplate.fromTemplate(generateSubtaskTemplate);
