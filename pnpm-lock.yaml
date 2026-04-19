@@ -2383,8 +2383,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.1.39
 
-  langsmith@0.5.18:
-    resolution: {integrity: sha512-3zuZUWffTHQ+73EAwnodADtf534VNEZUpXr9jC12qyG8/IQuJET7PRsCpTb9wX2lmBspakwLUpqpj3tNm/0bVA==}
+  langsmith@0.5.20:
+    resolution: {integrity: sha512-ULhLM8RswvQDXufLtNtvclHrWCBx8Cb5UPI6lAZC+8Dq59iHsVPz/3Ac9khWNm1VIvChRsuykixD/WrmzuuA3Q==}
     peerDependencies:
       '@opentelemetry/api': '*'
       '@opentelemetry/exporter-trace-otlp-proto': '*'
@@ -3642,7 +3642,7 @@ snapshots:
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.21
-      langsmith: 0.5.18(openai@6.34.0(zod@3.25.76))
+      langsmith: 0.5.20(openai@6.34.0(zod@3.25.76))
       mustache: 4.2.0
       p-queue: 6.6.2
       uuid: 11.1.0
@@ -5552,7 +5552,7 @@ snapshots:
       '@langchain/core': 1.1.39(openai@6.34.0(zod@3.25.76))
       '@langchain/langgraph': 1.2.8(@langchain/core@1.1.39(openai@6.34.0(zod@3.25.76)))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(zod@3.25.76)
       '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.39(openai@6.34.0(zod@3.25.76)))
-      langsmith: 0.5.18(openai@6.34.0(zod@3.25.76))
+      langsmith: 0.5.20(openai@6.34.0(zod@3.25.76))
       uuid: 11.1.0
       zod: 3.25.76
     transitivePeerDependencies:
@@ -5567,7 +5567,7 @@ snapshots:
       - ws
       - zod-to-json-schema
 
-  langsmith@0.5.18(openai@6.34.0(zod@3.25.76)):
+  langsmith@0.5.20(openai@6.34.0(zod@3.25.76)):
     dependencies:
       p-queue: 6.6.2
       uuid: 10.0.0
