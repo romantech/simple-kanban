@@ -32,7 +32,7 @@
     "@unkey/nextjs": "^2.0.0",
     "@unkey/ratelimit": "^2.1.4",
     "@vercel/analytics": "^1.6.1",
-    "axios": "^1.15.0",
+    "axios": "^1.15.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
