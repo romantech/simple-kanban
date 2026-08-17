@@ -82,7 +82,7 @@ const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
               control={form.control}
               name={presetField}
               render={({ field }) => (
-                <FormItem className="flex items-start space-y-0 space-x-3 rounded-md border p-4 shadow-sm">
+                <FormItem className="flex items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>

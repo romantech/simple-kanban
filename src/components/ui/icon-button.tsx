@@ -28,7 +28,7 @@ const IconButton = <T extends ElementType = 'button'>({
   const Element = (
     <PolymorphicComp
       className={cn(
-        'flex min-w-fit items-center gap-1.5 rounded p-0.5 transition-all hover:text-charade-200 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden active:scale-95',
+        'flex min-w-fit gap-1.5 items-center rounded transition-all hover:text-charade-200 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring p-0.5',
         className,
       )}
       {...props}

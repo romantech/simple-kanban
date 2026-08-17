@@ -47,7 +47,7 @@ export const Subtask = ({ subtaskId, className }: SubtaskProps) => {
       rootDndConfig={{ listeners: false, attributes: false }}
       as="li"
       className={cn(
-        'flex items-center gap-1.5 rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600',
+        'flex gap-1.5 items-center rounded-md border border-baltic-950 bg-baltic-950 px-3 py-1 focus-within:border-charade-600',
         className,
       )}
     >

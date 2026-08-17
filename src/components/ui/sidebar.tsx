@@ -9,12 +9,12 @@ const Sidebar = ({ children, title = 'all boards', className, ...divProps }: Sid
   return (
     <div
       className={cn(
-        'scroll-custom w-full max-w-72 space-y-4 overflow-y-auto border-r border-baltic-900 bg-charade-950 p-6 transition-all duration-300',
+        'scroll-custom w-full max-w-72 space-y-4 overflow-y-auto border-r border-baltic-900 bg-charade-950 transition-all duration-300 p-6',
         className,
       )}
       {...divProps}
     >
-      <h2 className="text-sm font-bold text-baltic-400 uppercase">{title}</h2>
+      <h2 className="text-sm font-bold uppercase text-baltic-400">{title}</h2>
       {children}
     </div>
   );

@@ -1,172 +1,24 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@plugin 'tailwindcss-animate';
-@plugin 'tailwind-scrollbar';
-
-@custom-variant dark (&:is(.dark *));
-
-@theme {
-  --animate-progress: progress 1s linear infinite;
-  --animate-shake: shake 0.15s ease-in-out 3;
-
-  --color-baltic-50: #f6f6f9;
-  --color-baltic-100: #ecedf2;
-  --color-baltic-200: #d5d6e2;
-  --color-baltic-300: #b1b5c8;
-  --color-baltic-400: #868daa;
-  --color-baltic-500: #676e90;
-  --color-baltic-600: #525777;
-  --color-baltic-700: #444860;
-  --color-baltic-800: #3a3d52;
-  --color-baltic-900: #343646;
-  --color-baltic-950: #20212b;
-
-  --color-charade-50: #f6f6f9;
-  --color-charade-100: #ededf1;
-  --color-charade-200: #d7d8e0;
-  --color-charade-300: #b4b7c5;
-  --color-charade-400: #8a8fa6;
-  --color-charade-500: #6c718b;
-  --color-charade-600: #575b72;
-  --color-charade-700: #474a5d;
-  --color-charade-800: #3d404f;
-  --color-charade-900: #363844;
-  --color-charade-950: #2b2c36;
-
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
-
-  --font-pretendard: var(--font-pretendard);
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  @keyframes progress {
-    0%,
-    60% {
-      transform: translateY(0px);
-    }
-    30% {
-      transform: translateY(-30px);
-    }
-  }
-  @keyframes shake {
-    0% {
-      transform: translateX(0px);
-    }
-    25% {
-      transform: translateX(5px);
-    }
-    75% {
-      transform: translateX(-5px);
-    }
-    100% {
-      transform: translateX(0px);
-    }
-  }
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-
-  button:not(:disabled),
-  [role='button']:not(:disabled) {
-    cursor: pointer;
-  }
-}
-
-@utility draggable-item {
-  /* 패닝/핀치줌은 허용하지만 더블탭 확대 같은 비표준 제스처는 비활성화하여 터치 드래그 반응성 개선 */
-  touch-action: manipulation;
-  /* 텍스트 선택 방지 */
-  user-select: none;
-  /* 텍스트 선택 방지 for iOS Safari */
-  -webkit-user-select: none;
-  /* 텍스트 선택 방지 for Firefox */
-  -moz-user-select: none;
-}
-
-@utility progress {
-  @apply rounded-full animate-progress;
-
-  &:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  &:nth-child(2) {
-    animation-delay: 0.3s;
-  }
-
-  &:nth-child(3) {
-    animation-delay: 0.5s;
-  }
-}
-
-@layer utilities {
-  body {
-    font-family:
-      'Pretendard Variable',
-      Pretendard,
-      -apple-system,
-      BlinkMacSystemFont,
-      system-ui,
-      Roboto,
-      'Helvetica Neue',
-      'Segoe UI',
-      'Apple SD Gothic Neo',
-      'Noto Sans KR',
-      'Malgun Gothic',
-      'Apple Color Emoji',
-      'Segoe UI Emoji',
-      'Segoe UI Symbol',
-      sans-serif;
-  }
+body {
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
 }
 
 @layer base {
@@ -235,5 +87,34 @@
 
   .scroll-custom {
     @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-charade-900 scrollbar-track-transparent;
+  }
+}
+
+@layer utilities {
+  .draggable-item {
+    /* 패닝/핀치줌은 허용하지만 더블탭 확대 같은 비표준 제스처는 비활성화하여 터치 드래그 반응성 개선 */
+    touch-action: manipulation;
+    /* 텍스트 선택 방지 */
+    user-select: none;
+    /* 텍스트 선택 방지 for iOS Safari */
+    -webkit-user-select: none;
+    /* 텍스트 선택 방지 for Firefox */
+    -moz-user-select: none;
+  }
+
+  .progress {
+    @apply rounded-full animate-progress;
+  }
+
+  .progress:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .progress:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+
+  .progress:nth-child(3) {
+    animation-delay: 0.5s;
   }
 }

@@ -57,9 +57,9 @@ const Board = () => {
         )}
       </AnimatePresence>
 
-      <div className="mt-11 ml-auto flex">
+      <div className="ml-auto mt-11 flex">
         <ColumnAddDialog>
-          <Button className="hidden h-full w-[210px] items-center justify-center gap-2 rounded-md bg-transparent bg-linear-to-b from-baltic-900/40 to-baltic-950 to-100% text-xl font-bold text-baltic-400 capitalize shadow-none transition-all hover:bg-baltic-900/40 active:scale-95 lg:flex [&_svg]:size-5">
+          <Button className="hidden h-full w-[210px] items-center justify-center gap-2 rounded-md bg-gradient-to-b  from-baltic-900/40 to-baltic-950 to-100% text-xl font-bold capitalize text-baltic-400 shadow-none transition-all hover:bg-baltic-900/40 active:scale-95 lg:flex [&_svg]:size-5">
             <Grid2x2Plus />
             컬럼 추가
           </Button>

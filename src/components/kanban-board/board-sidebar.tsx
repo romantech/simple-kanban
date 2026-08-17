@@ -31,13 +31,13 @@ const BoardSidebar = () => {
             <li
               key={id}
               className={cn(
-                'px-px py-2 font-semibold text-baltic-400 transition-all duration-300 hover:text-charade-100',
+                'font-semibold text-baltic-400 transition-all hover:text-charade-100 duration-300 py-2 px-px',
                 { 'text-charade-100 font-bold': id === currentBoardId },
               )}
             >
               <Link
                 href={{ pathname: id, query: { title } }}
-                className="flex items-center gap-2 rounded focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden"
+                className="flex items-center gap-2 rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 prefetch
               >
                 <SquareKanban className="size-[18px] shrink-0" />
@@ -64,7 +64,7 @@ const BoardSidebar = () => {
         onClick={panel.toggle}
         Icon={ChevronsLeft}
         className={cn(
-          'absolute bottom-6 hidden h-9 rounded-none bg-charade-950 px-2 shadow-md transition-all duration-300 hover:bg-baltic-900 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden lg:block [&_svg]:size-[22px]',
+          'hidden h-[36px] px-2 bg-charade-950 lg:block transition-all duration-300 [&_svg]:size-[22px] absolute bottom-6 hover:bg-baltic-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-none shadow-md',
           {
             'translate-x-[288px] rounded-r-xl': panel.open,
             'rotate-180 rounded-l-xl': !panel.open,

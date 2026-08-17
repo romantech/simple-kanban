@@ -65,7 +65,7 @@ const ColumnHeader = ({ column, className, ...divProps }: ColumnHeaderProps) => 
   return (
     <div
       className={cn(
-        'mb-2 flex h-6 cursor-grab items-center justify-between gap-2 text-baltic-400 focus-visible:rounded focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden',
+        'mb-2 flex h-[24px] cursor-grab items-center justify-between gap-2 text-baltic-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:rounded',
         className,
       )}
       {...divProps}
