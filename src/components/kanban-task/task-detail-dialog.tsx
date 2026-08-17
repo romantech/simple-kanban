@@ -80,7 +80,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
     <Dialog open={dialog.open} onOpenChange={handleDialogOpenChange}>
       <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
 
-      <DialogContent className="min-h-80 outline-none">
+      <DialogContent className="min-h-80 outline-hidden">
         <DialogHeader>
           <div className="flex flex-col gap-2">
             <DialogTitle className="mr-auto capitalize">{dialogTitle}</DialogTitle>
@@ -117,7 +117,7 @@ const TaskDetailDialog = ({ children, task, asChild }: PropsWithChildren<SharedT
                   id={TASK_EDIT_FORM_ID}
                   onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}
                 >
-                  <TaskEditForm className="pb-7 pt-3" />
+                  <TaskEditForm className="pt-3 pb-7" />
                   <DialogFooter>
                     <Button type="button" variant="outline" onClick={toggleEditMode}>
                       취소

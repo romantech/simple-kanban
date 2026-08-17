@@ -58,7 +58,7 @@ const HeaderCommand = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="min-w-full max-w-44 p-0 sm:max-w-60"
+          className="max-w-44 min-w-full p-0 sm:max-w-60"
           id="board-selector"
           role="dialog"
           aria-label="보드 선택 메뉴"

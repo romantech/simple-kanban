@@ -41,7 +41,7 @@ const HeaderDropdown = () => {
       <AlertDialog>
         <DropdownMenu>
           <DropdownMenuTrigger
-            className="focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="focus-visible:rounded focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden"
             aria-label="보드 관리 메뉴"
           >
             <EllipsisVertical aria-hidden="true" />

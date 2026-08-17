@@ -30,7 +30,7 @@ const Task = ({ taskId, className }: TaskProps) => {
       as="li"
       rootDndConfig={{ listeners: false, attributes: false }}
       className={cn(
-        'w-full max-w-[272px] rounded-md bg-charade-950 shadow-md transition-colors flex flex-col gap-1 hover:bg-charade-900/70 p-0.5',
+        'flex w-full max-w-68 flex-col gap-1 rounded-md bg-charade-950 p-0.5 shadow-md transition-colors hover:bg-charade-900/70',
         className,
       )}
     >
@@ -41,7 +41,7 @@ const Task = ({ taskId, className }: TaskProps) => {
             {...attributes}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex cursor-grab flex-col gap-2.5 p-3.5 text-left focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="flex cursor-grab flex-col gap-2.5 p-3.5 text-left focus-visible:rounded focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden"
           >
             <h4 className="line-clamp-2 text-[15px] font-semibold">{task.title}</h4>
             <div

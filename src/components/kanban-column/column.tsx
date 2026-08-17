@@ -27,7 +27,7 @@ const Column = ({ columnId, className }: ColumnProps) => {
       id={columnId}
       rootDndConfig={{ listeners: false, attributes: false }}
       className={cn(
-        'flex w-full max-h-full min-h-64 max-w-72 rounded bg-baltic-950 shrink-0 flex-col gap-4 p-2',
+        'flex max-h-full min-h-64 w-full max-w-72 shrink-0 flex-col gap-4 rounded bg-baltic-950 p-2',
         className,
       )}
     >
@@ -35,7 +35,7 @@ const Column = ({ columnId, className }: ColumnProps) => {
         <>
           <ColumnHeader {...listeners} {...attributes} column={column} />
           <TaskAddDialog columnId={columnId}>
-            <button className="flex w-full cursor-pointer items-center justify-start gap-2 rounded-md border border-baltic-900 px-3 py-2 text-sm font-semibold capitalize text-baltic-200 shadow-md transition-all hover:bg-charade-950 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:scale-95">
+            <button className="flex w-full cursor-pointer items-center justify-start gap-2 rounded-md border border-baltic-900 px-3 py-2 text-sm font-semibold text-baltic-200 capitalize shadow-md transition-all hover:bg-charade-950 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden active:scale-95">
               <CirclePlus className="size-4" />
               작업 추가
             </button>

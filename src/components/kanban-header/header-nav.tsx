@@ -27,7 +27,7 @@ const HeaderNav = () => {
             href="https://github.com/romantech/simple-kanban"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden p-1 focus-visible:rounded focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring lg:block"
+            className="hidden p-1 focus-visible:rounded focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden lg:block"
             tooltipContent="GitHub 레포지토리"
             aria-label="GitHub 레포지토리 방문"
           />

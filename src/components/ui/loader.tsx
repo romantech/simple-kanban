@@ -3,7 +3,7 @@ import { cn } from '@/lib';
 
 export const Loader = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={cn('*:progress *:size-6 *:bg-baltic-400 flex gap-4', className)} {...props}>
+    <div className={cn('flex gap-4 *:size-6 *:progress *:bg-baltic-400', className)} {...props}>
       <div />
       <div />
       <div />

@@ -27,8 +27,10 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { addBoardSchema, type AddBoardSchema } from '@/schema';
 import { useRouter } from 'next/navigation';
+import { type z } from 'zod';
 
-const [titleField, presetField] = addBoardSchema.keyof().options;
+const titleField = 'title';
+const presetField = 'preset';
 const resolver = zodResolver(addBoardSchema);
 const defaultValues = { title: '', preset: true };
 
@@ -40,7 +42,11 @@ const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
   const router = useRouter();
   const addBoard = useKanbanStore.use.addBoard();
 
-  const form = useForm<AddBoardSchema>({ resolver, defaultValues, shouldUnregister: true });
+  const form = useForm<z.input<typeof addBoardSchema>, unknown, AddBoardSchema>({
+    resolver,
+    defaultValues,
+    shouldUnregister: true,
+  });
 
   const onSubmit: SubmitHandler<AddBoardSchema> = ({ title, preset }) => {
     const newBoard = generateBoard(title);
@@ -76,7 +82,7 @@ const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
               control={form.control}
               name={presetField}
               render={({ field }) => (
-                <FormItem className="flex items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                <FormItem className="flex items-start space-y-0 space-x-3 rounded-md border p-4 shadow-sm">
                   <FormControl>
                     <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                   </FormControl>

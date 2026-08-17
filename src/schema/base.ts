@@ -9,6 +9,6 @@ export const createTitleSchema = ({ min = 1, max = 30 } = {}) => {
   return z
     .string()
     .trim()
-    .min(min, { message: `최소 ${min}자 이상 입력해주세요` })
-    .max(max, { message: `최대 ${max}자까지 입력할 수 있어요` });
+    .min(min, { error: `최소 ${min}자 이상 입력해주세요` })
+    .max(max, { error: `최대 ${max}자까지 입력할 수 있어요` });
 };

@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default tseslint.config(
-  globalIgnores(['.next/**', 'node_modules/**', 'dist/**', 'build/**']),
+  globalIgnores(['.next/**', 'next-env.d.ts', 'node_modules/**', 'dist/**', 'build/**']),
 
   {
     plugins: { '@next/next': nextPlugin },
@@ -28,7 +28,17 @@ export default tseslint.config(
     },
   },
 
-  ...tailwindPlugin.configs['flat/recommended'],
+  {
+    ...tailwindPlugin.configs.recommended,
+    settings: { tailwindcss: { cssConfigPath: 'src/app/globals.css' } },
+    rules: {
+      ...tailwindPlugin.configs.recommended.rules,
+      'tailwindcss/no-custom-classname': [
+        'warn',
+        { whitelist: ['inputs', 'scroll-custom', 'toaster'] },
+      ],
+    },
+  },
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -41,7 +51,6 @@ export default tseslint.config(
       'no-unused-vars': 'off',
       // 타입 import 할 때 인라인으로 type 키워드 추가 e.g., import { type Circle } from '...'
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
-      'tailwindcss/no-custom-classname': ['warn', { whitelist: ['toaster'] }],
     },
   },
 

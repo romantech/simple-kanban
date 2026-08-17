@@ -16,7 +16,7 @@ const Empty = ({ className, children, ...divProps }: EmptyProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
       className={cn(
-        'size-full flex flex-col gap-4 items-center justify-center text-baltic-400',
+        'flex size-full flex-col items-center justify-center gap-4 text-baltic-400',
         className,
       )}
       {...divProps}
