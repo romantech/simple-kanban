@@ -28,7 +28,7 @@ export const POST = withUnkey(
   async (req) => {
     const parsedBody = subtaskRequestSchema.safeParse(await parseRequestJSON(req));
     if (!parsedBody.success) {
-      console.error('Validation error:', parsedBody.error.errors);
+      console.error('Validation error:', parsedBody.error.issues);
       return errorResponse.zod(parsedBody.error);
     }
 

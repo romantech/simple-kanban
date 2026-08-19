@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import { arrayMove, getCurrentISODate } from '@/lib/utils';
 import type { Active, Over } from '@dnd-kit/core';
@@ -6,23 +5,30 @@ import type { Sortable, TaskSortable, Void } from '@/types';
 import {
   type BoardDef,
   type BoardId,
+  boardId,
   type ColumnDef,
   type ColumnId,
-  KanbanBrandType,
+  columnId,
   type KanbanEntity,
   type SubtaskDef,
+  type SubtaskId,
+  subtaskId,
   type TaskId,
+  taskId,
   type TitleDef,
 } from '@/schema';
 import { type DragType } from '@/hooks';
 
-export const generateKanbanId = <T extends KanbanEntity>(entity: T) => {
-  const brand = KanbanBrandType[entity];
-  return z
-    .string()
-    .brand(brand)
-    .parse(`${entity}-${nanoid(8)}`);
-};
+const idSchemas = { Task: taskId, Subtask: subtaskId, Column: columnId, Board: boardId };
+interface KanbanIdMap {
+  Task: TaskId;
+  Subtask: SubtaskId;
+  Column: ColumnId;
+  Board: BoardId;
+}
+
+export const generateKanbanId = <T extends KanbanEntity>(entity: T): KanbanIdMap[T] =>
+  idSchemas[entity].parse(`${entity}-${nanoid(8)}`) as KanbanIdMap[T];
 
 export const generateKanbanIds = <T extends KanbanEntity>(type: T, count: number) => {
   return Array.from({ length: count }, () => generateKanbanId(type));

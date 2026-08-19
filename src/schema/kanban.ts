@@ -33,7 +33,7 @@ export const taskSchema = timestampsSchema.extend({
   title: createTitleSchema({ max: TaskConfig.title.max, min: TaskConfig.title.min }),
   description: z
     .string()
-    .max(TaskConfig.desc.max, { message: `최대 ${TaskConfig.desc.max}자까지 입력할 수 있어요` })
+    .max(TaskConfig.desc.max, { error: `최대 ${TaskConfig.desc.max}자까지 입력할 수 있어요` })
     .transform((val) => (val === '' ? undefined : val))
     .optional(),
   subtaskIds: z.array(subtaskId).default([]),

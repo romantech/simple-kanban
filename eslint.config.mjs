@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default tseslint.config(
-  globalIgnores(['.next/**', 'node_modules/**', 'dist/**', 'build/**']),
+  globalIgnores(['.next/**', 'next-env.d.ts', 'node_modules/**', 'dist/**', 'build/**']),
 
   {
     plugins: { '@next/next': nextPlugin },

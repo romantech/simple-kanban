@@ -19,7 +19,7 @@ export const handleServerError = (error: unknown) => {
 };
 
 export const handleZodError = (error: ZodError) => {
-  const [firstError] = error.errors;
+  const [firstError] = error.issues;
   const message = `${firstError.path.join('.')} field ${firstError.message}`;
 
   return createResponse({ success: false, message }, 400);

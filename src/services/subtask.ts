@@ -17,6 +17,6 @@ export const generateAISubtasks = async (params: SubtaskRequest) => {
 
     const { response, message } = e;
     const errorMessage = `${message}. ${isAPIResponse(response?.data) ? response.data.message : ''}`;
-    throw new Error(errorMessage);
+    throw new Error(errorMessage, { cause: e });
   }
 };

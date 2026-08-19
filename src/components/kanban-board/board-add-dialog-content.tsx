@@ -27,8 +27,10 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { addBoardSchema, type AddBoardSchema } from '@/schema';
 import { useRouter } from 'next/navigation';
+import { type z } from 'zod';
 
-const [titleField, presetField] = addBoardSchema.keyof().options;
+const titleField = 'title';
+const presetField = 'preset';
 const resolver = zodResolver(addBoardSchema);
 const defaultValues = { title: '', preset: true };
 
@@ -40,7 +42,11 @@ const BoardAddDialogContent = ({ className }: BoardAddDialogContentProps) => {
   const router = useRouter();
   const addBoard = useKanbanStore.use.addBoard();
 
-  const form = useForm<AddBoardSchema>({ resolver, defaultValues, shouldUnregister: true });
+  const form = useForm<z.input<typeof addBoardSchema>, unknown, AddBoardSchema>({
+    resolver,
+    defaultValues,
+    shouldUnregister: true,
+  });
 
   const onSubmit: SubmitHandler<AddBoardSchema> = ({ title, preset }) => {
     const newBoard = generateBoard(title);

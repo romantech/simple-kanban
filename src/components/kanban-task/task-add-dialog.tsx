@@ -20,6 +20,7 @@ import { TaskEditForm } from '@/components/kanban-task/task-edit-form';
 import { addTaskSchema, type AddTaskSchema, type ColumnId, type TaskDef } from '@/schema';
 import { useDisclosure, useGenerateSubtasks } from '@/hooks';
 import { SubtaskPicker } from '@/components/kanban-subtask/subtask-picker';
+import { type z } from 'zod';
 
 interface AddTaskProps {
   columnId: ColumnId;
@@ -34,7 +35,7 @@ const TaskAddDialog = ({ columnId, children }: PropsWithChildren<AddTaskProps>) 
 
   const { generateSubtasksAsync, loading, subtaskList } = useGenerateSubtasks();
 
-  const form = useForm<AddTaskSchema>({
+  const form = useForm<z.input<typeof addTaskSchema>, unknown, AddTaskSchema>({
     resolver: zodResolver(addTaskSchema),
     shouldUnregister: true, // 언마운트 시 필드 값 초기화 (자식 컴포넌트에서도 적용됨)
   });
