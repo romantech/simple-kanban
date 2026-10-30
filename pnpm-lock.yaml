@@ -29,13 +29,13 @@ importers:
         version: 2.0.1(react-dom@19.3.0(react@19.3.0))(react-hook-form@7.88.0(react@19.3.0))(react@19.3.0)
       '@hookform/resolvers':
         specifier: ^5.9.1
-        version: 5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.88.0(react@19.3.0))(zod@4.6.4)
+        version: 5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.88.0(react@19.3.0))(zod@4.6.6)
       '@langchain/core':
         specifier: ^1.2.11
-        version: 1.2.11(openai@7.15.0(zod@4.6.4))
+        version: 1.2.11(openai@7.15.0(zod@4.6.6))
       '@langchain/openai':
         specifier: ^1.5.13
-        version: 1.5.13(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))
+        version: 1.5.13(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))
       '@radix-ui/react-alert-dialog':
         specifier: ^1.1.23
         version: 1.1.23(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -95,7 +95,7 @@ importers:
         version: 11.1.18
       langchain:
         specifier: ^1.5.11
-        version: 1.5.11(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))(openai@7.15.0(zod@4.6.4))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 1.5.11(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))(openai@7.15.0(zod@4.6.6))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       lucide-react:
         specifier: ^1.45.0
         version: 1.45.0(react@19.3.0)
@@ -133,8 +133,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.19)
       zod:
-        specifier: ^4.6.4
-        version: 4.6.4
+        specifier: ^4.6.6
+        version: 4.6.6
       zustand:
         specifier: ^5.0.15
         version: 5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0)
@@ -2268,8 +2268,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@4.6.4:
-    resolution: {integrity: sha512-AXSD6hvGdvRjajG/l1cC+d6IrhH+sjmPKtYeQdJIK8MFJl3LyClzS+o/YsVC+zQZPupAaeH5skwwm8YqYH7BqA==}
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
   zustand@5.0.15:
     resolution: {integrity: sha512-MpSEjRiBkA9crSYeOUH32rJC7SVqAbm0Fqcqge/bUi2PPoLcBWKOsG+C8mevmpr8TwXHBVkChbbJiyvkE+i/3A==}
@@ -2408,13 +2408,13 @@ snapshots:
       react-dom: 19.3.0(react@19.3.0)
       react-hook-form: 7.88.0(react@19.3.0)
 
-  '@hookform/resolvers@5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.88.0(react@19.3.0))(zod@4.6.4)':
+  '@hookform/resolvers@5.9.1(@standard-schema/spec@1.1.0)(react-hook-form@7.88.0(react@19.3.0))(zod@4.6.6)':
     dependencies:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.88.0(react@19.3.0)
     optionalDependencies:
       '@standard-schema/spec': 1.1.0
-      zod: 4.6.4
+      zod: 4.6.6
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -2561,15 +2561,15 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4))':
+  '@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       '@standard-schema/spec': 1.1.0
       js-tiktoken: 1.0.21
-      langsmith: 0.10.3(openai@7.15.0(zod@4.6.4))
+      langsmith: 0.10.3(openai@7.15.0(zod@4.6.6))
       mustache: 4.2.0
       p-queue: 6.6.2
-      zod: 4.6.4
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -2577,13 +2577,13 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))':
+  '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))':
     dependencies:
-      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.4))
+      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.6))
 
-  '@langchain/langgraph-sdk@1.11.0(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@langchain/langgraph-sdk@1.11.0(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
-      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.4))
+      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.6))
       '@langchain/protocol': 0.0.19
       '@types/json-schema': 7.0.15
       p-queue: 9.3.3
@@ -2592,24 +2592,24 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
 
-  '@langchain/langgraph@1.4.15(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(zod@4.6.4)':
+  '@langchain/langgraph@1.4.15(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(zod@4.6.6)':
     dependencies:
-      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.4))
-      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))
-      '@langchain/langgraph-sdk': 1.11.0(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.6))
+      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))
+      '@langchain/langgraph-sdk': 1.11.0(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@langchain/protocol': 0.0.19
       '@standard-schema/spec': 1.1.0
-      zod: 4.6.4
+      zod: 4.6.6
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@langchain/openai@1.5.13(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))':
+  '@langchain/openai@1.5.13(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))':
     dependencies:
-      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.4))
+      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.6))
       js-tiktoken: 1.0.21
-      openai: 7.15.0(zod@4.6.4)
-      zod: 4.6.4
+      openai: 7.15.0(zod@4.6.6)
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
       - '@smithy/hash-node'
@@ -3177,11 +3177,11 @@ snapshots:
 
   '@unkey/api@2.2.0':
     dependencies:
-      zod: 4.6.4
+      zod: 4.6.6
 
   '@unkey/api@2.5.1':
     dependencies:
-      zod: 4.6.4
+      zod: 4.6.6
 
   '@unkey/nextjs@2.0.0':
     dependencies:
@@ -3662,13 +3662,13 @@ snapshots:
     dependencies:
       '@keyv/serialize': 1.1.1
 
-  langchain@1.5.11(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))(openai@7.15.0(zod@4.6.4))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  langchain@1.5.11(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))(openai@7.15.0(zod@4.6.6))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
-      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.4))
-      '@langchain/langgraph': 1.4.15(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(zod@4.6.4)
-      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.4)))
-      langsmith: 0.10.3(openai@7.15.0(zod@4.6.4))
-      zod: 4.6.4
+      '@langchain/core': 1.2.11(openai@7.15.0(zod@4.6.6))
+      '@langchain/langgraph': 1.4.15(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(zod@4.6.6)
+      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(openai@7.15.0(zod@4.6.6)))
+      langsmith: 0.10.3(openai@7.15.0(zod@4.6.6))
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -3678,11 +3678,11 @@ snapshots:
       - react-dom
       - ws
 
-  langsmith@0.10.3(openai@7.15.0(zod@4.6.4)):
+  langsmith@0.10.3(openai@7.15.0(zod@4.6.6)):
     dependencies:
       p-queue: 6.6.2
     optionalDependencies:
-      openai: 7.15.0(zod@4.6.4)
+      openai: 7.15.0(zod@4.6.6)
 
   levn@0.4.1:
     dependencies:
@@ -3801,9 +3801,9 @@ snapshots:
 
   object-hash@3.0.0: {}
 
-  openai@7.15.0(zod@4.6.4):
+  openai@7.15.0(zod@4.6.6):
     optionalDependencies:
-      zod: 4.6.4
+      zod: 4.6.6
 
   optionator@0.9.4:
     dependencies:
@@ -4200,7 +4200,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@4.6.4: {}
+  zod@4.6.6: {}
 
   zustand@5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0):
     optionalDependencies:
